@@ -1,1 +1,95 @@
 
+name: Test API-Football connection
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test-api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test API key and load fixtures
+        env:
+          FOOTBALL_API: ${{ secrets.FOOTBALL_API }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import urllib.error
+          import urllib.parse
+          import urllib.request
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+
+          key = os.environ.get("FOOTBALL_API", "").strip()
+          if not key:
+              raise SystemExit(
+                  "ERROR: Secret FOOTBALL_API is missing or empty."
+              )
+
+          base = "https://v3.football.api-sports.io"
+          headers = {
+              "x-apisports-key": key,
+              "Accept": "application/json"
+          }
+
+          def get(path):
+              request = urllib.request.Request(
+                  base + path, headers=headers
+              )
+              try:
+                  with urllib.request.urlopen(
+                      request, timeout=30
+                  ) as response:
+                      data = json.load(response)
+              except urllib.error.HTTPError as exc:
+                  raise SystemExit(
+                      f"API request failed: HTTP {exc.code}. "
+                      "Check API key, plan and request limits."
+                  )
+              errors = data.get("errors") or {}
+              if errors:
+                  raise SystemExit(f"API returned errors: {errors}")
+              return data
+
+          status = get("/status")
+          account = status.get("response") or {}
+          requests = account.get("requests") or {}
+
+          print("SUCCESS: API key accepted.")
+          print("Requests used today:",
+                requests.get("current", "not reported"))
+          print("Daily request limit:",
+                requests.get("limit_day", "not reported"))
+
+          today = datetime.now(
+              ZoneInfo("Europe/Prague")
+          ).date().isoformat()
+
+          data = get(
+              "/fixtures?" + urllib.parse.urlencode(
+                  {"date": today}
+              )
+          )
+          matches = data.get("response") or []
+          print(f"Fixtures for {today}: {len(matches)}")
+
+          if matches:
+              item = matches[0]
+              fixture = item.get("fixture") or {}
+              teams = item.get("teams") or {}
+              print("Sample match ID:", fixture.get("id"))
+              print(
+                  "Sample match:",
+                  (teams.get("home") or {}).get("name"),
+                  "-",
+                  (teams.get("away") or {}).get("name")
+              )
+              print("Next: check statistics and xG coverage.")
+          else:
+              print("No fixtures found for this date.")
+          PY
+
