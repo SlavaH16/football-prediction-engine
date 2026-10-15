@@ -1,5 +1,6 @@
 
-name: Test API-Football match statistics
+
+name: Test API-Football Premier League statistics
 
 'on': [workflow_dispatch]
 
@@ -10,7 +11,7 @@ jobs:
   test-stats:
     runs-on: ubuntu-latest
     steps:
-      - name: Check recent match statistics and xG
+      - name: Check Premier League statistics and xG
         env:
           FOOTBALL_API: ${{ secrets.FOOTBALL_API }}
         run: |
@@ -19,80 +20,114 @@ jobs:
           import os
           import urllib.parse
           import urllib.request
-          from datetime import datetime, timedelta
-          from zoneinfo import ZoneInfo
+          import urllib.error
 
           key = os.environ.get("FOOTBALL_API", "").strip()
           if not key:
-              raise SystemExit("Secret FOOTBALL_API is missing.")
+              raise SystemExit("ERROR: Secret FOOTBALL_API is missing.")
 
           base = "https://v3.football.api-sports.io"
-          headers = {"x-apisports-key": key}
+          headers = {
+              "x-apisports-key": key,
+              "Accept": "application/json"
+          }
 
           def get(path):
               req = urllib.request.Request(base + path, headers=headers)
-              with urllib.request.urlopen(req, timeout=30) as response:
-                  data = json.load(response)
+              try:
+                  with urllib.request.urlopen(req, timeout=30) as response:
+                      data = json.load(response)
+              except urllib.error.HTTPError as exc:
+                  raise SystemExit(
+                      f"API HTTP error: {exc.code}. "
+                      "Check API key, plan and request limit."
+                  )
+
               errors = data.get("errors") or {}
               if errors:
                   raise SystemExit(f"API error: {errors}")
+
               return data.get("response") or []
 
-          today = datetime.now(ZoneInfo("Europe/Prague")).date()
-          fixtures = []
+          # Premier League: ID 39, season 2026.
+          params = urllib.parse.urlencode({
+              "league": 39,
+              "season": 2026,
+              "last": 20
+          })
 
-          for offset in (1, 2):
-              day = (today - timedelta(days=offset)).isoformat()
-              fixtures = get("/fixtures?" + urllib.parse.urlencode({
-                  "date": day,
-                  "status": "FT"
-              }))
-              if fixtures:
-                  print("Finished matches found:", len(fixtures))
-                  break
+          fixtures = get("/fixtures?" + params)
 
-          if not fixtures:
-              raise SystemExit("No recent finished matches found.")
+          finished = [
+              match for match in fixtures
+              if (match.get("fixture") or {})
+                 .get("status", {}).get("short") == "FT"
+          ]
 
-          match = fixtures[0]
-          fixture_id = match["fixture"]["id"]
+          if not finished:
+              print("No finished Premier League matches found.")
+              print("Fixtures returned:", len(fixtures))
+              print("Try again when more matches have been played.")
+              raise SystemExit(0)
+
+          # Select a completed Premier League match.
+          match = finished[0]
+          fixture = match.get("fixture") or {}
           teams = match.get("teams") or {}
           league = match.get("league") or {}
+          fixture_id = fixture.get("id")
 
           print("Competition:", league.get("name"))
+          print("League ID:", league.get("id"))
+          print("Season:", league.get("season"))
+          print("Date:", fixture.get("date"))
           print("Home:", (teams.get("home") or {}).get("name"))
           print("Away:", (teams.get("away") or {}).get("name"))
           print("Fixture ID:", fixture_id)
 
-          stats = get("/fixtures/statistics?" + urllib.parse.urlencode({
-              "fixture": fixture_id
-          }))
+          stats = get(
+              "/fixtures/statistics?" +
+              urllib.parse.urlencode({"fixture": fixture_id})
+          )
 
           if not stats:
-              print("No statistics available for this match.")
-          else:
-              found = set()
-              for item in stats:
-                  print("Team:", (item.get("team") or {}).get("name"))
-                  for stat in item.get("statistics") or []:
-                      name = stat.get("type", "")
-                      value = stat.get("value")
-                      print(f"  {name}: {value}")
-                      found.add(name.lower())
+              print("No statistics returned for this match.")
+              print("The match may not have statistics coverage.")
+              raise SystemExit(0)
 
-              print("--- Coverage summary ---")
-              checks = {
-                  "xG": ("expected_goals", "expected goals", "xg"),
-                  "Shots": ("total shots", "shots on goal"),
-                  "Possession": ("ball possession",),
-                  "Corners": ("corner kicks",)
-              }
-              for label, terms in checks.items():
-                  available = any(
-                      term in name
-                      for name in found
-                      for term in terms
-                  )
-                  print(f"{label}: {'YES' if available else 'NOT FOUND'}")
+          found = set()
+
+          for team_data in stats:
+              team_name = (
+                  (team_data.get("team") or {}).get("name", "Unknown")
+              )
+              print("\nTeam:", team_name)
+
+              for stat in team_data.get("statistics") or []:
+                  name = str(stat.get("type") or "")
+                  value = stat.get("value")
+                  print(f"  {name}: {value}")
+                  found.add(name.lower())
+
+          print("\n--- STATISTICS COVERAGE ---")
+
+          checks = {
+              "xG": ("expected_goals", "expected goals", "xg"),
+              "Shots": ("total shots", "shots on goal"),
+              "Possession": ("ball possession",),
+              "Corners": ("corner kicks",)
+          }
+
+          for label, terms in checks.items():
+              available = any(
+                  term in name
+                  for name in found
+                  for term in terms
+              )
+              print(
+                  f"{label}: "
+                  f"{'YES' if available else 'NOT FOUND'}"
+              )
+
+          print("\nTest completed.")
           PY
-
