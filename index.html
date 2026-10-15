@@ -1,1 +1,101 @@
 
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Football Prediction Engine</title>
+<style>
+body{margin:0;background:#0b1220;color:#f1f5f9;font:16px Arial;padding:18px}
+h1{color:#75e0b2;font-size:27px}
+p{color:#aab8cc}
+.card{background:#172438;border:1px solid #30415a;border-radius:14px;padding:15px;margin:12px 0}
+button,select{padding:11px;border-radius:9px;border:0;margin:5px 3px}
+button{background:#75e0b2;color:#092015;font-weight:bold}
+.probs{display:flex;gap:7px;margin-top:14px}
+.probs span{background:#26384d;padding:10px 4px;border-radius:8px;flex:1;text-align:center}
+small{color:#aab8cc}
+#ticket{white-space:pre-line;line-height:1.8}
+</style>
+</head>
+<body>
+<h1>⚽ Football Prediction Engine</h1>
+<p>Predikce zápasů a návrh tiketu</p>
+<p>DEMO DATA – nejde o aktuální zápasy ani živé kurzy.</p>
+
+<div id="matches"></div>
+
+<div class="card">
+<h2>🎯 Návrh tiketu</h2>
+<label for="limit">Minimální pravděpodobnost:</label>
+<select id="limit">
+<option value=".5">50 %</option>
+<option value=".6" selected>60 %</option>
+<option value=".7">70 %</option>
+</select>
+<br>
+<button onclick="buildTicket()">Navrhnout tiket</button>
+<button onclick="saveTicket()">Uložit tipy</button>
+<div id="ticket">Vyber zápasy a vytvoř návrh.</div>
+</div>
+
+<script>
+const games=[
+{h:"Arsenal",a:"Brighton",p:[57,24,19]},
+{h:"Real Madrid",a:"Sevilla",p:[66,20,14]},
+{h:"Inter",a:"Atalanta",p:[49,27,24]},
+{h:"Bayern",a:"Mainz",p:[73,16,11]},
+{h:"Sparta Praha",a:"Jablonec",p:[61,23,16]},
+{h:"Lyon",a:"Lille",p:[38,29,33]}
+];
+let selected=new Set([0,1,3,4]);
+let ticket=[];
+
+function render(){
+document.getElementById("matches").innerHTML=games.map((g,i)=>`
+<div class="card">
+<b>${g.h} – ${g.a}</b>
+<div class="probs">
+${g.p.map((p,j)=>`<span>${["1","X","2"][j]}<br><b>${p}%</b></span>`).join("")}
+</div>
+<p><small>Ukázkový odhad pravděpodobnosti</small></p>
+<button onclick="toggle(${i})">
+${selected.has(i)?"✓ Vybráno":"＋ Vybrat zápas"}
+</button>
+</div>`).join("");
+}
+function toggle(i){
+if(selected.has(i))selected.delete(i);
+else selected.add(i);
+render();
+}
+function buildTicket(){
+const min=Number(document.getElementById("limit").value);
+ticket=[];
+for(const i of selected){
+const g=games[i];
+const best=Math.max(...g.p);
+const j=g.p.indexOf(best);
+if(best/100>=min){
+ticket.push({match:g.h+" – "+g.a,
+tip:["1","X","2"][j],prob:best});
+}
+}
+document.getElementById("ticket").textContent=ticket.length
+?ticket.map(t=>`${t.match}\nTip: ${t.tip} · Pravděpodobnost ${t.prob}%`).join("\n\n")
+:"Pro zvolený práh nebyl nalezen žádný tip.";
+}
+function saveTicket(){
+if(!ticket.length){alert("Nejdřív vytvoř návrh tiketu.");return}
+try{
+const old=JSON.parse(localStorage.getItem("fpe_history")||"[]");
+old.unshift({date:new Date().toISOString(),tips:ticket});
+localStorage.setItem("fpe_history",JSON.stringify(old));
+alert("Návrh uložen v tomto prohlížeči.");
+}catch(e){alert("Uložení se nepodařilo.");}
+}
+render();
+</script>
+</body>
+</html>
+
