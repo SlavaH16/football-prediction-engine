@@ -1,8 +1,9 @@
 
+
 name: Test API-Football connection
 
-on:
-  workflow_dispatch:
+'on': [workflow_dispatch]
+
 
 permissions:
   contents: read
