@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Chronological comparison of the current and a less home-biased model.
+"""Chronological comparison of three football prediction variants.
 
 Each match is predicted only from matches dated before it. The script keeps
-the current model unchanged as a benchmark and tests one candidate variant.
+current and candidate formulas as benchmarks and tests a draw-calibrated variant.
 """
 import json
 import math
@@ -16,6 +16,7 @@ MIN_TEAM_MATCHES = 3
 MAX_GOALS = 8
 EPS = 1e-12
 OUTCOMES = ("1", "X", "2")
+DRAW_BOOST = 1.15
 
 
 def parse_date(value):
@@ -93,6 +94,13 @@ def probabilities(lam_home, lam_away):
     return {"1": p1 / total, "X": px / total, "2": p2 / total}
 
 
+def calibrate_draw(probs, factor=DRAW_BOOST):
+    """Increase draw probability by a test factor, then renormalize all outcomes."""
+    adjusted = {"1": probs["1"], "X": probs["X"] * factor, "2": probs["2"]}
+    total = sum(adjusted.values())
+    return {key: value / total for key, value in adjusted.items()}
+
+
 def predict(prior, match, variant="current"):
     home = match["homeTeam"]["name"]
     away = match["awayTeam"]["name"]
@@ -114,21 +122,16 @@ def predict(prior, match, variant="current"):
     form_a = away_recent["gf"] - away_recent["ga"]
 
     if variant == "current":
-        # Existing formula, retained as the comparison benchmark.
         lam_home = max(0.2, min(3.8, 0.52 * h_attack + 0.48 * a_concede + 0.12 + 0.06 * form_h))
         lam_away = max(0.2, min(3.8, 0.52 * a_attack + 0.48 * h_concede - 0.04 + 0.06 * form_a))
     else:
-        # Experimental candidate: slightly less home weighting and a more
-        # neutral baseline. This is a test candidate, not assumed to be better.
         lam_home = max(0.2, min(3.8, 0.48 * h_attack + 0.42 * a_concede + 0.08 + 0.04 * form_h))
         lam_away = max(0.2, min(3.8, 0.50 * a_attack + 0.50 * h_concede + 0.02 + 0.06 * form_a))
 
     probs = probabilities(lam_home, lam_away)
-    return {
-        **probs,
-        "lambda_home": lam_home,
-        "lambda_away": lam_away,
-    }
+    if variant == "draw_calibrated":
+        probs = calibrate_draw(probs)
+    return {**probs, "lambda_home": lam_home, "lambda_away": lam_away}
 
 
 def actual_outcome(match):
@@ -141,29 +144,24 @@ def calculate_metrics(rows, variant):
     n = len(rows)
     if not n:
         return {}
-    # Prediction dictionaries use p1/px/p2; map them to labels 1/X/2.
     def probs(row):
-        p = row[variant]
-        return {"1": p["1"] if "1" in p else p["p1"],
-                "X": p["X"] if "X" in p else p["px"],
-                "2": p["2"] if "2" in p else p["p2"]}
+        return {key: row[variant][key] for key in OUTCOMES}
 
     correct = sum(max(probs(row), key=probs(row).get) == row["actual"] for row in rows)
     accuracy = correct / n
-    brier = sum(
-        (probs(row)[key] - (row["actual"] == key)) ** 2
-        for row in rows for key in OUTCOMES
-    ) / n
+    brier = sum((probs(row)[key] - (row["actual"] == key)) ** 2 for row in rows for key in OUTCOMES) / n
     log_loss = -sum(math.log(max(EPS, probs(row)[row["actual"]])) for row in rows) / n
-    predicted_counts = {
-        key: sum(max(probs(row), key=probs(row).get) == key for row in rows)
-        for key in OUTCOMES
-    }
+    predicted_counts = {key: sum(max(probs(row), key=probs(row).get) == key for row in rows) for key in OUTCOMES}
+    mean_probabilities = {key: round(sum(probs(row)[key] for row in rows) / n, 5) for key in OUTCOMES}
+    actual_counts = {key: sum(row["actual"] == key for row in rows) for key in OUTCOMES}
+    actual_rates = {key: round(actual_counts[key] / n, 5) for key in OUTCOMES}
     return {
         "accuracy": round(accuracy, 5),
         "brier_score": round(brier, 5),
         "log_loss": round(log_loss, 5),
         "predicted_outcomes": predicted_counts,
+        "mean_predicted_probabilities": mean_probabilities,
+        "actual_outcome_rates": actual_rates,
     }
 
 
@@ -181,7 +179,8 @@ def main():
     for match in matches:
         current = predict(prior, match, "current")
         candidate = predict(prior, match, "candidate")
-        if current is None or candidate is None:
+        calibrated = predict(prior, match, "draw_calibrated")
+        if current is None or candidate is None or calibrated is None:
             skipped += 1
         else:
             rows.append({
@@ -194,53 +193,57 @@ def main():
                 "actual": actual_outcome(match),
                 "current": current,
                 "candidate": candidate,
+                "draw_calibrated": calibrated,
             })
         prior.append(match)
 
-    current_metrics = calculate_metrics(rows, "current")
-    candidate_metrics = calculate_metrics(rows, "candidate")
+    metrics = {name: calculate_metrics(rows, name) for name in ("current", "candidate", "draw_calibrated")}
     actual_counts = {key: sum(row["actual"] == key for row in rows) for key in OUTCOMES}
     baseline_accuracy = actual_counts["1"] / len(rows) if rows else None
-
+    base = metrics["current"]
     output = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "method": "Chronological expanding-window comparison; each match uses only earlier matches.",
+        "draw_calibration_factor": DRAW_BOOST,
         "source_matches": len(matches),
         "tested_matches": len(rows),
         "skipped_early_matches": skipped,
         "metrics": {
-            "current_model": current_metrics,
-            "candidate_model": candidate_metrics,
+            "current_model": metrics["current"],
+            "candidate_model": metrics["candidate"],
+            "draw_calibrated_model": metrics["draw_calibrated"],
             "always_home_win_baseline_accuracy": round(baseline_accuracy, 5) if baseline_accuracy is not None else None,
-            "candidate_accuracy_change_vs_current": round(candidate_metrics["accuracy"] - current_metrics["accuracy"], 5) if rows else None,
-            "candidate_brier_change_vs_current": round(candidate_metrics["brier_score"] - current_metrics["brier_score"], 5) if rows else None,
-            "candidate_log_loss_change_vs_current": round(candidate_metrics["log_loss"] - current_metrics["log_loss"], 5) if rows else None,
             "actual_outcomes": actual_counts,
+            "candidate_changes_vs_current": {
+                "accuracy": round(metrics["candidate"]["accuracy"] - base["accuracy"], 5),
+                "brier_score": round(metrics["candidate"]["brier_score"] - base["brier_score"], 5),
+                "log_loss": round(metrics["candidate"]["log_loss"] - base["log_loss"], 5),
+            },
+            "draw_calibrated_changes_vs_current": {
+                "accuracy": round(metrics["draw_calibrated"]["accuracy"] - base["accuracy"], 5),
+                "brier_score": round(metrics["draw_calibrated"]["brier_score"] - base["brier_score"], 5),
+                "log_loss": round(metrics["draw_calibrated"]["log_loss"] - base["log_loss"], 5),
+            },
         },
         "predictions": [
-            {
-                "date": row["date"], "competition": row["competition"],
-                "home": row["home"], "away": row["away"],
-                "score_home": row["score_home"], "score_away": row["score_away"],
-                "actual": row["actual"],
-                "current": row["current"], "candidate": row["candidate"],
-            }
+            {"date": row["date"], "competition": row["competition"], "home": row["home"], "away": row["away"],
+             "score_home": row["score_home"], "score_away": row["score_away"], "actual": row["actual"],
+             "current": row["current"], "candidate": row["candidate"], "draw_calibrated": row["draw_calibrated"]}
             for row in rows
         ],
     }
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_PATH.write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    print("FOOTBALL MODEL COMPARISON")
+    print("FOOTBALL MODEL COMPARISON — DRAW CALIBRATION")
     print(f"Historical matches: {len(matches)}")
     print(f"Predictions evaluated: {len(rows)}; skipped early matches: {skipped}")
-    print(f"Current model: accuracy={current_metrics.get('accuracy', 0):.1%}, Brier={current_metrics.get('brier_score', 0):.4f}, log loss={current_metrics.get('log_loss', 0):.4f}")
-    print(f"Candidate model: accuracy={candidate_metrics.get('accuracy', 0):.1%}, Brier={candidate_metrics.get('brier_score', 0):.4f}, log loss={candidate_metrics.get('log_loss', 0):.4f}")
+    for name, label in (("current", "Current model"), ("candidate", "Candidate model"), ("draw_calibrated", f"Draw-calibrated model (X × {DRAW_BOOST:.2f})")):
+        m = metrics[name]
+        print(f"{label}: accuracy={m.get('accuracy', 0):.1%}, Brier={m.get('brier_score', 0):.4f}, log loss={m.get('log_loss', 0):.4f}")
+        print(f"  Predicted outcomes: {m.get('predicted_outcomes', {})}")
+        print(f"  Mean probabilities: {m.get('mean_predicted_probabilities', {})}")
     print(f"Always-home baseline: {baseline_accuracy:.1%}" if baseline_accuracy is not None else "Always-home baseline: unavailable")
-    if rows:
-        print(f"Candidate accuracy change: {candidate_metrics['accuracy'] - current_metrics['accuracy']:+.1%}")
-        print(f"Candidate Brier change (negative is better): {candidate_metrics['brier_score'] - current_metrics['brier_score']:+.4f}")
-        print(f"Candidate log-loss change (negative is better): {candidate_metrics['log_loss'] - current_metrics['log_loss']:+.4f}")
     print(f"Output: {OUTPUT_PATH}")
 
 
