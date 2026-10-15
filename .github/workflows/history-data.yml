@@ -1,3 +1,4 @@
+
 name: Aktualizace historie fotbalu
 
 on:
@@ -19,7 +20,12 @@ jobs:
           FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
         run: |
           python - <<'PY'
-          import os, json, datetime, urllib.request, urllib.error
+          import os
+          import json
+          import time
+          import datetime
+          import urllib.request
+          import urllib.error
           from pathlib import Path
 
           token = os.environ.get("FOOTBALL_DATA_TOKEN")
@@ -28,40 +34,69 @@ jobs:
 
           today = datetime.date.today()
           start = today - datetime.timedelta(days=365)
-          url = (
-              "https://api.football-data.org/v4/matches"
-              f"?dateFrom={start.isoformat()}&dateTo={today.isoformat()}"
-          )
-          req = urllib.request.Request(url, headers={"X-Auth-Token": token})
-          try:
-              with urllib.request.urlopen(req, timeout=60) as response:
-                  payload = json.load(response)
-          except urllib.error.HTTPError as exc:
-              body = exc.read().decode("utf-8", "replace")
-              print(f"API vrátilo HTTP {exc.code}: {body[:1000]}")
-              raise SystemExit(
-                  "Historické období může být omezené tarifem. "
-                  "Podrobnosti jsou v logu GitHub Actions."
+          matches_by_id = {}
+          current = start
+
+          while current <= today:
+              end = min(current + datetime.timedelta(days=9), today)
+
+              url = (
+                  "https://api.football-data.org/v4/matches"
+                  f"?dateFrom={current.isoformat()}"
+                  f"&dateTo={end.isoformat()}"
               )
 
-          finished = [
-              m for m in payload.get("matches", [])
-              if m.get("status") == "FINISHED"
-          ]
+              req = urllib.request.Request(
+                  url,
+                  headers={"X-Auth-Token": token}
+              )
+
+              try:
+                  with urllib.request.urlopen(req, timeout=60) as response:
+                      payload = json.load(response)
+              except urllib.error.HTTPError as exc:
+                  body = exc.read().decode("utf-8", "replace")
+                  print(f"Chyba API HTTP {exc.code}: {body[:1000]}")
+                  raise SystemExit("Stahování historie selhalo.")
+
+              for match in payload.get("matches", []):
+                  if match.get("status") == "FINISHED":
+                      matches_by_id[match["id"]] = match
+
+              print(
+                  f"Období {current} až {end}; "
+                  f"zápasů celkem: {len(matches_by_id)}"
+              )
+
+              current = end + datetime.timedelta(days=1)
+
+              if current <= today:
+                  time.sleep(6)
+
+          finished = sorted(
+              matches_by_id.values(),
+              key=lambda match: match.get("utcDate", "")
+          )
+
           Path("data").mkdir(exist_ok=True)
-          out = {
-              "updated": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+
+          output = {
+              "updated": datetime.datetime.now(
+                  datetime.timezone.utc
+              ).isoformat(),
               "dateFrom": start.isoformat(),
               "dateTo": today.isoformat(),
               "count": len(finished),
               "source": "football-data.org",
               "matches": finished
           }
+
           Path("data/history.json").write_text(
-              json.dumps(out, ensure_ascii=False, indent=2),
+              json.dumps(output, ensure_ascii=False, indent=2),
               encoding="utf-8"
           )
-          print(f"Uloženo dokončených historických zápasů: {len(finished)}")
+
+          print(f"Uloženo dokončených zápasů: {len(finished)}")
           PY
 
       - name: Uložit historii do repozitáře
