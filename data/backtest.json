@@ -1,11 +1,13 @@
 {
-  "generated_at": "2026-10-15T12:43:27.073641+00:00",
+  "generated_at": "2026-10-15T12:47:14.290378+00:00",
   "method": "Chronological expanding-window backtest; each match is predicted only from earlier matches.",
   "source_matches": 3361,
   "tested_matches": 2831,
   "skipped_early_matches": 530,
   "metrics": {
     "accuracy": 0.47298,
+    "always_home_win_baseline_accuracy": 0.44189,
+    "accuracy_lift_vs_baseline": 0.03108,
     "multiclass_brier_score": 0.6348,
     "log_loss": 1.05724,
     "actual_outcomes": {
