@@ -52,7 +52,7 @@ jobs:
           # Premier League: ID 39, season 2026.
           params = urllib.parse.urlencode({
               "league": 39,
-              "season": 2026,
+              "season": 2024,
               "last": 20
           })
 
