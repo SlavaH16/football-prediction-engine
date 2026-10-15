@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-15T12:35:05.513152+00:00",
+  "generated_at": "2026-10-15T12:43:27.073641+00:00",
   "method": "Chronological expanding-window backtest; each match is predicted only from earlier matches.",
   "source_matches": 3361,
   "tested_matches": 2831,
