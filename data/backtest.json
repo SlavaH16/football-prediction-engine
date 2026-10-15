@@ -1,32 +1,32 @@
 {
-  "generated_at": "2026-10-15T12:52:45.804482+00:00",
+  "generated_at": "2026-10-15T12:58:44.329687+00:00",
   "method": "Chronological expanding-window comparison; each match uses only earlier matches.",
   "source_matches": 3361,
   "tested_matches": 2831,
   "skipped_early_matches": 530,
   "metrics": {
     "current_model": {
-      "accuracy": 0.0,
+      "accuracy": 0.47298,
       "brier_score": 0.6348,
       "log_loss": 1.05724,
       "predicted_outcomes": {
-        "1": 0,
-        "X": 1,
-        "2": 0
+        "1": 2193,
+        "X": 17,
+        "2": 621
       }
     },
     "candidate_model": {
-      "accuracy": 0.00035,
+      "accuracy": 0.47051,
       "brier_score": 0.63173,
       "log_loss": 1.05233,
       "predicted_outcomes": {
-        "1": 0,
-        "X": 2,
-        "2": 0
+        "1": 1858,
+        "X": 28,
+        "2": 945
       }
     },
     "always_home_win_baseline_accuracy": 0.44189,
-    "candidate_accuracy_change_vs_current": 0.00035,
+    "candidate_accuracy_change_vs_current": -0.00247,
     "candidate_brier_change_vs_current": -0.00307,
     "candidate_log_loss_change_vs_current": -0.00491,
     "actual_outcomes": {
