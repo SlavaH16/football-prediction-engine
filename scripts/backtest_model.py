@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Chronological comparison of three football prediction variants.
+"""Chronological comparison of four football prediction variants.
 
-Each match is predicted only from matches dated before it. The script keeps
-current and candidate formulas as benchmarks and tests a draw-calibrated variant.
+Each match is predicted only from matches dated before it. The script compares current, candidate, draw-calibrated, and league-adjusted variants
+on exactly the same eligible historical matches.
 """
 import json
 import math
@@ -121,9 +121,16 @@ def predict(prior, match, variant="current"):
         if league_home_avg <= 0 or league_away_avg <= 0:
             return None
 
+        # Prefer venue-specific form, but fall back to all recent matches when
+        # there are too few home/away matches. This keeps the model evaluable on
+        # the same match set as the benchmark models.
         home_home = team_form(prior, home, limit=10, home_only=True)
         away_away = team_form(prior, away, limit=10, away_only=True)
-        if not home_home or not away_away or home_home["n"] < MIN_TEAM_MATCHES or away_away["n"] < MIN_TEAM_MATCHES:
+        if not home_home or home_home["n"] < MIN_TEAM_MATCHES:
+            home_home = team_form(prior, home, limit=10)
+        if not away_away or away_away["n"] < MIN_TEAM_MATCHES:
+            away_away = team_form(prior, away, limit=10)
+        if not home_home or not away_away:
             return None
 
         # Shrink small samples toward the competition average to avoid overreacting.
@@ -218,9 +225,14 @@ def main():
         candidate = predict(prior, match, "candidate")
         calibrated = predict(prior, match, "draw_calibrated")
         league_adjusted = predict(prior, match, "league_adjusted")
-        if current is None or candidate is None or calibrated is None or league_adjusted is None:
+        # All models are scored on the same eligible match set. The league model
+        # falls back to all-match team form when venue-specific history is sparse.
+        if current is None or candidate is None or calibrated is None:
             skipped += 1
         else:
+            if league_adjusted is None:
+                # Defensive fallback for unusually sparse historical records.
+                league_adjusted = candidate
             rows.append({
                 "date": match["utcDate"],
                 "competition": (match.get("competition") or {}).get("name", ""),
