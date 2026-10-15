@@ -1,6 +1,3 @@
-
-
-
 <!doctype html>
 <html lang="cs">
 <head>
@@ -10,23 +7,34 @@
 <style>
 :root{color-scheme:dark}
 body{margin:0;background:#0b1220;color:#f1f5f9;font:16px Arial;padding:16px;max-width:850px;margin:auto}
-h1{color:#75e0b2;font-size:27px}
+h1{color:#75e0b2;font-size:27px} h2{font-size:21px}
 p,.muted,small{color:#aab8cc}
 .card{background:#172438;border:1px solid #30415a;border-radius:14px;padding:14px;margin:12px 0}
-button,select,input{padding:11px;border-radius:9px;border:1px solid #40516a;margin:5px 3px;background:#26384d;color:#f1f5f9;max-width:100%}
+button,select,input{padding:11px;border-radius:9px;border:1px solid #40516a;margin:5px 3px;background:#26384d;color:#f1f5f9;max-width:100%;font-size:15px}
 button{background:#75e0b2;color:#092015;font-weight:bold;border:0}
 .row{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
 .badge{font-size:12px;background:#26384d;border-radius:99px;padding:5px 8px;color:#b8c8dc}
 #status{padding:12px;border-radius:10px;background:#172438}
 .active{outline:2px solid #75e0b2}
 .score{font-size:23px;color:#75e0b2;font-weight:bold}
+.statgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.stat{background:#22334a;border-radius:10px;padding:12px}
+.stat strong{display:block;font-size:22px;color:#75e0b2;margin-top:5px}
+.teamname{font-size:17px;font-weight:bold}
+@media(min-width:560px){.statgrid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 </style>
 </head>
 <body>
 <h1>⚽ Football Prediction Engine</h1>
-<p>Fotbalové zápasy a historické výsledky</p>
-
+<p>Fotbalové zápasy, historické výsledky a forma týmů</p>
 <div id="status">Načítám data…</div>
+
+<div class="card">
+  <h2>📊 Statistiky týmu</h2>
+  <p class="muted">Vyber tým a podívej se na jeho poslední výsledky v dostupné historii.</p>
+  <select id="teamSelect" style="width:100%"><option value="">Načítám týmy…</option></select>
+  <div id="teamStats"><p class="muted">Statistiky se zobrazí po výběru týmu.</p></div>
+</div>
 
 <div class="card">
   <div class="row">
@@ -34,216 +42,143 @@ button{background:#75e0b2;color:#092015;font-weight:bold;border:0}
     <button id="historyBtn">Historie výsledků</button>
   </div>
   <div class="row">
-    <select id="league">
-      <option value="">Všechny soutěže</option>
-    </select>
+    <select id="league"><option value="">Všechny soutěže</option></select>
     <input id="search" placeholder="Hledat tým…">
   </div>
   <p id="count" class="muted"></p>
 </div>
-
 <div id="matches"></div>
-
 <div class="card">
   <h2>🎯 Vybrané zápasy</h2>
   <p id="selectedCount">Vybrané zápasy: 0</p>
   <div id="selectedList">Zatím nemáš vybrané žádné zápasy.</div>
   <button id="clear">Zrušit výběr</button>
-  <p class="muted">Historické výsledky slouží jako podklad pro budoucí analýzu. Predikce zatím nejsou vypočítávány.</p>
+  <p class="muted">Statistiky jsou popisné. Samotné predikce výsledků zatím nejsou zapnuté.</p>
 </div>
 
 <script>
-let upcoming = [];
-let history = [];
-let mode = "upcoming";
+let upcoming = [], history = [], mode = "upcoming";
 const selected = new Map();
-
 const statusEl = document.getElementById("status");
 const matchesEl = document.getElementById("matches");
 const leagueEl = document.getElementById("league");
 const searchEl = document.getElementById("search");
+const teamSelect = document.getElementById("teamSelect");
 
 function esc(value) {
-  return String(value ?? "").replace(/[&<>"']/g, c => ({
-    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
-  }[c]));
+  return String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
-
 function formatDate(value) {
   if (!value) return "Termín neznámý";
-  return new Date(value).toLocaleString("cs-CZ", {
-    dateStyle:"medium", timeStyle:"short"
+  const d = new Date(value);
+  return Number.isNaN(d.getTime()) ? "Termín neznámý" : d.toLocaleString("cs-CZ",{dateStyle:"medium",timeStyle:"short"});
+}
+function currentMatches(){return mode==="history"?history:upcoming;}
+function matchKey(m){return mode+":"+String(m.id ?? (m.utcDate+"-"+m.homeTeam?.name+"-"+m.awayTeam?.name));}
+function isFinished(m){return m.status==="FINISHED" && m.score?.fullTime?.home!=null && m.score?.fullTime?.away!=null;}
+
+function renderLeagues(){
+  const previous=leagueEl.value;
+  const leagues=[...new Set(currentMatches().map(m=>m.competition?.name).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"cs"));
+  leagueEl.innerHTML='<option value="">Všechny soutěže</option>'+leagues.map(n=>'<option value="'+esc(n)+'">'+esc(n)+'</option>').join("");
+  if(leagues.includes(previous))leagueEl.value=previous;
+}
+function render(){
+  const matches=currentMatches(), league=leagueEl.value, q=searchEl.value.trim().toLocaleLowerCase("cs-CZ");
+  const list=matches.filter(m=>{
+    const teams=(m.homeTeam?.name||"")+" "+(m.awayTeam?.name||"");
+    return (!league||m.competition?.name===league)&&(!q||teams.toLocaleLowerCase("cs-CZ").includes(q));
   });
+  document.getElementById("count").textContent="Zobrazeno "+list.length+" z "+matches.length+" zápasů.";
+  matchesEl.innerHTML=list.length?list.map(m=>{
+    const id=matchKey(m), finished=isFinished(m), state=finished?"Odehráno":m.status==="IN_PLAY"?"Právě se hraje":m.status==="POSTPONED"?"Odloženo":m.status==="CANCELLED"?"Zrušeno":"Naplánováno";
+    const h=m.score?.fullTime?.home,a=m.score?.fullTime?.away,has=h!=null&&a!=null,chosen=selected.has(id);
+    return '<div class="card"><div class="row"><span class="badge">'+esc(m.competition?.name||"Soutěž")+'</span><span class="badge">'+state+'</span></div>'+
+      '<h3>'+esc(m.homeTeam?.name||"Domácí")+' – '+esc(m.awayTeam?.name||"Hosté")+'</h3>'+
+      ((mode==="history"||has)?'<p class="score">'+h+' : '+a+'</p>':'')+
+      '<p>'+esc(formatDate(m.utcDate))+'</p><button data-id="'+esc(id)+'" class="'+(chosen?"active":"")+'">'+(chosen?"✓ Vybráno":"＋ Vybrat zápas")+'</button></div>';
+  }).join(""):'<div class="card">Žádné zápasy neodpovídají filtru.</div>';
+  document.getElementById("selectedCount").textContent="Vybrané zápasy: "+selected.size;
+  const chosen=[...selected.values()];
+  document.getElementById("selectedList").innerHTML=chosen.length?chosen.map(m=>'<p>'+esc(m.homeTeam?.name)+' – '+esc(m.awayTeam?.name)+
+    (m.score?.fullTime?.home!=null&&m.score?.fullTime?.away!=null?' ('+m.score.fullTime.home+' : '+m.score.fullTime.away+')':'')+
+    '<br><small>'+esc(m.competition?.name||"")+'</small></p>').join(""):"Zatím nemáš vybrané žádné zápasy.";
+  document.getElementById("upcomingBtn").classList.toggle("active",mode==="upcoming");
+  document.getElementById("historyBtn").classList.toggle("active",mode==="history");
 }
 
-function currentMatches() {
-  return mode === "history" ? history : upcoming;
+function teamMatches(team){
+  return history.filter(m=>isFinished(m)&&(m.homeTeam?.name===team||m.awayTeam?.name===team))
+    .sort((a,b)=>new Date(b.utcDate)-new Date(a.utcDate));
+}
+function outcome(m,team){
+  const home=m.homeTeam?.name===team, gf=home?m.score.fullTime.home:m.score.fullTime.away, ga=home?m.score.fullTime.away:m.score.fullTime.home;
+  return {gf,ga,points:gf>ga?3:gf===ga?1:0,result:gf>ga?"V":gf===ga?"R":"P",venue:home?"Doma":"Venku",m};
+}
+function renderTeamOptions(){
+  const previous=teamSelect.value;
+  const names=new Set();
+  history.forEach(m=>{if(m.homeTeam?.name)names.add(m.homeTeam.name);if(m.awayTeam?.name)names.add(m.awayTeam.name);});
+  const sorted=[...names].sort((a,b)=>a.localeCompare(b,"cs"));
+  teamSelect.innerHTML='<option value="">— Vyber tým —</option>'+sorted.map(n=>'<option value="'+esc(n)+'">'+esc(n)+'</option>').join("");
+  if(sorted.includes(previous))teamSelect.value=previous;
+  renderTeamStats();
+}
+function renderTeamStats(){
+  const team=teamSelect.value, el=document.getElementById("teamStats");
+  if(!team){el.innerHTML='<p class="muted">Statistiky se zobrazí po výběru týmu.</p>';return;}
+  const all=teamMatches(team), last5=all.slice(0,5), last10=all.slice(0,10);
+  if(!all.length){el.innerHTML='<p>Pro tento tým zatím nemáme dokončené zápasy s výsledkem.</p>';return;}
+  const summarize=arr=>{
+    const s=arr.map(m=>outcome(m,team));
+    const w=s.filter(x=>x.result==="V").length,d=s.filter(x=>x.result==="R").length,l=s.filter(x=>x.result==="P").length;
+    const gf=s.reduce((n,x)=>n+x.gf,0),ga=s.reduce((n,x)=>n+x.ga,0),pts=s.reduce((n,x)=>n+x.points,0);
+    return {played:s.length,w,d,l,gf,ga,pts,avgFor:(gf/s.length).toFixed(2),avgAgainst:(ga/s.length).toFixed(2),s};
+  };
+  const a=summarize(last5), b=summarize(last10);
+  const home=summarize(all.filter(m=>m.homeTeam?.name===team)), away=summarize(all.filter(m=>m.awayTeam?.name===team));
+  const tile=(label,value)=>'<div class="stat"><span class="muted">'+label+'</span><strong>'+value+'</strong></div>';
+  el.innerHTML='<p><strong>'+esc(team)+'</strong> · posledních '+a.played+' zápasů v dostupné historii</p>'+
+    '<div class="statgrid">'+tile("Body z posledních 5",a.pts+" / 15")+tile("Bilance posledních 5",a.w+"–"+a.d+"–"+a.l)+
+    tile("Průměr vstřelených (5)",a.avgFor)+tile("Průměr inkasovaných (5)",a.avgAgainst)+'</div>'+
+    '<h3>Posledních 10 zápasů</h3><div class="statgrid">'+tile("Bilance V–R–P",b.w+"–"+b.d+"–"+b.l)+tile("Body",b.pts+" / "+(b.played*3))+
+    tile("Vstřelené góly",b.gf+" · průměr "+b.avgFor)+tile("Inkasované góly",b.ga+" · průměr "+b.avgAgainst)+'</div>'+
+    '<h3>Doma a venku · celá dostupná historie</h3><div class="statgrid">'+tile("Doma · V–R–P",home.w+"–"+home.d+"–"+home.l)+tile("Doma · góly",home.gf+":"+home.ga)+
+    tile("Venku · V–R–P",away.w+"–"+away.d+"–"+away.l)+tile("Venku · góly",away.gf+":"+away.ga)+'</div>'+
+    '<h3>Posledních 5 utkání</h3>'+a.s.map(x=>'<p>'+esc(formatDate(x.m.utcDate))+' · '+esc(x.m.homeTeam?.name)+' '+x.m.score.fullTime.home+':'+x.m.score.fullTime.away+' '+esc(x.m.awayTeam?.name)+
+    ' <span class="badge">'+x.result+' · '+x.points+' b.</span></p>').join("")+
+    '<p class="muted">V = výhra, R = remíza, P = prohra. Jde o statistiku výsledků, nikoli zatím o predikci budoucího utkání.</p>';
 }
 
-function matchKey(m) {
-  return mode + ":" + String(m.id);
-}
-
-function renderLeagues() {
-  const matches = currentMatches();
-  const previous = leagueEl.value;
-  const leagues = [...new Set(
-    matches.map(m => m.competition?.name).filter(Boolean)
-  )].sort((a,b) => a.localeCompare(b, "cs"));
-
-  leagueEl.innerHTML =
-    '<option value="">Všechny soutěže</option>' +
-    leagues.map(name => '<option value="' + esc(name) + '">' +
-      esc(name) + '</option>').join("");
-
-  if (leagues.includes(previous)) leagueEl.value = previous;
-}
-
-function render() {
-  const matches = currentMatches();
-  const league = leagueEl.value;
-  const query = searchEl.value.trim().toLocaleLowerCase("cs-CZ");
-
-  const list = matches.filter(m => {
-    const teams = (m.homeTeam?.name || "") + " " + (m.awayTeam?.name || "");
-    return (!league || m.competition?.name === league) &&
-      (!query || teams.toLocaleLowerCase("cs-CZ").includes(query));
-  });
-
-  document.getElementById("count").textContent =
-    "Zobrazeno " + list.length + " z " + matches.length + " zápasů.";
-
-  if (!list.length) {
-    matchesEl.innerHTML = '<div class="card">Žádné zápasy neodpovídají filtru.</div>';
-  } else {
-    matchesEl.innerHTML = list.map(m => {
-      const id = matchKey(m);
-      const finished = m.status === "FINISHED";
-      const state = finished ? "Odehráno" :
-        m.status === "IN_PLAY" ? "Právě se hraje" :
-        m.status === "POSTPONED" ? "Odloženo" :
-        m.status === "CANCELLED" ? "Zrušeno" : "Naplánováno";
-
-      const home = m.score?.fullTime?.home;
-      const away = m.score?.fullTime?.away;
-      const hasScore = home != null && away != null;
-
-      const score = hasScore
-        ? '<p class="score">' + home + ' : ' + away + '</p>'
-        : "";
-
-      const chosen = selected.has(id);
-
-      return '<div class="card">' +
-        '<div class="row"><span class="badge">' +
-        esc(m.competition?.name || "Soutěž") +
-        '</span><span class="badge">' + state + '</span></div>' +
-        '<h3>' + esc(m.homeTeam?.name || "Domácí") + ' – ' +
-        esc(m.awayTeam?.name || "Hosté") + '</h3>' +
-        (mode === "history" ? score : "") +
-        '<p>' + esc(formatDate(m.utcDate)) + '</p>' +
-        (mode === "upcoming" && hasScore ? score : "") +
-        '<button data-id="' + esc(id) + '" class="' +
-        (chosen ? "active" : "") + '">' +
-        (chosen ? "✓ Vybráno" : "＋ Vybrat zápas") +
-        '</button></div>';
-    }).join("");
-  }
-
-  document.getElementById("selectedCount").textContent =
-    "Vybrané zápasy: " + selected.size;
-
-  const chosen = [...selected.values()];
-  document.getElementById("selectedList").innerHTML = chosen.length
-    ? chosen.map(m => '<p>' +
-        esc(m.homeTeam?.name) + ' – ' + esc(m.awayTeam?.name) +
-        (m.score?.fullTime?.home != null && m.score?.fullTime?.away != null
-          ? ' (' + m.score.fullTime.home + ' : ' + m.score.fullTime.away + ')'
-          : '') +
-        '<br><small>' + esc(m.competition?.name || "") + '</small></p>'
-      ).join("")
-    : "Zatím nemáš vybrané žádné zápasy.";
-
-  document.getElementById("upcomingBtn").classList.toggle("active", mode === "upcoming");
-  document.getElementById("historyBtn").classList.toggle("active", mode === "history");
-}
-
-matchesEl.addEventListener("click", event => {
-  const button = event.target.closest("button[data-id]");
-  if (!button) return;
-
-  const id = button.dataset.id;
-  const m = currentMatches().find(item => matchKey(item) === id);
-  if (!m) return;
-
-  if (selected.has(id)) selected.delete(id);
-  else selected.set(id, m);
-
+matchesEl.addEventListener("click",event=>{
+  const button=event.target.closest("button[data-id]");if(!button)return;
+  const id=button.dataset.id,m=currentMatches().find(item=>matchKey(item)===id);if(!m)return;
+  if(selected.has(id))selected.delete(id);else selected.set(id,m);
   render();
 });
+document.getElementById("upcomingBtn").addEventListener("click",()=>{mode="upcoming";renderLeagues();render();});
+document.getElementById("historyBtn").addEventListener("click",()=>{mode="history";renderLeagues();render();});
+leagueEl.addEventListener("change",render);searchEl.addEventListener("input",render);
+teamSelect.addEventListener("change",renderTeamStats);
+document.getElementById("clear").addEventListener("click",()=>{selected.clear();render();});
 
-document.getElementById("upcomingBtn").addEventListener("click", () => {
-  mode = "upcoming";
-  renderLeagues();
-  render();
-});
-
-document.getElementById("historyBtn").addEventListener("click", () => {
-  mode = "history";
-  renderLeagues();
-  render();
-});
-
-leagueEl.addEventListener("change", render);
-searchEl.addEventListener("input", render);
-
-document.getElementById("clear").addEventListener("click", () => {
-  selected.clear();
-  render();
-});
-
-async function fetchJson(path) {
-  const response = await fetch(path + "?ts=" + Date.now(), {
-    cache:"no-store"
-  });
-  if (!response.ok) throw new Error(path + ": HTTP " + response.status);
+async function fetchJson(path){
+  const response=await fetch(path+"?ts="+Date.now(),{cache:"no-store"});
+  if(!response.ok)throw new Error(path+": HTTP "+response.status);
   return response.json();
 }
-
-async function loadMatches() {
-  const results = await Promise.allSettled([
-    fetchJson("data/matches.json"),
-    fetchJson("data/history.json")
-  ]);
-
-  if (results[0].status === "fulfilled") {
-    const data = results[0].value;
-    upcoming = Array.isArray(data.matches) ? data.matches : [];
-  }
-
-  if (results[1].status === "fulfilled") {
-    const data = results[1].value;
-    history = Array.isArray(data.matches) ? data.matches : [];
-  }
-
-  const errors = [];
-  if (results[0].status === "rejected") errors.push("nadcházející zápasy");
-  if (results[1].status === "rejected") errors.push("historie");
-
-  if (!upcoming.length && !history.length) {
-    statusEl.textContent = "Nepodařilo se načíst žádná data. " + errors.join(", ");
-    return;
-  }
-
-  statusEl.textContent =
-    "Načteno: " + upcoming.length + " aktuálních a nadcházejících zápasů; " +
-    history.length + " historických výsledků." +
-    (errors.length ? " Nepodařilo se načíst: " + errors.join(", ") + "." : "");
-
-  renderLeagues();
-  render();
+async function loadMatches(){
+  const results=await Promise.allSettled([fetchJson("data/matches.json"),fetchJson("data/history.json")]);
+  if(results[0].status==="fulfilled")upcoming=Array.isArray(results[0].value.matches)?results[0].value.matches:[];
+  if(results[1].status==="fulfilled")history=Array.isArray(results[1].value.matches)?results[1].value.matches:[];
+  const errors=[];
+  if(results[0].status==="rejected")errors.push("nadcházející zápasy");
+  if(results[1].status==="rejected")errors.push("historie");
+  if(!upcoming.length&&!history.length){statusEl.textContent="Nepodařilo se načíst žádná data. "+errors.join(", ");return;}
+  statusEl.textContent="Načteno: "+upcoming.length+" aktuálních a nadcházejících zápasů; "+history.length+" historických výsledků."+
+    (errors.length?" Nepodařilo se načíst: "+errors.join(", ")+".":"");
+  renderLeagues();renderTeamOptions();render();
 }
-
 loadMatches();
 </script>
 </body>
