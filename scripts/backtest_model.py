@@ -141,15 +141,22 @@ def calculate_metrics(rows, variant):
     n = len(rows)
     if not n:
         return {}
-    correct = sum(max(row[variant], key=row[variant].get) == row["actual"] for row in rows)
+    # Prediction dictionaries use p1/px/p2; map them to labels 1/X/2.
+    def probs(row):
+        p = row[variant]
+        return {"1": p["1"] if "1" in p else p["p1"],
+                "X": p["X"] if "X" in p else p["px"],
+                "2": p["2"] if "2" in p else p["p2"]}
+
+    correct = sum(max(probs(row), key=probs(row).get) == row["actual"] for row in rows)
     accuracy = correct / n
     brier = sum(
-        (row[variant][key] - (row["actual"] == key)) ** 2
+        (probs(row)[key] - (row["actual"] == key)) ** 2
         for row in rows for key in OUTCOMES
     ) / n
-    log_loss = -sum(math.log(max(EPS, row[variant][row["actual"]])) for row in rows) / n
+    log_loss = -sum(math.log(max(EPS, probs(row)[row["actual"]])) for row in rows) / n
     predicted_counts = {
-        key: sum(max(row[variant], key=row[variant].get) == key for row in rows)
+        key: sum(max(probs(row), key=probs(row).get) == key for row in rows)
         for key in OUTCOMES
     }
     return {
