@@ -1,0 +1,117 @@
+
+name: Test SofaScore Premier League data
+
+'on': [workflow_dispatch]
+
+permissions:
+  contents: read
+
+jobs:
+  test-sofascore:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check SofaScore fixtures and statistics
+        run: |
+          python -m pip install --quiet curl_cffi
+          python - <<'PY'
+          import sys
+          from curl_cffi import requests
+
+          base = "https://www.sofascore.com/api/v1"
+          session = requests.Session(impersonate="chrome")
+          session.headers.update({
+              "Accept": "application/json",
+              "Referer": "https://www.sofascore.com/"
+          })
+
+          def get(path):
+              try:
+                  r = session.get(base + path, timeout=25)
+                  print(f"GET {path} -> HTTP {r.status_code}")
+                  if r.status_code != 200:
+                      print("Request blocked or unavailable.")
+                      return None
+                  return r.json()
+              except Exception as exc:
+                  print("Request error:", type(exc).__name__)
+                  return None
+
+          # Premier League tournament ID on SofaScore: 17
+          data = get("/unique-tournament/17/seasons")
+          seasons = (data or {}).get("seasons") or []
+
+          if not seasons:
+              print("RESULT: Could not retrieve Premier League seasons.")
+              sys.exit(0)
+
+          season = seasons[0]
+          season_id = season.get("id")
+          print("Season:", season.get("name"))
+          print("Season ID:", season_id)
+
+          if not season_id:
+              print("RESULT: Season ID missing.")
+              sys.exit(0)
+
+          data = get(
+              f"/unique-tournament/17/season/{season_id}/events/last/0"
+          )
+          events = (data or {}).get("events") or []
+
+          if not events:
+              print("RESULT: No recent events returned.")
+              sys.exit(0)
+
+          finished = [
+              e for e in events
+              if (e.get("status") or {}).get("type") == "finished"
+          ]
+
+          if not finished:
+              print("No finished match found in returned events.")
+              sys.exit(0)
+
+          match = finished[0]
+          event_id = match.get("id")
+          home = (match.get("homeTeam") or {}).get("name", "Home")
+          away = (match.get("awayTeam") or {}).get("name", "Away")
+
+          print("Match:", home, "-", away)
+          print("Event ID:", event_id)
+
+          data = get(f"/event/{event_id}/statistics")
+          if not data:
+              print("RESULT: Statistics endpoint unavailable.")
+              sys.exit(0)
+
+          names = set()
+          for period in data.get("statistics") or []:
+              for group in period.get("groups") or []:
+                  print("Group:", group.get("groupName"))
+                  for item in group.get("statisticsItems") or []:
+                      name = str(item.get("name") or "")
+                      names.add(name.lower())
+                      print(
+                          f"  {name}: "
+                          f"home={item.get('home')}, "
+                          f"away={item.get('away')}"
+                      )
+
+          print("--- COVERAGE SUMMARY ---")
+          checks = {
+              "xG": ("expected goals", "xg"),
+              "Shots": ("total shots", "shots on target"),
+              "Possession": ("ball possession", "possession"),
+              "Corners": ("corner kicks", "corners")
+          }
+
+          for label, terms in checks.items():
+              available = any(
+                  term in name
+                  for name in names
+                  for term in terms
+              )
+              print(f"{label}: {'YES' if available else 'NOT FOUND'}")
+
+          print("Test finished. Coverage can vary by match.")
+          PY
