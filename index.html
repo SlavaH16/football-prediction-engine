@@ -1,4 +1,5 @@
 
+
 <!doctype html>
 <html lang="cs">
 <head>
@@ -6,96 +7,159 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Football Prediction Engine</title>
 <style>
-body{margin:0;background:#0b1220;color:#f1f5f9;font:16px Arial;padding:18px}
+:root{color-scheme:dark}
+body{margin:0;background:#0b1220;color:#f1f5f9;font:16px Arial;padding:16px;max-width:850px;margin:auto}
 h1{color:#75e0b2;font-size:27px}
-p{color:#aab8cc}
-.card{background:#172438;border:1px solid #30415a;border-radius:14px;padding:15px;margin:12px 0}
-button,select{padding:11px;border-radius:9px;border:0;margin:5px 3px}
-button{background:#75e0b2;color:#092015;font-weight:bold}
-.probs{display:flex;gap:7px;margin-top:14px}
-.probs span{background:#26384d;padding:10px 4px;border-radius:8px;flex:1;text-align:center}
-small{color:#aab8cc}
-#ticket{white-space:pre-line;line-height:1.8}
+p,.muted,small{color:#aab8cc}
+.card{background:#172438;border:1px solid #30415a;border-radius:14px;padding:14px;margin:12px 0}
+button,select,input{padding:11px;border-radius:9px;border:1px solid #40516a;margin:5px 3px;background:#26384d;color:#f1f5f9}
+button{background:#75e0b2;color:#092015;font-weight:bold;border:0}
+.row{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.badge{font-size:12px;background:#26384d;border-radius:99px;padding:5px 8px;color:#b8c8dc}
+#status{padding:12px;border-radius:10px;background:#172438}
 </style>
 </head>
 <body>
 <h1>⚽ Football Prediction Engine</h1>
-<p>Predikce zápasů a návrh tiketu</p>
-<p>DEMO DATA – nejde o aktuální zápasy ani živé kurzy.</p>
+<p>Skutečné fotbalové zápasy</p>
+
+<div id="status">Načítám zápasy…</div>
+
+<div class="row">
+  <select id="league">
+    <option value="">Všechny soutěže</option>
+  </select>
+  <input id="search" placeholder="Hledat tým…">
+</div>
 
 <div id="matches"></div>
 
 <div class="card">
-<h2>🎯 Návrh tiketu</h2>
-<label for="limit">Minimální pravděpodobnost:</label>
-<select id="limit">
-<option value=".5">50 %</option>
-<option value=".6" selected>60 %</option>
-<option value=".7">70 %</option>
-</select>
-<br>
-<button onclick="buildTicket()">Navrhnout tiket</button>
-<button onclick="saveTicket()">Uložit tipy</button>
-<div id="ticket">Vyber zápasy a vytvoř návrh.</div>
+  <h2>🎯 Vybrané zápasy</h2>
+  <p id="selectedCount">Vybrané zápasy: 0</p>
+  <div id="selectedList">Zatím nemáš vybrané žádné zápasy.</div>
+  <button id="clear">Zrušit výběr</button>
+  <p class="muted">Predikce a doporučení tiketů přidáme po ověření načítání skutečných dat.</p>
 </div>
 
 <script>
-const games=[
-{h:"Arsenal",a:"Brighton",p:[57,24,19]},
-{h:"Real Madrid",a:"Sevilla",p:[66,20,14]},
-{h:"Inter",a:"Atalanta",p:[49,27,24]},
-{h:"Bayern",a:"Mainz",p:[73,16,11]},
-{h:"Sparta Praha",a:"Jablonec",p:[61,23,16]},
-{h:"Lyon",a:"Lille",p:[38,29,33]}
-];
-let selected=new Set([0,1,3,4]);
-let ticket=[];
+let allMatches = [];
+const selected = new Set();
 
-function render(){
-document.getElementById("matches").innerHTML=games.map((g,i)=>`
-<div class="card">
-<b>${g.h} – ${g.a}</b>
-<div class="probs">
-${g.p.map((p,j)=>`<span>${["1","X","2"][j]}<br><b>${p}%</b></span>`).join("")}
-</div>
-<p><small>Ukázkový odhad pravděpodobnosti</small></p>
-<button onclick="toggle(${i})">
-${selected.has(i)?"✓ Vybráno":"＋ Vybrat zápas"}
-</button>
-</div>`).join("");
+const statusEl = document.getElementById("status");
+const matchesEl = document.getElementById("matches");
+const leagueEl = document.getElementById("league");
+const searchEl = document.getElementById("search");
+
+function esc(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+  }[c]));
 }
-function toggle(i){
-if(selected.has(i))selected.delete(i);
-else selected.add(i);
-render();
+
+function formatDate(value) {
+  if (!value) return "Termín neznámý";
+  return new Date(value).toLocaleString("cs-CZ", {
+    dateStyle:"medium", timeStyle:"short"
+  });
 }
-function buildTicket(){
-const min=Number(document.getElementById("limit").value);
-ticket=[];
-for(const i of selected){
-const g=games[i];
-const best=Math.max(...g.p);
-const j=g.p.indexOf(best);
-if(best/100>=min){
-ticket.push({match:g.h+" – "+g.a,
-tip:["1","X","2"][j],prob:best});
+
+function render() {
+  const league = leagueEl.value;
+  const query = searchEl.value.trim().toLocaleLowerCase("cs-CZ");
+
+  const list = allMatches.filter(m => {
+    const teams = (m.homeTeam?.name || "") + " " + (m.awayTeam?.name || "");
+    return (!league || m.competition?.name === league) &&
+      (!query || teams.toLocaleLowerCase("cs-CZ").includes(query));
+  });
+
+  if (!list.length) {
+    matchesEl.innerHTML = '<div class="card">Žádné zápasy neodpovídají filtru.</div>';
+  } else {
+    matchesEl.innerHTML = list.map(m => {
+      const id = String(m.id);
+      const state = m.status === "FINISHED" ? "Odehráno" :
+        m.status === "IN_PLAY" ? "Právě se hraje" :
+        m.status === "POSTPONED" ? "Odloženo" : "Naplánováno";
+
+      const score = m.score?.fullTime?.home != null &&
+        m.score?.fullTime?.away != null
+        ? '<p><b>Výsledek: ' + m.score.fullTime.home + ' : ' +
+          m.score.fullTime.away + '</b></p>'
+        : "";
+
+      return '<div class="card">' +
+        '<div class="row"><span class="badge">' +
+        esc(m.competition?.name || "Soutěž") +
+        '</span><span class="badge">' + state + '</span></div>' +
+        '<h3>' + esc(m.homeTeam?.name || "Domácí") + ' – ' +
+        esc(m.awayTeam?.name || "Hosté") + '</h3>' +
+        '<p>' + esc(formatDate(m.utcDate)) + '</p>' + score +
+        '<button data-id="' + esc(id) + '">' +
+        (selected.has(id) ? "✓ Vybráno" : "＋ Vybrat zápas") +
+        '</button></div>';
+    }).join("");
+  }
+
+  document.getElementById("selectedCount").textContent =
+    "Vybrané zápasy: " + selected.size;
+
+  const chosen = allMatches.filter(m => selected.has(String(m.id)));
+  document.getElementById("selectedList").innerHTML = chosen.length
+    ? chosen.map(m => '<p>' + esc(m.homeTeam?.name) + ' – ' +
+        esc(m.awayTeam?.name) + '</p>').join("")
+    : "Zatím nemáš vybrané žádné zápasy.";
 }
+
+matchesEl.addEventListener("click", event => {
+  const button = event.target.closest("button[data-id]");
+  if (!button) return;
+  const id = button.dataset.id;
+  selected.has(id) ? selected.delete(id) : selected.add(id);
+  render();
+});
+
+leagueEl.addEventListener("change", render);
+searchEl.addEventListener("input", render);
+
+document.getElementById("clear").addEventListener("click", () => {
+  selected.clear();
+  render();
+});
+
+async function loadMatches() {
+  try {
+    const response = await fetch("data/matches.json?ts=" + Date.now(), {
+      cache:"no-store"
+    });
+    if (!response.ok) throw new Error("HTTP " + response.status);
+
+    const data = await response.json();
+    allMatches = Array.isArray(data.matches) ? data.matches : [];
+
+    const leagues = [...new Set(
+      allMatches.map(m => m.competition?.name).filter(Boolean)
+    )].sort((a,b) => a.localeCompare(b, "cs"));
+
+    leagueEl.innerHTML =
+      '<option value="">Všechny soutěže (' + allMatches.length + ')</option>' +
+      leagues.map(name => '<option value="' + esc(name) + '">' +
+        esc(name) + '</option>').join("");
+
+    statusEl.textContent = "Načteno " + allMatches.length +
+      " skutečných zápasů. Poslední aktualizace: " +
+      formatDate(data.updated) + ".";
+
+    render();
+  } catch (error) {
+    statusEl.textContent =
+      "Zápasy se nepodařilo načíst. Zkontroluj dostupnost souboru data/matches.json. " +
+      error.message;
+  }
 }
-document.getElementById("ticket").textContent=ticket.length
-?ticket.map(t=>`${t.match}\nTip: ${t.tip} · Pravděpodobnost ${t.prob}%`).join("\n\n")
-:"Pro zvolený práh nebyl nalezen žádný tip.";
-}
-function saveTicket(){
-if(!ticket.length){alert("Nejdřív vytvoř návrh tiketu.");return}
-try{
-const old=JSON.parse(localStorage.getItem("fpe_history")||"[]");
-old.unshift({date:new Date().toISOString(),tips:ticket});
-localStorage.setItem("fpe_history",JSON.stringify(old));
-alert("Návrh uložen v tomto prohlížeči.");
-}catch(e){alert("Uložení se nepodařilo.");}
-}
-render();
+
+loadMatches();
 </script>
 </body>
 </html>
-
