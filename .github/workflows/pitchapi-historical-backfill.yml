@@ -1,6 +1,6 @@
 name: Historical PitchAPI backfill (last 3 years)
 
-"on":
+on:
   workflow_dispatch:
     inputs:
       max_matches:
