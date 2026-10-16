@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-10-16T18:45:42.582945+00:00",
+  "generated_at": "2026-10-16T18:51:17.637565+00:00",
   "cutoff_date": "2023-10-16",
   "max_new_matches": 180,
   "max_per_league": 30,
-  "known_ids_before_run": 5975,
+  "known_ids_before_run": 6155,
   "new_matches_saved": 180,
-  "known_ids_after_run": 6155,
-  "discovered_unstored_matches": 3279,
+  "known_ids_after_run": 6335,
+  "discovered_unstored_matches": 3099,
   "leagues": [
     {
       "league": "Premier League",
@@ -51,5 +51,8 @@
       "seasons_scanned": 6
     }
   ],
-  "errors": []
+  "errors": [
+    "Bundesliga 2024/2025 match m_47kYru advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a1460c-7f5c-7c38-ba23-306ec96a370a)",
+    "Bundesliga 2024/2025 match m_15Z2Bt advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a1460c-87a3-7e64-a0aa-b313b8670632)"
+  ]
 }
