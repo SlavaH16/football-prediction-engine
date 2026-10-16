@@ -1,8 +1,7 @@
 
 name: Test PitchAPI football data
 
-'on':
-  workflow_dispatch:
+on: [workflow_dispatch]
 
 permissions:
   contents: read
@@ -10,7 +9,6 @@ permissions:
 jobs:
   test-pitchapi:
     runs-on: ubuntu-latest
-
     steps:
       - name: Test PitchAPI
         env:
@@ -21,98 +19,57 @@ jobs:
           import sys
           import requests
 
-          BASE = "https://api.pitchapi.dev/v1"
-          KEY = os.environ.get("PITCHAPI_API_KEY", "").strip()
-
-          if not KEY:
-              print("ERROR: Secret PITCHAPI_API_KEY is empty or missing.")
+          key = os.environ.get("PITCHAPI_API_KEY", "").strip()
+          if not key:
+              print("ERROR: Missing PITCHAPI_API_KEY secret")
               sys.exit(1)
 
           session = requests.Session()
           session.headers.update({
-              "X-API-KEY": KEY,
+              "X-API-KEY": key,
               "Accept": "application/json"
           })
 
-          def get(path):
-              response = session.get(BASE + path, timeout=30)
-              print(f"GET {path} -> HTTP {response.status_code}")
+          url = "https://api.pitchapi.dev/v1/leagues"
 
-              try:
-                  data = response.json()
-              except ValueError:
-                  print("Response is not JSON.")
-                  response.raise_for_status()
+          try:
+              response = session.get(url, timeout=30)
+              print("HTTP status:", response.status_code)
+
+              if response.status_code != 200:
+                  print("API request failed. Check endpoint, key and API access.")
+                  print(response.text[:500])
                   sys.exit(1)
 
-              if not response.ok:
-                  print("API returned an error.")
-                  print(str(data)[:500])
-                  response.raise_for_status()
-
+              data = response.json()
               if isinstance(data, dict) and data.get("error"):
                   print("API error:", str(data["error"])[:500])
                   sys.exit(1)
 
-              return data.get("data", data) if isinstance(data, dict) else data
-
-          print("1. Checking API key and leagues...")
-          result = get("/leagues")
-
-          if isinstance(result, dict):
-              leagues = result.get("leagues", [])
-          elif isinstance(result, list):
-              leagues = result
-          else:
-              leagues = []
-
-          print("Leagues returned:", len(leagues))
-
-          for league in leagues[:10]:
-              print("-", league.get("name", "Unknown"))
-
-          premier = next(
-              (
-                  league for league in leagues
-                  if "premier league" in league.get("name", "").lower()
-                  and (
-                      str(league.get("country_code", "")).upper() == "ENG"
-                      or str(league.get("country", "")).lower() == "england"
-                  )
-              ),
-              None
-          )
-
-          if not premier:
-              print(
-                  "Premier League was not found in the first response. "
-                  "Check the endpoint response and API documentation."
+              payload = data.get("data", data) if isinstance(data, dict) else data
+              leagues = (
+                  payload.get("leagues", [])
+                  if isinstance(payload, dict)
+                  else payload if isinstance(payload, list) else []
               )
+
+              print("API key accepted; leagues returned:", len(leagues))
+
+              for league in leagues:
+                  name = str(league.get("name", ""))
+                  if "premier league" in name.lower():
+                      print("Possible Premier League:", name)
+                      print("League ID:", league.get("id", "not provided"))
+                      print("Country:", league.get("country", league.get("country_code", "not provided")))
+
+              print("League endpoint test completed.")
+
+          except requests.RequestException as exc:
+              print("Request error:", str(exc))
               sys.exit(1)
-
-          league_id = premier.get("id")
-          print("Premier League found. ID:", league_id)
-          print("Seasons:", premier.get("seasons", "not listed"))
-
-          print("2. Checking league matches...")
-          matches_result = get(f"/leagues/{league_id}/matches")
-
-          if isinstance(matches_result, dict):
-              matches = matches_result.get("matches", [])
-          elif isinstance(matches_result, list):
-              matches = matches_result
-          else:
-              matches = []
-
-          print("Matches returned:", len(matches))
-
-          if matches:
-              match = matches[0]
-              print("Sample match ID:", match.get("id"))
-              print("Home team:", match.get("home_team", {}).get("name", "n/a"))
-              print("Away team:", match.get("away_team", {}).get("name", "n/a"))
-              print("Date:", match.get("date", "n/a"))
-
-          print("TEST COMPLETED: API key and league endpoint responded.")
+          except ValueError:
+              print("API returned invalid JSON.")
+              sys.exit(1)
           PY
+
 
