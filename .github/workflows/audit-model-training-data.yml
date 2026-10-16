@@ -1,7 +1,7 @@
 
 name: Audit model training data
 
-on:
+'on':
   workflow_dispatch:
 
 permissions:
