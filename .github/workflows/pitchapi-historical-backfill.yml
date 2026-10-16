@@ -1,1 +1,254 @@
+name: Historical PitchAPI backfill (last 3 years)
 
+"on":
+  workflow_dispatch:
+    inputs:
+      max_matches:
+        description: "Maximum new matches in this run (30–180)"
+        required: false
+        default: "120"
+  schedule:
+    - cron: "45 7 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pitchapi-historical-backfill
+  cancel-in-progress: false
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install PitchAPI client
+        run: python -m pip install --upgrade pip pitchapi
+
+      - name: Collect historical matches, newest first
+        env:
+          PITCHAPI_API_KEY: ${{ secrets.PITCHAPI_API_KEY }}
+          MAX_MATCHES_INPUT: ${{ inputs.max_matches || '120' }}
+        run: |
+          python -u - <<'PY'
+          import json
+          import os
+          import re
+          import time
+          from datetime import date, datetime, timezone
+          from pathlib import Path
+          from pitchapi import PitchAPI
+
+          API_KEY = os.environ.get("PITCHAPI_API_KEY")
+          if not API_KEY:
+              raise SystemExit("Missing GitHub secret PITCHAPI_API_KEY")
+
+          LEAGUES = {
+              "Premier League": "l_4WFCIZ",
+              "Czech First League": "l_0F4I4F",
+              "Bundesliga": "l_1Isor4",
+              "LaLiga": "l_0ErfuF",
+              "Serie A": "l_0ALvwF",
+              "Ligue 1": "l_3FJFUl",
+          }
+          try:
+              MAX_NEW_MATCHES = max(30, min(180, int(os.getenv("MAX_MATCHES_INPUT", "120"))))
+          except ValueError:
+              MAX_NEW_MATCHES = 120
+          MAX_PER_LEAGUE = max(1, MAX_NEW_MATCHES // len(LEAGUES))
+          CUTOFF = date(2023, 10, 16)
+          ROOT = Path("data/pitchapi_history")
+          ROOT.mkdir(parents=True, exist_ok=True)
+          FINISHED = {"finished", "ft", "ended", "complete", "completed"}
+
+          def as_dict(obj):
+              if hasattr(obj, "model_dump"):
+                  return as_dict(obj.model_dump())
+              if hasattr(obj, "__dict__"):
+                  return {k: as_dict(v) for k, v in vars(obj).items() if not k.startswith("_")}
+              if isinstance(obj, dict):
+                  return {k: as_dict(v) for k, v in obj.items()}
+              if isinstance(obj, (list, tuple)):
+                  return [as_dict(v) for v in obj]
+              if isinstance(obj, (str, int, float, bool)) or obj is None:
+                  return obj
+              return str(obj)
+
+          def match_date(match):
+              dumped = as_dict(match)
+              for key in ("date", "start_date", "start_time", "time_utc", "timestamp", "startTimestamp"):
+                  raw = dumped.get(key)
+                  if isinstance(raw, (int, float)):
+                      try:
+                          return datetime.fromtimestamp(raw, timezone.utc).date()
+                      except (ValueError, OSError, OverflowError):
+                          continue
+                  if raw:
+                      try:
+                          return date.fromisoformat(str(raw)[:10])
+                      except ValueError:
+                          try:
+                              return datetime.fromisoformat(str(raw).replace("Z", "+00:00")).date()
+                          except ValueError:
+                              continue
+              return None
+
+          def season_sort_key(season):
+              found = re.search(r"(20\d{2})", str(season))
+              return int(found.group(1)) if found else 0
+
+          def safe_slug(name):
+              return re.sub(r"[^a-z0-9]+", "_", name.lower()).strip("_")
+
+          def season_slug(season):
+              return re.sub(r"[^A-Za-z0-9_-]+", "_", str(season)).strip("_")
+
+          def load_season_file(league_name, season):
+              path = ROOT / f"{safe_slug(league_name)}_{season_slug(season)}.json"
+              if path.exists():
+                  data = json.loads(path.read_text(encoding="utf-8"))
+                  if not isinstance(data, dict) or not isinstance(data.get("matches", {}), dict):
+                      raise SystemExit(f"Unexpected format in {path}; refusing to overwrite it.")
+              else:
+                  data = {"source": "PitchAPI", "league_name": league_name, "league_id": LEAGUES[league_name],
+                          "season": str(season), "date_from": CUTOFF.isoformat(), "matches": {}, "metadata": {}}
+              return path, data
+
+          def save(path, data):
+              data["metadata"].update({
+                  "updated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                  "stored_matches": len(data["matches"]),
+              })
+              tmp = path.with_suffix(".json.tmp")
+              tmp.write_text(json.dumps(data, ensure_ascii=False, indent=2, default=str) + "\n", encoding="utf-8")
+              tmp.replace(path)
+
+          # Avoid duplicates against both previous backfill files and the existing dataset.
+          stored_ids = set()
+          files_loaded = 0
+          existing_paths = list(ROOT.glob("*.json"))
+          main_file = Path("data/pitchapi_stats.json")
+          if main_file.exists():
+              existing_paths.append(main_file)
+          for path in existing_paths:
+              try:
+                  old = json.loads(path.read_text(encoding="utf-8"))
+                  stored_ids.update(str(k) for k in old.get("matches", {}).keys())
+                  files_loaded += 1
+              except Exception as exc:
+                  raise SystemExit(f"Could not read existing data file {path}: {exc}")
+
+          errors = []
+          new_total = 0
+          new_by_league = {name: 0 for name in LEAGUES}
+          discovered_in_range = 0
+
+          with PitchAPI(api_key=API_KEY) as client:
+              catalogue = client.leagues.list().leagues
+              catalogue_by_id = {str(league.id): league for league in catalogue}
+
+              for league_name, league_id in LEAGUES.items():
+                  if new_total >= MAX_NEW_MATCHES:
+                      break
+                  league = catalogue_by_id.get(league_id)
+                  seasons = list(getattr(league, "seasons", []) or [])
+                  if not seasons:
+                      msg = f"{league_name}: no seasons in API catalogue"
+                      errors.append(msg)
+                      print("WARNING:", msg, flush=True)
+                      continue
+
+                  # Newest seasons first, regardless of API catalogue order.
+                  seasons.sort(key=season_sort_key, reverse=True)
+                  candidates = []
+                  for season in seasons:
+                      try:
+                          response = client.leagues.matches(league_id, season=season)
+                          matches = list(response.matches or [])
+                          for match in matches:
+                              md = match_date(match)
+                              if md is None or md < CUTOFF or md > date.today():
+                                  continue
+                              if str(getattr(match, "status", "")).casefold() not in FINISHED:
+                                  continue
+                              discovered_in_range += 1
+                              mid = str(getattr(match, "id", ""))
+                              if not mid or mid in stored_ids:
+                                  continue
+                              candidates.append((md, str(season), match))
+                      except Exception as exc:
+                          msg = f"{league_name} {season}: {type(exc).__name__}: {exc}"
+                          errors.append(msg)
+                          print("WARNING:", msg, flush=True)
+
+                  candidates.sort(key=lambda item: item[0], reverse=True)
+                  league_budget = min(MAX_PER_LEAGUE, MAX_NEW_MATCHES - new_total)
+                  league_saved = 0
+                  for md, season, match in candidates:
+                      if new_total >= MAX_NEW_MATCHES or league_saved >= league_budget:
+                          break
+                      match_id = str(match.id)
+                      path, data = load_season_file(league_name, season)
+                      if match_id in data["matches"] or match_id in stored_ids:
+                          continue
+                      record = {
+                          "match": as_dict(match),
+                          "league_name": league_name,
+                          "league_id": league_id,
+                          "season": str(season),
+                          "match_date": md.isoformat(),
+                          "collected_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                      }
+                      for label, method in (
+                          ("stats", client.matches.stats),
+                          ("shots", client.matches.shots),
+                          ("advanced", client.matches.advanced),
+                      ):
+                          try:
+                              record[label] = as_dict(method(match_id))
+                          except Exception as exc:
+                              record[label] = None
+                              errors.append(f"{league_name} {season} match {match_id} {label}: {type(exc).__name__}: {exc}")
+                      data["matches"][match_id] = record
+                      save(path, data)
+                      stored_ids.add(match_id)
+                      new_total += 1
+                      league_saved += 1
+                      new_by_league[league_name] += 1
+                      print(f"Saved {league_name} {season} {md} match {match_id}; "
+                            f"run {new_total}/{MAX_NEW_MATCHES}; total stored IDs {len(stored_ids)}", flush=True)
+                      time.sleep(0.2)
+
+          summary = {
+              "run_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+              "date_from": CUTOFF.isoformat(),
+              "date_to": date.today().isoformat(),
+              "max_new_matches": MAX_NEW_MATCHES,
+              "existing_data_files_checked": files_loaded,
+              "finished_matches_found_in_range": discovered_in_range,
+              "new_matches_stored_this_run": new_total,
+              "new_matches_by_league": new_by_league,
+              "total_known_match_ids": len(stored_ids),
+              "errors_count": len(errors),
+              "errors": errors[:100],
+          }
+          Path("data/pitchapi_history_summary.json").write_text(
+              json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print("BACKFILL SUMMARY:")
+          print(json.dumps(summary, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Commit historical batches
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/pitchapi_history data/pitchapi_history_summary.json
+          if git diff --cached --quiet; then
+            echo "No new historical data to commit."
+          else
+            git commit -m "Backfill historical PitchAPI match data"
+            git push
+          fi
