@@ -1,1 +1,75 @@
+name: Discover PitchAPI leagues
 
+on: [workflow_dispatch]
+
+permissions:
+  contents: read
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Discover target leagues and seasons
+        env:
+          PITCHAPI_API_KEY: ${{ secrets.PITCHAPI_API_KEY }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          api_key = os.environ.get("PITCHAPI_API_KEY")
+          if not api_key:
+              raise SystemExit("Missing GitHub secret PITCHAPI_API_KEY")
+
+          request = urllib.request.Request(
+              "https://api.pitchapi.dev/v1/leagues",
+              headers={
+                  "X-API-KEY": api_key,
+                  "Accept": "application/json",
+              },
+          )
+
+          with urllib.request.urlopen(request, timeout=30) as response:
+              payload = json.load(response)
+
+          data = payload.get("data", payload)
+          leagues = (
+              data.get("leagues", [])
+              if isinstance(data, dict)
+              else data
+          )
+
+          print("\n=== CATALOGUE ENTRIES RELEVANT TO TARGET LEAGUES ===")
+
+          for league in leagues:
+              name = str(league.get("name", ""))
+              n = name.casefold()
+
+              if any(term in n for term in (
+                  "premier league",
+                  "czech",
+                  "1. liga",
+                  "bundesliga",
+                  "laliga",
+                  "la liga",
+                  "serie a",
+                  "ligue 1",
+              )):
+                  print(json.dumps({
+                      "name": name,
+                      "id": league.get("id"),
+                      "country_code": league.get("country_code"),
+                      "seasons": league.get("seasons", []),
+                  }, ensure_ascii=False))
+
+          print("\n=== LEAGUES AND SEASONS ===")
+
+          for league in leagues:
+              print(json.dumps({
+                  "name": league.get("name"),
+                  "id": league.get("id"),
+                  "country_code": league.get("country_code"),
+                  "seasons": league.get("seasons", []),
+              }, ensure_ascii=False))
+          PY
