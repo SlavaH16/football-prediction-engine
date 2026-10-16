@@ -1,0 +1,255 @@
+name: Collect PitchAPI statistics for multiple leagues
+
+"on":
+  workflow_dispatch:
+  schedule:
+    - cron: "15 6 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pitchapi-multi-league-stats
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install PitchAPI client
+        run: python -m pip install --upgrade pip pitchapi
+
+      - name: Collect matches and statistics
+        env:
+          PITCHAPI_API_KEY: ${{ secrets.PITCHAPI_API_KEY }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import time
+          from pathlib import Path
+          from pitchapi import PitchAPI
+
+          API_KEY = os.environ.get("PITCHAPI_API_KEY")
+          if not API_KEY:
+              raise SystemExit("Missing GitHub secret PITCHAPI_API_KEY")
+
+          # Confirmed IDs from the successful PitchAPI league catalogue run.
+          LEAGUES = {
+              "Premier League": "l_4WFCIZ",
+              "Czech First League": "l_0F4I4F",
+              "Bundesliga": "l_1Isor4",
+              "LaLiga": "l_0ErfuF",
+              "Serie A": "l_0ALvwF",
+              "Ligue 1": "l_3FJFUl",
+          }
+
+          OUTPUT = Path("data/pitchapi_stats.json")
+          OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+
+          if OUTPUT.exists():
+              try:
+                  store = json.loads(OUTPUT.read_text(encoding="utf-8"))
+              except json.JSONDecodeError:
+                  raise SystemExit("data/pitchapi_stats.json is invalid JSON; stopping to avoid overwriting data.")
+          else:
+              store = {}
+
+          # Preserve the existing file and add a league/season-aware store.
+          store.setdefault("matches", {})
+          store.setdefault("metadata", {})
+          if not isinstance(store["matches"], dict):
+              raise SystemExit("Unexpected data format in data/pitchapi_stats.json; stopping safely.")
+
+          def as_dict(obj):
+              if hasattr(obj, "model_dump"):
+                  return obj.model_dump()
+              if isinstance(obj, dict):
+                  return obj
+              if isinstance(obj, list):
+                  return [as_dict(x) for x in obj]
+              if hasattr(obj, "__dict__"):
+                  return {k: as_dict(v) for k, v in vars(obj).items() if not k.startswith("_")}
+              if isinstance(obj, (str, int, float, bool)) or obj is None:
+                  return obj
+              return str(obj)
+
+          def unwrap_list(result, *keys):
+              result = as_dict(result)
+              if isinstance(result, list):
+                  return result
+              if isinstance(result, dict):
+                  for key in keys:
+                      value = result.get(key)
+                      if isinstance(value, list):
+                          return value
+              return []
+
+          def call_first(obj, paths):
+              last_error = None
+              for path in paths:
+                  target = obj
+                  try:
+                      for part in path:
+                          target = getattr(target, part)
+                      return target
+                  except Exception as exc:
+                      last_error = exc
+              raise RuntimeError(f"Could not find a supported PitchAPI method among {paths}: {last_error}")
+
+          def invoke_method(method, **kwargs):
+              # The SDK versions may expose either keyword or positional arguments.
+              try:
+                  return method(**kwargs)
+              except TypeError:
+                  if "league_id" in kwargs and "season" in kwargs:
+                      return method(kwargs["league_id"], kwargs["season"])
+                  if "match_id" in kwargs:
+                      return method(kwargs["match_id"])
+                  raise
+
+          errors = []
+          collected = 0
+          discovered = 0
+
+          with PitchAPI(api_key=API_KEY) as client:
+              league_list_method = call_first(client, [
+                  ("leagues", "list"),
+              ])
+              league_catalogue = unwrap_list(league_list_method(), "leagues", "data")
+              catalogue_by_id = {}
+              for item in league_catalogue:
+                  item = as_dict(item)
+                  if isinstance(item, dict) and item.get("id"):
+                      catalogue_by_id[item["id"]] = item
+
+              matches_method = call_first(client, [
+                  ("matches", "list"),
+                  ("leagues", "matches"),
+              ])
+              stats_method = call_first(client, [
+                  ("matches", "stats"),
+                  ("stats", "match"),
+              ])
+              shots_method = call_first(client, [
+                  ("matches", "shots"),
+                  ("shots", "match"),
+              ])
+              advanced_method = call_first(client, [
+                  ("matches", "advanced"),
+                  ("advanced", "match"),
+              ])
+
+              for league_name, league_id in LEAGUES.items():
+                  league_meta = catalogue_by_id.get(league_id, {})
+                  seasons = league_meta.get("seasons", [])
+                  if not seasons:
+                      # If the SDK returns a catalogue object format not yet handled,
+                      # do not guess seasons; report the issue and continue.
+                      errors.append(f"{league_name}: no seasons found in catalogue")
+                      continue
+
+                  for season in seasons:
+                      try:
+                          raw_matches = invoke_method(
+                              matches_method,
+                              league_id=league_id,
+                              season=season,
+                          )
+                          matches = unwrap_list(raw_matches, "matches", "data", "events")
+                          discovered += len(matches)
+
+                          for raw_match in matches:
+                              match = as_dict(raw_match)
+                              if not isinstance(match, dict):
+                                  continue
+                              match_id = match.get("id") or match.get("match_id")
+                              if match_id is None:
+                                  continue
+                              key = str(match_id)
+
+                              # Existing records remain untouched unless the ID is new.
+                              if key in store["matches"]:
+                                  continue
+
+                              status = str(
+                                  match.get("status")
+                                  or match.get("state")
+                                  or match.get("match_status")
+                                  or ""
+                              ).casefold()
+                              finished = (
+                                  match.get("is_finished") is True
+                                  or match.get("finished") is True
+                                  or status in {"finished", "ft", "ended", "complete", "completed"}
+                              )
+                              score = match.get("score")
+                              if not finished and not score:
+                                  continue
+
+                              record = {
+                                  "match": match,
+                                  "league_name": league_name,
+                                  "league_id": league_id,
+                                  "season": season,
+                                  "collected_at_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                              }
+
+                              for label, method in (
+                                  ("stats", stats_method),
+                                  ("shots", shots_method),
+                                  ("advanced", advanced_method),
+                              ):
+                                  try:
+                                      raw = invoke_method(method, match_id=key)
+                                      record[label] = as_dict(raw)
+                                  except Exception as exc:
+                                      record[label] = None
+                                      errors.append(f"{league_name} {season} match {key} {label}: {exc}")
+
+                              store["matches"][key] = record
+                              collected += 1
+
+                              # Be polite with the API and avoid bursts.
+                              time.sleep(0.15)
+
+                      except Exception as exc:
+                          errors.append(f"{league_name} {season} matches: {exc}")
+
+          store["metadata"].update({
+              "source": "PitchAPI",
+              "leagues": LEAGUES,
+              "last_run_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+              "discovered_matches_this_run": discovered,
+              "new_matches_stored_this_run": collected,
+              "total_stored_matches": len(store["matches"]),
+              "errors_this_run": errors[:100],
+          })
+
+          OUTPUT.write_text(
+              json.dumps(store, ensure_ascii=False, indent=2, default=str) + "\n",
+              encoding="utf-8",
+          )
+
+          print(f"Discovered matches this run: {discovered}")
+          print(f"New matches stored this run: {collected}")
+          print(f"Total stored match records: {len(store['matches'])}")
+          print(f"Errors: {len(errors)}")
+          for error in errors[:30]:
+              print("WARNING:", error)
+          PY
+
+      - name: Commit updated statistics
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/pitchapi_stats.json
+          if git diff --cached --quiet; then
+            echo "No new statistics to commit."
+          else
+            git commit -m "Update multi-league PitchAPI statistics"
+            git push
+          fi
