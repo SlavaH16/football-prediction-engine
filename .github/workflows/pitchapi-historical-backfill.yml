@@ -256,14 +256,31 @@ jobs:
                   display_name = league_name
 
               try:
-                  season_result = client.leagues.seasons(league_id)
-                  seasons = get_match_list(season_result)
-                  if not seasons and isinstance(season_result, dict):
-                      seasons = season_result.get("seasons", [])
+                  # PitchAPI SDK exposes seasons on each league returned by leagues.list().
+                  # There is no client.leagues.seasons() method in the installed SDK.
+                  season_result = client.leagues.list()
+                  season_leagues = getattr(season_result, "leagues", None)
+                  if season_leagues is None and isinstance(season_result, dict):
+                      season_leagues = season_result.get("leagues", [])
+                  selected_league = None
+                  for league_obj in (season_leagues or []):
+                      obj = as_dict(league_obj)
+                      if not isinstance(obj, dict):
+                          continue
+                      obj_id = obj.get("id") or obj.get("league_id")
+                      if str(obj_id) == str(league_id):
+                          selected_league = league_obj
+                          selected_league_dict = obj
+                          break
+                  if selected_league is None:
+                      raise RuntimeError(f"League {league_id} was not found in client.leagues.list()")
+                  seasons = selected_league_dict.get("seasons", [])
                   if not seasons:
-                      # Some client versions expose seasons through the league object.
-                      seasons = getattr(season_result, "seasons", []) or []
+                      seasons = getattr(selected_league, "seasons", []) or []
+                  if not seasons:
+                      raise RuntimeError(f"No seasons returned for league {league_id}")
                   seasons = sorted(seasons, key=lambda s: season_sort_key(season_label(s)), reverse=True)
+                  print(f"Loaded {len(seasons)} seasons for {league_name}")
               except Exception as exc:
                   errors.append(f"{league_name}: seasons: {type(exc).__name__}: {exc}")
                   print(f"ERROR loading seasons: {type(exc).__name__}: {exc}")
