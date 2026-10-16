@@ -15,6 +15,7 @@ concurrency:
 jobs:
   collect:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -22,11 +23,11 @@ jobs:
       - name: Install PitchAPI client
         run: python -m pip install --upgrade pip pitchapi
 
-      - name: Collect matches and statistics
+      - name: Collect a small batch of match statistics
         env:
           PITCHAPI_API_KEY: ${{ secrets.PITCHAPI_API_KEY }}
         run: |
-          python - <<'PY'
+          python -u - <<'PY'
           import json
           import os
           import time
@@ -37,7 +38,6 @@ jobs:
           if not API_KEY:
               raise SystemExit("Missing GitHub secret PITCHAPI_API_KEY")
 
-          # Confirmed IDs from the successful PitchAPI league catalogue run.
           LEAGUES = {
               "Premier League": "l_4WFCIZ",
               "Czech First League": "l_0F4I4F",
@@ -46,62 +46,50 @@ jobs:
               "Serie A": "l_0ALvwF",
               "Ligue 1": "l_3FJFUl",
           }
-
+          MAX_NEW_MATCHES = 8
           OUTPUT = Path("data/pitchapi_stats.json")
           OUTPUT.parent.mkdir(parents=True, exist_ok=True)
 
           if OUTPUT.exists():
-              try:
-                  store = json.loads(OUTPUT.read_text(encoding="utf-8"))
-              except json.JSONDecodeError:
-                  raise SystemExit("data/pitchapi_stats.json is invalid JSON; stopping to avoid overwriting data.")
+              store = json.loads(OUTPUT.read_text(encoding="utf-8"))
+              if not isinstance(store, dict):
+                  raise SystemExit("Unexpected data format in data/pitchapi_stats.json")
           else:
               store = {}
-
-          # Preserve the existing file and add a league/season-aware store.
           store.setdefault("matches", {})
           store.setdefault("metadata", {})
           if not isinstance(store["matches"], dict):
-              raise SystemExit("Unexpected data format in data/pitchapi_stats.json; stopping safely.")
+              raise SystemExit("Unexpected 'matches' format; no data was changed.")
 
           def as_dict(obj):
               if hasattr(obj, "model_dump"):
                   return obj.model_dump()
               if isinstance(obj, dict):
-                  return obj
+                  return {k: as_dict(v) for k, v in obj.items()}
               if isinstance(obj, list):
-                  return [as_dict(x) for x in obj]
+                  return [as_dict(v) for v in obj]
               if hasattr(obj, "__dict__"):
                   return {k: as_dict(v) for k, v in vars(obj).items() if not k.startswith("_")}
               if isinstance(obj, (str, int, float, bool)) or obj is None:
                   return obj
               return str(obj)
 
-          def unwrap_list(result, *keys):
+          def get_list(result, *keys):
               result = as_dict(result)
               if isinstance(result, list):
                   return result
               if isinstance(result, dict):
                   for key in keys:
-                      value = result.get(key)
-                      if isinstance(value, list):
-                          return value
+                      if isinstance(result.get(key), list):
+                          return result[key]
               return []
 
-          def call_first(obj, paths):
-              last_error = None
-              for path in paths:
-                  target = obj
-                  try:
-                      for part in path:
-                          target = getattr(target, part)
-                      return target
-                  except Exception as exc:
-                      last_error = exc
-              raise RuntimeError(f"Could not find a supported PitchAPI method among {paths}: {last_error}")
+          def method_at(obj, *path):
+              for part in path:
+                  obj = getattr(obj, part)
+              return obj
 
-          def invoke_method(method, **kwargs):
-              # The SDK versions may expose either keyword or positional arguments.
+          def invoke(method, **kwargs):
               try:
                   return method(**kwargs)
               except TypeError:
@@ -111,58 +99,58 @@ jobs:
                       return method(kwargs["match_id"])
                   raise
 
+          def save_now():
+              store["metadata"].update({
+                  "source": "PitchAPI",
+                  "leagues": LEAGUES,
+                  "last_checkpoint_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                  "total_stored_matches": len(store["matches"]),
+              })
+              temp = OUTPUT.with_suffix(".json.tmp")
+              temp.write_text(json.dumps(store, ensure_ascii=False, indent=2, default=str) + "\n", encoding="utf-8")
+              temp.replace(OUTPUT)
+
           errors = []
-          collected = 0
           discovered = 0
+          collected = 0
 
           with PitchAPI(api_key=API_KEY) as client:
-              league_list_method = call_first(client, [
-                  ("leagues", "list"),
-              ])
-              league_catalogue = unwrap_list(league_list_method(), "leagues", "data")
+              catalogue = get_list(method_at(client, "leagues", "list")(), "leagues", "data")
               catalogue_by_id = {}
-              for item in league_catalogue:
+              for item in catalogue:
                   item = as_dict(item)
                   if isinstance(item, dict) and item.get("id"):
                       catalogue_by_id[item["id"]] = item
 
-              matches_method = call_first(client, [
-                  ("matches", "list"),
-                  ("leagues", "matches"),
-              ])
-              stats_method = call_first(client, [
-                  ("matches", "stats"),
-                  ("stats", "match"),
-              ])
-              shots_method = call_first(client, [
-                  ("matches", "shots"),
-                  ("shots", "match"),
-              ])
-              advanced_method = call_first(client, [
-                  ("matches", "advanced"),
-                  ("advanced", "match"),
-              ])
+              matches_method = method_at(client, "matches", "list")
+              stats_method = method_at(client, "matches", "stats")
+              shots_method = method_at(client, "matches", "shots")
+              advanced_method = method_at(client, "matches", "advanced")
 
+              stop = False
               for league_name, league_id in LEAGUES.items():
-                  league_meta = catalogue_by_id.get(league_id, {})
-                  seasons = league_meta.get("seasons", [])
+                  seasons = catalogue_by_id.get(league_id, {}).get("seasons", [])
                   if not seasons:
-                      # If the SDK returns a catalogue object format not yet handled,
-                      # do not guess seasons; report the issue and continue.
-                      errors.append(f"{league_name}: no seasons found in catalogue")
+                      msg = f"{league_name}: no seasons found in catalogue"
+                      errors.append(msg)
+                      print("WARNING:", msg, flush=True)
                       continue
 
                   for season in seasons:
+                      if collected >= MAX_NEW_MATCHES:
+                          stop = True
+                          break
+                      print(f"Checking {league_name}, season {season}; saved {collected}/{MAX_NEW_MATCHES}", flush=True)
                       try:
-                          raw_matches = invoke_method(
-                              matches_method,
-                              league_id=league_id,
-                              season=season,
-                          )
-                          matches = unwrap_list(raw_matches, "matches", "data", "events")
+                          raw = invoke(matches_method, league_id=league_id, season=season)
+                          matches = get_list(raw, "matches", "data", "events")
                           discovered += len(matches)
+                          print(f"  Matches returned by API: {len(matches)}", flush=True)
 
                           for raw_match in matches:
+                              if collected >= MAX_NEW_MATCHES:
+                                  stop = True
+                                  break
                               match = as_dict(raw_match)
                               if not isinstance(match, dict):
                                   continue
@@ -170,24 +158,19 @@ jobs:
                               if match_id is None:
                                   continue
                               key = str(match_id)
-
-                              # Existing records remain untouched unless the ID is new.
                               if key in store["matches"]:
                                   continue
 
-                              status = str(
-                                  match.get("status")
-                                  or match.get("state")
-                                  or match.get("match_status")
-                                  or ""
-                              ).casefold()
+                              status_obj = match.get("status") or match.get("state") or match.get("match_status") or ""
+                              if isinstance(status_obj, dict):
+                                  status_obj = status_obj.get("name") or status_obj.get("description") or str(status_obj)
+                              status = str(status_obj).casefold()
                               finished = (
                                   match.get("is_finished") is True
                                   or match.get("finished") is True
                                   or status in {"finished", "ft", "ended", "complete", "completed"}
                               )
-                              score = match.get("score")
-                              if not finished and not score:
+                              if not finished:
                                   continue
 
                               record = {
@@ -197,49 +180,43 @@ jobs:
                                   "season": season,
                                   "collected_at_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                               }
-
                               for label, method in (
                                   ("stats", stats_method),
                                   ("shots", shots_method),
                                   ("advanced", advanced_method),
                               ):
                                   try:
-                                      raw = invoke_method(method, match_id=key)
-                                      record[label] = as_dict(raw)
+                                      record[label] = as_dict(invoke(method, match_id=key))
                                   except Exception as exc:
                                       record[label] = None
                                       errors.append(f"{league_name} {season} match {key} {label}: {exc}")
 
                               store["matches"][key] = record
                               collected += 1
-
-                              # Be polite with the API and avoid bursts.
+                              save_now()
+                              print(f"  Saved match {key} ({collected}/{MAX_NEW_MATCHES}); total={len(store['matches'])}", flush=True)
                               time.sleep(0.15)
-
                       except Exception as exc:
-                          errors.append(f"{league_name} {season} matches: {exc}")
+                          msg = f"{league_name} {season}: {type(exc).__name__}: {exc}"
+                          errors.append(msg)
+                          print("WARNING:", msg, flush=True)
+                  if stop:
+                      break
 
           store["metadata"].update({
-              "source": "PitchAPI",
-              "leagues": LEAGUES,
               "last_run_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
               "discovered_matches_this_run": discovered,
               "new_matches_stored_this_run": collected,
               "total_stored_matches": len(store["matches"]),
               "errors_this_run": errors[:100],
           })
-
-          OUTPUT.write_text(
-              json.dumps(store, ensure_ascii=False, indent=2, default=str) + "\n",
-              encoding="utf-8",
-          )
-
-          print(f"Discovered matches this run: {discovered}")
-          print(f"New matches stored this run: {collected}")
-          print(f"Total stored match records: {len(store['matches'])}")
-          print(f"Errors: {len(errors)}")
+          save_now()
+          print(f"Discovered matches this run: {discovered}", flush=True)
+          print(f"New matches stored this run: {collected}", flush=True)
+          print(f"Total stored match records: {len(store['matches'])}", flush=True)
+          print(f"Errors: {len(errors)}", flush=True)
           for error in errors[:30]:
-              print("WARNING:", error)
+              print("WARNING:", error, flush=True)
           PY
 
       - name: Commit updated statistics
