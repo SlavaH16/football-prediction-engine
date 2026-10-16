@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-10-16T19:10:15.393929+00:00",
+  "generated_at": "2026-10-16T19:13:20.344011+00:00",
   "cutoff_date": "2023-10-16",
   "max_new_matches": 180,
   "max_per_league": 30,
-  "known_ids_before_run": 7055,
-  "new_matches_saved": 180,
-  "known_ids_after_run": 7235,
-  "discovered_unstored_matches": 2199,
+  "known_ids_before_run": 7235,
+  "new_matches_saved": 151,
+  "known_ids_after_run": 7386,
+  "discovered_unstored_matches": 2019,
   "leagues": [
     {
       "league": "Premier League",
@@ -18,7 +18,7 @@
     {
       "league": "Czech First League",
       "league_id": "l_0F4I4F",
-      "new_matches": 30,
+      "new_matches": 1,
       "file": "data/pitchapi_history/Czech_First_League_2026_2027.json",
       "seasons_scanned": 3
     },
@@ -51,5 +51,12 @@
       "seasons_scanned": 6
     }
   ],
-  "errors": []
+  "errors": [
+    "Bundesliga 2024/2025 match m_2rrmcO advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a14621-00eb-758e-bb1c-6c8a325c5f5e)",
+    "Bundesliga 2024/2025 match m_0uLvkx advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a14621-0754-7229-b3e2-df04234cad9f)",
+    "Bundesliga 2023/2024 match m_459apI advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a14621-3127-7ac5-9707-c88e6723a6c8)",
+    "Bundesliga 2023/2024 match m_447PXu advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a14621-330d-786a-8e02-053c810939bb)",
+    "Bundesliga 2023/2024 match m_3Lpt3a advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a14621-34f4-71ed-9230-4a629f426006)",
+    "Bundesliga 2023/2024 match m_2buLiw advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a14621-36ce-7dc3-b1e5-8924784d7317)"
+  ]
 }
