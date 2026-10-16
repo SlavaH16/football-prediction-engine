@@ -1,5 +1,6 @@
 
 
+
 name: Test PitchAPI football data
 
 on: [workflow_dispatch]
@@ -11,41 +12,124 @@ jobs:
   test-pitchapi:
     runs-on: ubuntu-latest
     steps:
-      - name: Test PitchAPI
+      - name: Test match statistics and xG
         env:
           PITCHAPI_API_KEY: ${{ secrets.PITCHAPI_API_KEY }}
         run: |
           python - <<'PY'
           import os
+          import sys
           import requests
 
-          base = "https://api.pitchapi.dev/v1"
-          session = requests.Session()
-          session.headers.update({
-              "X-API-KEY": os.environ["PITCHAPI_API_KEY"].strip(),
+          BASE = "https://api.pitchapi.dev/v1"
+          KEY = os.environ.get("PITCHAPI_API_KEY", "").strip()
+
+          if not KEY:
+              print("ERROR: PITCHAPI_API_KEY secret is missing.")
+              sys.exit(1)
+
+          s = requests.Session()
+          s.headers.update({
+              "X-API-KEY": KEY,
               "Accept": "application/json"
           })
 
-          def get(path):
-              r = session.get(base + path, timeout=30)
+          def fetch(path):
+              r = s.get(BASE + path, timeout=30)
               print(f"\nGET {path} -> HTTP {r.status_code}")
-              print(r.text[:2500])
-              r.raise_for_status()
-              return r.json()
+              if r.status_code != 200:
+                  print(r.text[:500])
+                  return None
+              result = r.json()
+              return result.get("data", result)
 
-          print("TEST 1: Premier League matches")
-          try:
-              data = get("/leagues/l_4WFCIZ/matches")
-              print("\nMatches endpoint responded successfully.")
-          except Exception as e:
-              print("Matches request failed:", str(e))
+          # Use a real finished match returned by the league endpoint.
+          league = fetch("/leagues/l_4WFCIZ/matches")
+          if not league:
+              sys.exit("Could not load Premier League matches.")
 
-          print("\nTEST 2: API documentation endpoint")
-          try:
-              data = get("/openapi.json")
-              print("\nDocumentation endpoint responded.")
-          except Exception as e:
-              print("OpenAPI endpoint not available at this path:", str(e))
+          matches = league.get("matches", [])
+          finished = [
+              m for m in matches
+              if m.get("status") == "finished"
+              and m.get("score_home") is not None
+              and m.get("score_away") is not None
+          ]
 
-          print("\nTEST FINISHED")
+          if not finished:
+              sys.exit("No finished matches were returned.")
+
+          match = finished[0]
+          mid = match["id"]
+
+          print("\nMATCH SELECTED")
+          print(
+              match.get("date"),
+              "|", match["home_team"]["name"],
+              match["score_home"], "-", match["score_away"],
+              match["away_team"]["name"],
+              "| ID:", mid
+          )
+
+          # 1. Team statistics: xG, shots, possession and corners if available.
+          stats = fetch(f"/matches/{mid}/stats")
+          if stats:
+              periods = stats.get("periods", [])
+              all_period = next(
+                  (p for p in periods if p.get("period") == "All"),
+                  {}
+              )
+              print("\nTEAM STATISTICS")
+              found = 0
+              for group in all_period.get("groups", []):
+                  for item in group.get("items", []):
+                      title = item.get("title", "")
+                      key = item.get("key", "").lower()
+                      if any(x in (title + " " + key).lower() for x in
+                             ["expected goals", "xg", "shot", "possession", "corner"]):
+                          print(
+                              title,
+                              "| Home:", item.get("home"),
+                              "| Away:", item.get("away")
+                          )
+                          found += 1
+              if found == 0:
+                  print("No xG/shots/possession/corners found in All-period stats.")
+
+          # 2. Individual shots, including shot-level expected goals.
+          shots_data = fetch(f"/matches/{mid}/shots")
+          if shots_data:
+              shots = []
+              for period in shots_data.get("periods", []):
+                  shots.extend(period.get("shots", []))
+              with_xg = [
+                  shot for shot in shots
+                  if shot.get("expected_goals") is not None
+              ]
+              print("\nSHOT DATA")
+              print("Total shots:", len(shots))
+              print("Shots with xG:", len(with_xg))
+              for shot in with_xg[:5]:
+                  print(
+                      shot.get("player", {}).get("name", "Unknown"),
+                      "| minute:", shot.get("minute"),
+                      "| xG:", shot.get("expected_goals")
+                  )
+
+          # 3. Advanced analytics availability.
+          advanced = fetch(f"/matches/{mid}/advanced")
+          print("\nADVANCED ANALYTICS")
+          if advanced and advanced.get("teams"):
+              print("Available for", len(advanced["teams"]), "teams.")
+              for team in advanced["teams"]:
+                  print(
+                      team.get("team", {}).get("name", "Unknown"),
+                      "| actions:", team.get("actions"),
+                      "| passing:", "available" if team.get("passing") else "not returned",
+                      "| creation:", "available" if team.get("creation") else "not returned"
+                  )
+          else:
+              print("Advanced analytics unavailable or not returned.")
+
+          print("\nTEST COMPLETED")
           PY
