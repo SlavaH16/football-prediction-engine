@@ -1,0 +1,157 @@
+name: Collect PitchAPI match statistics
+
+'on':
+  workflow_dispatch:
+  schedule:
+    - cron: '15 6 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Collect match statistics
+        env:
+          PITCHAPI_API_KEY: ${{ secrets.PITCHAPI_API_KEY }}
+        run: |
+          python - <<'PY'
+          import os
+          import json
+          import time
+          import requests
+          from pathlib import Path
+          from datetime import datetime, timezone
+
+          BASE = "https://api.pitchapi.dev/v1"
+          LEAGUE_ID = "l_4WFCIZ"
+          OUTPUT = Path("data/pitchapi_stats.json")
+          MAX_NEW_MATCHES = 10
+
+          key = os.environ.get("PITCHAPI_API_KEY", "").strip()
+          if not key:
+              raise SystemExit("Missing secret PITCHAPI_API_KEY")
+
+          session = requests.Session()
+          session.headers.update({
+              "X-API-KEY": key,
+              "Accept": "application/json"
+          })
+
+          def get(path):
+              response = session.get(BASE + path, timeout=30)
+              print(f"GET {path}: HTTP {response.status_code}")
+              response.raise_for_status()
+              result = response.json()
+              if isinstance(result, dict) and result.get("error"):
+                  raise RuntimeError(str(result["error"]))
+              return result.get("data", result) if isinstance(result, dict) else result
+
+          OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+
+          if OUTPUT.exists():
+              store = json.loads(OUTPUT.read_text(encoding="utf-8"))
+          else:
+              store = {
+                  "source": "PitchAPI",
+                  "league_id": LEAGUE_ID,
+                  "matches": {}
+              }
+
+          if not isinstance(store.get("matches"), dict):
+              store["matches"] = {}
+
+          print("Loading Premier League fixtures...")
+          league_data = get(f"/leagues/{LEAGUE_ID}/matches")
+          matches = league_data.get("matches", [])
+
+          finished = [
+              m for m in matches
+              if m.get("status") == "finished"
+              and m.get("score_home") is not None
+              and m.get("score_away") is not None
+              and m.get("id")
+          ]
+
+          pending = sorted(
+              [m for m in finished if m["id"] not in store["matches"]],
+              key=lambda m: m.get("date", "")
+          )[:MAX_NEW_MATCHES]
+
+          print("Finished matches available:", len(finished))
+          print("Already stored:", len(store["matches"]))
+          print("New matches to process:", len(pending))
+
+          stored_now = 0
+          for index, match in enumerate(pending, start=1):
+              match_id = match["id"]
+              print(
+                  f"\n[{index}/{len(pending)}] "
+                  f"{match['home_team']['name']} - "
+                  f"{match['away_team']['name']} ({match.get('date')})"
+              )
+
+              entry = {
+                  "match": match,
+                  "collected_at": datetime.now(timezone.utc).isoformat()
+              }
+
+              try:
+                  entry["stats"] = get(f"/matches/{match_id}/stats")
+              except Exception as exc:
+                  print("Stats failed:", str(exc)[:300])
+                  print("Will retry this match on a later run.")
+                  continue
+
+              time.sleep(1)
+
+              try:
+                  entry["shots"] = get(f"/matches/{match_id}/shots")
+              except Exception as exc:
+                  print("Shots unavailable:", str(exc)[:300])
+                  entry["shots"] = None
+
+              time.sleep(1)
+
+              try:
+                  entry["advanced"] = get(f"/matches/{match_id}/advanced")
+              except Exception as exc:
+                  print("Advanced data unavailable:", str(exc)[:300])
+                  entry["advanced"] = None
+
+              store["matches"][match_id] = entry
+              stored_now += 1
+              print("Stored match:", match_id)
+              time.sleep(1)
+
+          store["updated"] = datetime.now(timezone.utc).isoformat()
+          store["finished_matches_available"] = len(finished)
+          store["stored_matches"] = len(store["matches"])
+
+          OUTPUT.write_text(
+              json.dumps(store, ensure_ascii=False, indent=2),
+              encoding="utf-8"
+          )
+
+          print("\nCollection summary")
+          print("Available finished matches:", len(finished))
+          print("Total stored matches:", len(store["matches"]))
+          print("New matches successfully stored:", stored_now)
+          print("Output:", OUTPUT)
+          PY
+
+      - name: Save collected data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/pitchapi_stats.json
+          if git diff --cached --quiet; then
+            echo "No new statistics to save."
+          else
+            git commit -m "Collect PitchAPI match statistics"
+            git push
+          fi
