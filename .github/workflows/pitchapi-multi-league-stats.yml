@@ -62,42 +62,15 @@ jobs:
               raise SystemExit("Unexpected 'matches' format; no data was changed.")
 
           def as_dict(obj):
-              if hasattr(obj, "model_dump"):
-                  return obj.model_dump()
+              if hasattr(obj, "__dict__"):
+                  return {k: as_dict(v) for k, v in vars(obj).items() if not k.startswith("_")}
               if isinstance(obj, dict):
                   return {k: as_dict(v) for k, v in obj.items()}
               if isinstance(obj, list):
                   return [as_dict(v) for v in obj]
-              if hasattr(obj, "__dict__"):
-                  return {k: as_dict(v) for k, v in vars(obj).items() if not k.startswith("_")}
               if isinstance(obj, (str, int, float, bool)) or obj is None:
                   return obj
               return str(obj)
-
-          def get_list(result, *keys):
-              result = as_dict(result)
-              if isinstance(result, list):
-                  return result
-              if isinstance(result, dict):
-                  for key in keys:
-                      if isinstance(result.get(key), list):
-                          return result[key]
-              return []
-
-          def method_at(obj, *path):
-              for part in path:
-                  obj = getattr(obj, part)
-              return obj
-
-          def invoke(method, **kwargs):
-              try:
-                  return method(**kwargs)
-              except TypeError:
-                  if "league_id" in kwargs and "season" in kwargs:
-                      return method(kwargs["league_id"], kwargs["season"])
-                  if "match_id" in kwargs:
-                      return method(kwargs["match_id"])
-                  raise
 
           def save_now():
               store["metadata"].update({
@@ -107,7 +80,10 @@ jobs:
                   "total_stored_matches": len(store["matches"]),
               })
               temp = OUTPUT.with_suffix(".json.tmp")
-              temp.write_text(json.dumps(store, ensure_ascii=False, indent=2, default=str) + "\n", encoding="utf-8")
+              temp.write_text(
+                  json.dumps(store, ensure_ascii=False, indent=2, default=str) + "\n",
+                  encoding="utf-8",
+              )
               temp.replace(OUTPUT)
 
           errors = []
@@ -115,21 +91,11 @@ jobs:
           collected = 0
 
           with PitchAPI(api_key=API_KEY) as client:
-              catalogue = get_list(method_at(client, "leagues", "list")(), "leagues", "data")
-              catalogue_by_id = {}
-              for item in catalogue:
-                  item = as_dict(item)
-                  if isinstance(item, dict) and item.get("id"):
-                      catalogue_by_id[item["id"]] = item
+              catalogue = client.leagues.list().leagues
+              catalogue_by_id = {league.id: league for league in catalogue}
 
-              matches_method = method_at(client, "matches", "list")
-              stats_method = method_at(client, "matches", "stats")
-              shots_method = method_at(client, "matches", "shots")
-              advanced_method = method_at(client, "matches", "advanced")
-
-              stop = False
               for league_name, league_id in LEAGUES.items():
-                  seasons = catalogue_by_id.get(league_id, {}).get("seasons", [])
+                  seasons = getattr(catalogue_by_id.get(league_id), "seasons", [])
                   if not seasons:
                       msg = f"{league_name}: no seasons found in catalogue"
                       errors.append(msg)
@@ -138,69 +104,68 @@ jobs:
 
                   for season in seasons:
                       if collected >= MAX_NEW_MATCHES:
-                          stop = True
                           break
-                      print(f"Checking {league_name}, season {season}; saved {collected}/{MAX_NEW_MATCHES}", flush=True)
+
+                      print(
+                          f"Checking {league_name}, season {season}; "
+                          f"saved {collected}/{MAX_NEW_MATCHES}",
+                          flush=True,
+                      )
                       try:
-                          raw = invoke(matches_method, league_id=league_id, season=season)
-                          matches = get_list(raw, "matches", "data", "events")
+                          # Correct SDK method: league match lists live under client.leagues.
+                          response = client.leagues.matches(league_id, season=season)
+                          matches = response.matches
                           discovered += len(matches)
                           print(f"  Matches returned by API: {len(matches)}", flush=True)
 
-                          for raw_match in matches:
+                          for match in matches:
                               if collected >= MAX_NEW_MATCHES:
-                                  stop = True
                                   break
-                              match = as_dict(raw_match)
-                              if not isinstance(match, dict):
+                              match_id = str(match.id)
+                              if match_id in store["matches"]:
                                   continue
-                              match_id = match.get("id") or match.get("match_id")
-                              if match_id is None:
-                                  continue
-                              key = str(match_id)
-                              if key in store["matches"]:
-                                  continue
-
-                              status_obj = match.get("status") or match.get("state") or match.get("match_status") or ""
-                              if isinstance(status_obj, dict):
-                                  status_obj = status_obj.get("name") or status_obj.get("description") or str(status_obj)
-                              status = str(status_obj).casefold()
-                              finished = (
-                                  match.get("is_finished") is True
-                                  or match.get("finished") is True
-                                  or status in {"finished", "ft", "ended", "complete", "completed"}
-                              )
-                              if not finished:
+                              if str(match.status).casefold() not in {
+                                  "finished", "ft", "ended", "complete", "completed"
+                              }:
                                   continue
 
                               record = {
-                                  "match": match,
+                                  "match": as_dict(match),
                                   "league_name": league_name,
                                   "league_id": league_id,
                                   "season": season,
                                   "collected_at_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                               }
                               for label, method in (
-                                  ("stats", stats_method),
-                                  ("shots", shots_method),
-                                  ("advanced", advanced_method),
+                                  ("stats", client.matches.stats),
+                                  ("shots", client.matches.shots),
+                                  ("advanced", client.matches.advanced),
                               ):
                                   try:
-                                      record[label] = as_dict(invoke(method, match_id=key))
+                                      record[label] = as_dict(method(match_id))
                                   except Exception as exc:
                                       record[label] = None
-                                      errors.append(f"{league_name} {season} match {key} {label}: {exc}")
+                                      errors.append(
+                                          f"{league_name} {season} match {match_id} {label}: "
+                                          f"{type(exc).__name__}: {exc}"
+                                      )
 
-                              store["matches"][key] = record
+                              store["matches"][match_id] = record
                               collected += 1
                               save_now()
-                              print(f"  Saved match {key} ({collected}/{MAX_NEW_MATCHES}); total={len(store['matches'])}", flush=True)
+                              print(
+                                  f"  Saved match {match_id} ({collected}/{MAX_NEW_MATCHES}); "
+                                  f"total={len(store['matches'])}",
+                                  flush=True,
+                              )
                               time.sleep(0.15)
+
                       except Exception as exc:
                           msg = f"{league_name} {season}: {type(exc).__name__}: {exc}"
                           errors.append(msg)
                           print("WARNING:", msg, flush=True)
-                  if stop:
+
+                  if collected >= MAX_NEW_MATCHES:
                       break
 
           store["metadata"].update({
