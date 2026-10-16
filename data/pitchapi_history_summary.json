@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-10-16T18:17:59.266802+00:00",
+  "generated_at": "2026-10-16T18:20:45.600927+00:00",
   "cutoff_date": "2023-10-16",
   "max_new_matches": 180,
   "max_per_league": 30,
-  "known_ids_before_run": 4535,
+  "known_ids_before_run": 4715,
   "new_matches_saved": 180,
-  "known_ids_after_run": 4715,
-  "discovered_unstored_matches": 4719,
+  "known_ids_after_run": 4895,
+  "discovered_unstored_matches": 4539,
   "leagues": [
     {
       "league": "Premier League",
