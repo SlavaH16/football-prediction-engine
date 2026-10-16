@@ -205,17 +205,23 @@ jobs:
                       if item_id:
                           known_ids.add(item_id)
 
-          for path in DATA_DIR.glob("*.json"):
+          # Scan every JSON file under data/, including nested history folders and legacy files.
+          # This makes duplicate detection independent of where older data was stored.
+          for path in Path("data").rglob("*.json"):
               if path.name == "pitchapi_history_summary.json":
                   continue
               payload = load_json(path, [])
               records = payload.get("matches", payload.get("data", [])) if isinstance(payload, dict) else payload
               if isinstance(records, list):
+                  file_ids = set()
                   for item in records:
                       if isinstance(item, dict):
                           item_id = match_id_of(item)
                           if item_id:
-                              known_ids.add(item_id)
+                              file_ids.add(item_id)
+                  known_ids.update(file_ids)
+                  if file_ids:
+                      print(f"Loaded {len(file_ids)} known match IDs from {path}")
 
           print(f"Known match IDs before this run: {len(known_ids)}")
           print(f"Maximum new matches this run: {MAX_NEW_MATCHES} (target {MAX_PER_LEAGUE} per league)")
@@ -250,21 +256,14 @@ jobs:
                   display_name = league_name
 
               try:
-                  # Available seasons are included in the /v1/leagues response.
-                  # The current PitchAPI SDK has no client.leagues.seasons() method.
-                  seasons = []
-                  for league_obj in (all_leagues or []):
-                      obj = as_dict(league_obj)
-                      if isinstance(obj, dict) and str(obj.get("id") or obj.get("league_id") or "") == league_id:
-                          seasons = obj.get("seasons") or []
-                          break
+                  season_result = client.leagues.seasons(league_id)
+                  seasons = get_match_list(season_result)
+                  if not seasons and isinstance(season_result, dict):
+                      seasons = season_result.get("seasons", [])
                   if not seasons:
-                      league_detail = as_dict(client.leagues.get(league_id))
-                      if isinstance(league_detail, dict):
-                          seasons = league_detail.get("seasons") or []
+                      # Some client versions expose seasons through the league object.
+                      seasons = getattr(season_result, "seasons", []) or []
                   seasons = sorted(seasons, key=lambda s: season_sort_key(season_label(s)), reverse=True)
-                  if not seasons:
-                      raise RuntimeError("No seasons returned by PitchAPI for this league")
               except Exception as exc:
                   errors.append(f"{league_name}: seasons: {type(exc).__name__}: {exc}")
                   print(f"ERROR loading seasons: {type(exc).__name__}: {exc}")
