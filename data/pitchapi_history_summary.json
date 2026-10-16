@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-10-16T18:54:59.938364+00:00",
+  "generated_at": "2026-10-16T18:58:36.592550+00:00",
   "cutoff_date": "2023-10-16",
   "max_new_matches": 180,
   "max_per_league": 30,
-  "known_ids_before_run": 6335,
+  "known_ids_before_run": 6515,
   "new_matches_saved": 180,
-  "known_ids_after_run": 6515,
-  "discovered_unstored_matches": 2919,
+  "known_ids_after_run": 6695,
+  "discovered_unstored_matches": 2739,
   "leagues": [
     {
       "league": "Premier League",
@@ -52,6 +52,8 @@
     }
   ],
   "errors": [
-    "Bundesliga 2024/2025 match m_4Iu1oI advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a14610-2931-7a57-a7d5-c7b0e8249486)"
+    "Bundesliga 2024/2025 match m_221caR advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a14613-32c0-77eb-aa39-b1ba133d7196)",
+    "Bundesliga 2024/2025 match m_4F5uaX advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a14613-6fc4-76d0-9308-6129b49281ca)",
+    "Bundesliga 2024/2025 match m_14zdJR advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a14613-74ee-7a93-a048-397bd1d05d0a)"
   ]
 }
