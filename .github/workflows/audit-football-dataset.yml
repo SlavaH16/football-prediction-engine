@@ -1,0 +1,140 @@
+name: Audit football dataset
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Audit JSON dataset
+        run: |
+          python - <<'PY'
+          import json
+          from collections import Counter, defaultdict
+          from datetime import datetime
+          from pathlib import Path
+
+          DATA = Path('data')
+          files = sorted(p for p in DATA.rglob('*.json') if p.name not in {'dataset_audit.json', 'pitchapi_history_summary.json'})
+
+          def get_id(x):
+              if not isinstance(x, dict): return None
+              for k in ('id', 'match_id', 'matchId'):
+                  if x.get(k) not in (None, ''): return str(x[k]).strip()
+              return None
+
+          def extract(payload):
+              sources = [payload] if isinstance(payload, list) else []
+              if isinstance(payload, dict):
+                  sources += [payload[k] for k in ('matches','data','results','history','events') if isinstance(payload.get(k), list)]
+                  if get_id(payload): sources.append([payload])
+              out, seen = [], set()
+              for source in sources:
+                  for x in source:
+                      mid = get_id(x)
+                      if mid and mid not in seen:
+                          seen.add(mid); out.append(x)
+              return out
+
+          def first(x, keys):
+              if not isinstance(x, dict): return None
+              return next((x[k] for k in keys if x.get(k) not in (None, '')), None)
+
+          def date_of(x):
+              vals = [first(x, ('date','utcDate','start_time','startTime','kickoff','kickoff_time','utc_date'))]
+              m = x.get('match') if isinstance(x.get('match'), dict) else {}
+              vals.append(first(m, ('date','utcDate','start_time','startTime','kickoff','kickoff_time')))
+              for v in vals:
+                  if v:
+                      try: return datetime.fromisoformat(str(v).replace('Z','+00:00')).date().isoformat()
+                      except (ValueError, TypeError): pass
+              return None
+
+          def nonempty(v): return v is not None and v != '' and v != [] and v != {}
+
+          file_rows, parse_errors, all_rows = [], [], []
+          ids_to_files = defaultdict(set)
+          league_rows = defaultdict(list)
+          season_counts = Counter()
+          for p in files:
+              try:
+                  payload = json.loads(p.read_text(encoding='utf-8'))
+              except Exception as e:
+                  parse_errors.append({'file':str(p), 'error':f'{type(e).__name__}: {e}'})
+                  file_rows.append({'file':str(p), 'records':0, 'parse_error':str(e)})
+                  continue
+              records = extract(payload)
+              dates = [d for d in (date_of(x) for x in records) if d]
+              file_rows.append({'file':str(p), 'records':len(records), 'unique_ids':len({get_id(x) for x in records}), 'oldest_date':min(dates, default=None), 'newest_date':max(dates, default=None)})
+              for x in records:
+                  mid = get_id(x); ids_to_files[mid].add(str(p)); all_rows.append((str(p), x))
+                  league = first(x, ('league','league_name','competition'))
+                  if isinstance(league, dict): league = first(league, ('name','displayName','code'))
+                  m = x.get('match') if isinstance(x.get('match'), dict) else {}
+                  if not league:
+                      comp = m.get('competition') or m.get('league')
+                      league = first(comp, ('name','displayName','code')) if isinstance(comp, dict) else comp
+                  league = str(league or 'Unknown'); league_rows[league].append(x)
+                  season = first(x, ('season','season_name','seasonName'))
+                  if isinstance(season, dict): season = first(season, ('name','label','year'))
+                  season_counts[(league, str(season or 'Unknown'))] += 1
+
+          duplicates = {mid:sorted(paths) for mid,paths in ids_to_files.items() if len(paths)>1}
+          stats = Counter(); score_count = 0; all_dates = []; statuses = Counter()
+          for _, x in all_rows:
+              for field in ('stats','advanced','shots'):
+                  if nonempty(x.get(field)): stats[field] += 1
+              m = x.get('match') if isinstance(x.get('match'), dict) else {}
+              score = x.get('score', m.get('score'))
+              if nonempty(score) or any(nonempty(obj.get(k)) for obj in (x,m) for k in ('home_score','away_score','homeScore','awayScore','result')): score_count += 1
+              d = date_of(x)
+              if d: all_dates.append(d)
+              status = first(x, ('status','state','match_status'))
+              if status: statuses[str(status)] += 1
+
+          per_league = []
+          for league, rows in sorted(league_rows.items()):
+              ds = [d for d in (date_of(x) for x in rows) if d]
+              per_league.append({'league':league,'records':len(rows),'unique_ids':len({get_id(x) for x in rows}),'oldest_date':min(ds,default=None),'newest_date':max(ds,default=None)})
+
+          report = {
+              'generated_at_utc':datetime.utcnow().isoformat(timespec='seconds')+'Z',
+              'files_scanned':len(files), 'files_with_parse_errors':len(parse_errors),
+              'records_counted_across_files':len(all_rows), 'unique_match_ids_across_data':len(ids_to_files),
+              'ids_present_in_multiple_files':len(duplicates), 'extra_duplicate_copies_across_files':sum(len(v)-1 for v in duplicates.values()),
+              'records_with_recognized_score_fields':score_count,
+              'records_with_nonempty_stats':stats['stats'], 'records_with_nonempty_advanced':stats['advanced'], 'records_with_nonempty_shots':stats['shots'],
+              'records_with_recognized_date':len(all_dates), 'oldest_date':min(all_dates,default=None), 'newest_date':max(all_dates,default=None),
+              'status_counts':dict(statuses.most_common()), 'per_league':per_league,
+              'per_league_season_counts':[{'league':l,'season':s,'records':n} for (l,s),n in sorted(season_counts.items())],
+              'files':file_rows, 'parse_errors':parse_errors,
+              'duplicate_ids_sample':[{'id':mid,'files':paths} for mid,paths in sorted(duplicates.items())[:100]],
+              'notes':['Counts are computed from JSON files in data/; they do not guarantee every record has complete analytics.','Field checks recognize common score/date shapes; unusual schemas may need additional rules.','Duplicate IDs across files are reported separately and are not added to the unique ID count.']
+          }
+          out = Path('dataset-audit-report'); out.mkdir(exist_ok=True)
+          (out/'dataset_audit.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
+          lines = ['# Football dataset audit','',f"- Generated: {report['generated_at_utc']}",f"- JSON files scanned: **{report['files_scanned']}**",f"- Files with parse errors: **{report['files_with_parse_errors']}**",f"- Records counted across files: **{report['records_counted_across_files']}**",f"- Unique match IDs across data/: **{report['unique_match_ids_across_data']}**",f"- IDs present in multiple files: **{report['ids_present_in_multiple_files']}**",f"- Extra duplicate copies across files: **{report['extra_duplicate_copies_across_files']}**",f"- Records with recognized score fields: **{report['records_with_recognized_score_fields']}**",f"- Records with non-empty stats: **{report['records_with_nonempty_stats']}**",f"- Records with non-empty advanced: **{report['records_with_nonempty_advanced']}**",f"- Records with non-empty shots: **{report['records_with_nonempty_shots']}**",f"- Date range: **{report['oldest_date'] or 'unknown'} → {report['newest_date'] or 'unknown'}**",'', '## Per league','','| League | Records | Unique IDs | Oldest | Newest |','|---|---:|---:|---|---|']
+          for r in per_league: lines.append(f"| {r['league'].replace('|','/')} | {r['records']} | {r['unique_ids']} | {r['oldest_date'] or '—'} | {r['newest_date'] or '—'} |")
+          lines += ['', '## Per league and season', '', '| League | Season | Records |', '|---|---|---:|']
+          for (l,s),n in sorted(season_counts.items()): lines.append(f'| {l.replace("|","/")} | {s.replace("|","/")} | {n} |')
+          if parse_errors: lines += ['', '## JSON parse errors', ''] + [f"- `{e['file']}`: {e['error']}" for e in parse_errors]
+          md='\n'.join(lines)+'\n'; (out/'summary.md').write_text(md,encoding='utf-8'); Path('audit-summary.md').write_text(md,encoding='utf-8'); print(md)
+          PY
+
+      - name: Upload audit report
+        uses: actions/upload-artifact@v4
+        with:
+          name: football-dataset-audit
+          path: |
+            dataset-audit-report/
+            audit-summary.md
+          if-no-files-found: error
+          retention-days: 30
