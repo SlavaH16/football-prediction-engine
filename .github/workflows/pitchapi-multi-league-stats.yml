@@ -15,7 +15,7 @@ concurrency:
 jobs:
   collect:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 45
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -23,7 +23,7 @@ jobs:
       - name: Install PitchAPI client
         run: python -m pip install --upgrade pip pitchapi
 
-      - name: Collect a small batch of match statistics
+      - name: Collect balanced batches of match statistics
         env:
           PITCHAPI_API_KEY: ${{ secrets.PITCHAPI_API_KEY }}
         run: |
@@ -46,7 +46,8 @@ jobs:
               "Serie A": "l_0ALvwF",
               "Ligue 1": "l_3FJFUl",
           }
-          MAX_NEW_MATCHES = 8
+          MAX_NEW_MATCHES = 30
+          MAX_NEW_MATCHES_PER_LEAGUE = 5
           OUTPUT = Path("data/pitchapi_stats.json")
           OUTPUT.parent.mkdir(parents=True, exist_ok=True)
 
@@ -62,6 +63,8 @@ jobs:
               raise SystemExit("Unexpected 'matches' format; no data was changed.")
 
           def as_dict(obj):
+              if hasattr(obj, "model_dump"):
+                  return as_dict(obj.model_dump())
               if hasattr(obj, "__dict__"):
                   return {k: as_dict(v) for k, v in vars(obj).items() if not k.startswith("_")}
               if isinstance(obj, dict):
@@ -89,12 +92,15 @@ jobs:
           errors = []
           discovered = 0
           collected = 0
+          collected_by_league = {name: 0 for name in LEAGUES}
 
           with PitchAPI(api_key=API_KEY) as client:
               catalogue = client.leagues.list().leagues
               catalogue_by_id = {league.id: league for league in catalogue}
 
               for league_name, league_id in LEAGUES.items():
+                  if collected >= MAX_NEW_MATCHES:
+                      break
                   seasons = getattr(catalogue_by_id.get(league_id), "seasons", [])
                   if not seasons:
                       msg = f"{league_name}: no seasons found in catalogue"
@@ -103,23 +109,23 @@ jobs:
                       continue
 
                   for season in seasons:
-                      if collected >= MAX_NEW_MATCHES:
+                      if collected >= MAX_NEW_MATCHES or collected_by_league[league_name] >= MAX_NEW_MATCHES_PER_LEAGUE:
                           break
 
                       print(
                           f"Checking {league_name}, season {season}; "
-                          f"saved {collected}/{MAX_NEW_MATCHES}",
+                          f"saved {collected_by_league[league_name]}/{MAX_NEW_MATCHES_PER_LEAGUE} "
+                          f"for this league, {collected}/{MAX_NEW_MATCHES} total",
                           flush=True,
                       )
                       try:
-                          # Correct SDK method: league match lists live under client.leagues.
                           response = client.leagues.matches(league_id, season=season)
                           matches = response.matches
                           discovered += len(matches)
                           print(f"  Matches returned by API: {len(matches)}", flush=True)
 
                           for match in matches:
-                              if collected >= MAX_NEW_MATCHES:
+                              if collected >= MAX_NEW_MATCHES or collected_by_league[league_name] >= MAX_NEW_MATCHES_PER_LEAGUE:
                                   break
                               match_id = str(match.id)
                               if match_id in store["matches"]:
@@ -152,10 +158,13 @@ jobs:
 
                               store["matches"][match_id] = record
                               collected += 1
+                              collected_by_league[league_name] += 1
                               save_now()
                               print(
-                                  f"  Saved match {match_id} ({collected}/{MAX_NEW_MATCHES}); "
-                                  f"total={len(store['matches'])}",
+                                  f"  Saved {league_name} match {match_id}; "
+                                  f"league={collected_by_league[league_name]}/{MAX_NEW_MATCHES_PER_LEAGUE}, "
+                                  f"total this run={collected}/{MAX_NEW_MATCHES}, "
+                                  f"all records={len(store['matches'])}",
                                   flush=True,
                               )
                               time.sleep(0.15)
@@ -172,12 +181,14 @@ jobs:
               "last_run_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
               "discovered_matches_this_run": discovered,
               "new_matches_stored_this_run": collected,
+              "new_matches_by_league_this_run": collected_by_league,
               "total_stored_matches": len(store["matches"]),
               "errors_this_run": errors[:100],
           })
           save_now()
           print(f"Discovered matches this run: {discovered}", flush=True)
           print(f"New matches stored this run: {collected}", flush=True)
+          print(f"New matches by league: {json.dumps(collected_by_league, ensure_ascii=False)}", flush=True)
           print(f"Total stored match records: {len(store['matches'])}", flush=True)
           print(f"Errors: {len(errors)}", flush=True)
           for error in errors[:30]:
@@ -192,6 +203,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No new statistics to commit."
           else
-            git commit -m "Update multi-league PitchAPI statistics"
+            git commit -m "Collect larger balanced multi-league PitchAPI batches"
             git push
           fi
