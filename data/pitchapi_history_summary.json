@@ -1,0 +1,24 @@
+{
+  "run_utc": "2026-10-16T16:40:01Z",
+  "date_from": "2023-10-16",
+  "date_to": "2026-10-16",
+  "max_new_matches": 180,
+  "existing_data_files_checked": 1,
+  "finished_matches_found_in_range": 5799,
+  "new_matches_stored_this_run": 180,
+  "new_matches_by_league": {
+    "Premier League": 30,
+    "Czech First League": 30,
+    "Bundesliga": 30,
+    "LaLiga": 30,
+    "Serie A": 30,
+    "Ligue 1": 30
+  },
+  "total_known_match_ids": 372,
+  "errors_count": 3,
+  "errors": [
+    "Czech First League 2026/2027 match m_1y3TMq shots: TypeError: Shot.__init__() missing 1 required positional argument: 'expected_goals'",
+    "Czech First League 2026/2027 match m_1KuZN6 shots: TypeError: Shot.__init__() missing 1 required positional argument: 'expected_goals'",
+    "Czech First League 2026/2027 match m_2BKp8e shots: TypeError: Shot.__init__() missing 1 required positional argument: 'expected_goals'"
+  ]
+}
