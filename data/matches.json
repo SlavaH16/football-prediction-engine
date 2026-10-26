@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-26T12:56:08.325069+00:00",
+  "updated": "2026-10-26T22:38:35.981435+00:00",
   "matches": [
     {
       "area": {
@@ -24,11 +24,11 @@
       },
       "id": 567331,
       "utcDate": "2026-10-26T18:45:00Z",
-      "status": "TIMED",
+      "status": "FINISHED",
       "matchday": 9,
       "stage": "REGULAR_SEASON",
       "group": null,
-      "lastUpdated": "2026-10-26T10:20:31Z",
+      "lastUpdated": "2026-10-26T20:46:53Z",
       "homeTeam": {
         "id": 5530,
         "name": "CD Santa Clara",
@@ -44,21 +44,28 @@
         "crest": "https://crests.football-data.org/1903.png"
       },
       "score": {
-        "winner": null,
+        "winner": "AWAY_TEAM",
         "duration": "REGULAR",
         "fullTime": {
-          "home": null,
-          "away": null
+          "home": 1,
+          "away": 2
         },
         "halfTime": {
-          "home": null,
-          "away": null
+          "home": 1,
+          "away": 0
         }
       },
       "odds": {
         "msg": "Activate Odds-Package in User-Panel to retrieve odds."
       },
-      "referees": []
+      "referees": [
+        {
+          "id": 176741,
+          "name": "Claudio Pereira",
+          "type": "REFEREE",
+          "nationality": null
+        }
+      ]
     },
     {
       "area": {
@@ -83,11 +90,11 @@
       },
       "id": 559648,
       "utcDate": "2026-10-26T19:30:00Z",
-      "status": "TIMED",
+      "status": "FINISHED",
       "matchday": 8,
       "stage": "REGULAR_SEASON",
       "group": null,
-      "lastUpdated": "2026-10-26T10:20:30Z",
+      "lastUpdated": "2026-10-26T21:27:25Z",
       "homeTeam": {
         "id": 524,
         "name": "Paris Saint-Germain FC",
@@ -103,21 +110,28 @@
         "crest": "https://crests.football-data.org/523.png"
       },
       "score": {
-        "winner": null,
+        "winner": "HOME_TEAM",
         "duration": "REGULAR",
         "fullTime": {
-          "home": null,
-          "away": null
+          "home": 2,
+          "away": 0
         },
         "halfTime": {
-          "home": null,
-          "away": null
+          "home": 0,
+          "away": 0
         }
       },
       "odds": {
         "msg": "Activate Odds-Package in User-Panel to retrieve odds."
       },
-      "referees": []
+      "referees": [
+        {
+          "id": 15548,
+          "name": "Jérôme Brisard",
+          "type": "REFEREE",
+          "nationality": "France"
+        }
+      ]
     },
     {
       "area": {
@@ -142,11 +156,11 @@
       },
       "id": 564721,
       "utcDate": "2026-10-26T20:00:00Z",
-      "status": "TIMED",
+      "status": "FINISHED",
       "matchday": 10,
       "stage": "REGULAR_SEASON",
       "group": null,
-      "lastUpdated": "2026-10-26T10:20:30Z",
+      "lastUpdated": "2026-10-26T22:02:05Z",
       "homeTeam": {
         "id": 559,
         "name": "Sevilla FC",
@@ -162,21 +176,28 @@
         "crest": "https://crests.football-data.org/79.png"
       },
       "score": {
-        "winner": null,
+        "winner": "HOME_TEAM",
         "duration": "REGULAR",
         "fullTime": {
-          "home": null,
-          "away": null
+          "home": 2,
+          "away": 0
         },
         "halfTime": {
-          "home": null,
-          "away": null
+          "home": 1,
+          "away": 0
         }
       },
       "odds": {
         "msg": "Activate Odds-Package in User-Panel to retrieve odds."
       },
-      "referees": []
+      "referees": [
+        {
+          "id": 207048,
+          "name": "Miguel Ortiz Arias",
+          "type": "REFEREE",
+          "nationality": "Spain"
+        }
+      ]
     },
     {
       "area": {
@@ -201,11 +222,11 @@
       },
       "id": 555051,
       "utcDate": "2026-10-26T22:30:00Z",
-      "status": "TIMED",
+      "status": "IN_PLAY",
       "matchday": 32,
       "stage": "REGULAR_SEASON",
       "group": null,
-      "lastUpdated": "2026-10-26T10:20:30Z",
+      "lastUpdated": "2026-10-26T22:37:49Z",
       "homeTeam": {
         "id": 4241,
         "name": "Coritiba FBC",
@@ -221,11 +242,11 @@
         "crest": "https://crests.football-data.org/1767.png"
       },
       "score": {
-        "winner": null,
+        "winner": "DRAW",
         "duration": "REGULAR",
         "fullTime": {
-          "home": null,
-          "away": null
+          "home": 0,
+          "away": 0
         },
         "halfTime": {
           "home": null,
@@ -235,7 +256,14 @@
       "odds": {
         "msg": "Activate Odds-Package in User-Panel to retrieve odds."
       },
-      "referees": []
+      "referees": [
+        {
+          "id": 18754,
+          "name": "Ramon Abatti Abel",
+          "type": "REFEREE",
+          "nationality": "Brazil"
+        }
+      ]
     },
     {
       "area": {
@@ -294,7 +322,14 @@
       "odds": {
         "msg": "Activate Odds-Package in User-Panel to retrieve odds."
       },
-      "referees": []
+      "referees": [
+        {
+          "id": 206944,
+          "name": "Rodrigo Pereira de Lima",
+          "type": "REFEREE",
+          "nationality": "Brazil"
+        }
+      ]
     },
     {
       "area": {
