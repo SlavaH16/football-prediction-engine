@@ -1,5 +1,4148 @@
 [
   {
+    "id": "m_3YgM7X",
+    "match_id": "m_3YgM7X",
+    "league": "Bundesliga",
+    "league_id": "l_1Isor4",
+    "season": "2026/2027",
+    "date": "2026-10-25",
+    "match": {
+      "id": "m_3YgM7X",
+      "home_team": {
+        "id": "t_3xyER9",
+        "name": "Hoffenheim",
+        "image_url": "https://cdn.pitchapi.dev/images/teams/b5ac3a3e493c752b9eb37367f9d58d704dbccf83b0b325090c5b89c327f212fd.webp"
+      },
+      "away_team": {
+        "id": "t_2lHR8t",
+        "name": "Bayer Leverkusen",
+        "image_url": "https://cdn.pitchapi.dev/images/teams/2e47f0a718e58090d287870e5eef626c90b236d75fff1e901cd6b35235adb0c7.webp"
+      },
+      "date": "2026-10-25",
+      "time_utc": "2026-10-25T14:30:00Z",
+      "status": "finished",
+      "score_home": 3,
+      "score_away": 0
+    },
+    "collected_at": "2026-10-26T14:34:13.455917+00:00",
+    "stats": {
+      "match_id": "m_3YgM7X",
+      "home_team": {
+        "id": "t_3xyER9",
+        "name": "Hoffenheim",
+        "image_url": "https://cdn.pitchapi.dev/images/teams/b5ac3a3e493c752b9eb37367f9d58d704dbccf83b0b325090c5b89c327f212fd.webp"
+      },
+      "away_team": {
+        "id": "t_2lHR8t",
+        "name": "Bayer Leverkusen",
+        "image_url": "https://cdn.pitchapi.dev/images/teams/2e47f0a718e58090d287870e5eef626c90b236d75fff1e901cd6b35235adb0c7.webp"
+      },
+      "periods": [
+        {
+          "period": "All",
+          "groups": [
+            {
+              "group_name": "Defence",
+              "items": [
+                {
+                  "title": "Clearances",
+                  "key": "clearances",
+                  "home": "32",
+                  "away": "18",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Interceptions",
+                  "key": "interceptions",
+                  "home": "16",
+                  "away": "11",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Keeper saves",
+                  "key": "keeper_saves",
+                  "home": "1",
+                  "away": "3",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Tackles",
+                  "key": "matchstats.headers.tackles",
+                  "home": "15",
+                  "away": "15",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Blocks",
+                  "key": "shot_blocks",
+                  "home": "2",
+                  "away": "4",
+                  "format_type": "integer"
+                }
+              ]
+            },
+            {
+              "group_name": "Discipline",
+              "items": [
+                {
+                  "title": "Fouls committed",
+                  "key": "fouls",
+                  "home": "14",
+                  "away": "6",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Red cards",
+                  "key": "red_cards",
+                  "home": "1",
+                  "away": "0",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Yellow cards",
+                  "key": "yellow_cards",
+                  "home": "2",
+                  "away": "4",
+                  "format_type": "integer"
+                }
+              ]
+            },
+            {
+              "group_name": "Duels",
+              "items": [
+                {
+                  "title": "Aerial duels won",
+                  "key": "aerials_won",
+                  "home": "14 (64%)",
+                  "away": "8 (36%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Successful dribbles",
+                  "key": "dribbles_succeeded",
+                  "home": "7 (44%)",
+                  "away": "7 (58%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Duels won",
+                  "key": "duel_won",
+                  "home": "42",
+                  "away": "43",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Ground duels won",
+                  "key": "ground_duels_won",
+                  "home": "28 (44%)",
+                  "away": "35 (56%)",
+                  "format_type": "integerWithPercentage"
+                }
+              ]
+            },
+            {
+              "group_name": "Expected goals (xG)",
+              "items": [
+                {
+                  "title": "Expected goals (xG)",
+                  "key": "expected_goals",
+                  "home": "3.46",
+                  "away": "0.57",
+                  "format_type": "double"
+                },
+                {
+                  "title": "xG non-penalty",
+                  "key": "expected_goals_non_penalty",
+                  "home": "2.67",
+                  "away": "0.57",
+                  "format_type": "double"
+                },
+                {
+                  "title": "xG on target (xGOT)",
+                  "key": "expected_goals_on_target",
+                  "home": "2.24",
+                  "away": "0.22",
+                  "format_type": "double"
+                },
+                {
+                  "title": "xG open play",
+                  "key": "expected_goals_open_play",
+                  "home": "2.34",
+                  "away": "0.46",
+                  "format_type": "double"
+                },
+                {
+                  "title": "xG set play",
+                  "key": "expected_goals_set_play",
+                  "home": "0.33",
+                  "away": "0.11",
+                  "format_type": "double"
+                }
+              ]
+            },
+            {
+              "group_name": "Passes",
+              "items": [
+                {
+                  "title": "Offsides",
+                  "key": "Offsides",
+                  "home": "1",
+                  "away": "0",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Accurate crosses",
+                  "key": "accurate_crosses",
+                  "home": "5 (29%)",
+                  "away": "1 (6%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Accurate passes",
+                  "key": "accurate_passes",
+                  "home": "279 (78%)",
+                  "away": "432 (85%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Accurate long balls",
+                  "key": "long_balls_accurate",
+                  "home": "18 (45%)",
+                  "away": "23 (43%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Opposition half",
+                  "key": "opposition_half_passes",
+                  "home": "140",
+                  "away": "229",
+                  "format_type": ""
+                },
+                {
+                  "title": "Own half",
+                  "key": "own_half_passes",
+                  "home": "139",
+                  "away": "203",
+                  "format_type": ""
+                },
+                {
+                  "title": "Passes",
+                  "key": "passes",
+                  "home": "359",
+                  "away": "509",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Throws",
+                  "key": "player_throws",
+                  "home": "18",
+                  "away": "22",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Touches in opposition box",
+                  "key": "touches_opp_box",
+                  "home": "28",
+                  "away": "20",
+                  "format_type": ""
+                }
+              ]
+            },
+            {
+              "group_name": "Shots",
+              "items": [
+                {
+                  "title": "Shots off target",
+                  "key": "ShotsOffTarget",
+                  "home": "10",
+                  "away": "6",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Shots on target",
+                  "key": "ShotsOnTarget",
+                  "home": "6",
+                  "away": "1",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Blocked shots",
+                  "key": "blocked_shots",
+                  "home": "4",
+                  "away": "2",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Shots inside box",
+                  "key": "shots_inside_box",
+                  "home": "15",
+                  "away": "6",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Shots outside box",
+                  "key": "shots_outside_box",
+                  "home": "5",
+                  "away": "3",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Hit woodwork",
+                  "key": "shots_woodwork",
+                  "home": "2",
+                  "away": "0",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Total shots",
+                  "key": "total_shots",
+                  "home": "20",
+                  "away": "9",
+                  "format_type": "integer"
+                }
+              ]
+            },
+            {
+              "group_name": "Top stats",
+              "items": [
+                {
+                  "title": "Ball possession",
+                  "key": "BallPossesion",
+                  "home": "42",
+                  "away": "58",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Shots on target",
+                  "key": "ShotsOnTarget",
+                  "home": "6",
+                  "away": "1",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Accurate passes",
+                  "key": "accurate_passes",
+                  "home": "279 (78%)",
+                  "away": "432 (85%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Big chances",
+                  "key": "big_chance",
+                  "home": "4",
+                  "away": "1",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Big chances missed",
+                  "key": "big_chance_missed_title",
+                  "home": "1",
+                  "away": "1",
+                  "format_type": ""
+                },
+                {
+                  "title": "Corners",
+                  "key": "corners",
+                  "home": "5",
+                  "away": "3",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Expected goals (xG)",
+                  "key": "expected_goals",
+                  "home": "3.46",
+                  "away": "0.57",
+                  "format_type": "double"
+                },
+                {
+                  "title": "Total shots",
+                  "key": "total_shots",
+                  "home": "20",
+                  "away": "9",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Touches in opposition box",
+                  "key": "touches_opp_box",
+                  "home": "28",
+                  "away": "20",
+                  "format_type": ""
+                },
+                {
+                  "title": "Yellow cards",
+                  "key": "yellow_cards",
+                  "home": "2",
+                  "away": "4",
+                  "format_type": "integer"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "period": "FirstHalf",
+          "groups": [
+            {
+              "group_name": "Defence",
+              "items": [
+                {
+                  "title": "Clearances",
+                  "key": "clearances",
+                  "home": "10",
+                  "away": "10",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Interceptions",
+                  "key": "interceptions",
+                  "home": "11",
+                  "away": "9",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Keeper saves",
+                  "key": "keeper_saves",
+                  "home": "0",
+                  "away": "2",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Tackles",
+                  "key": "matchstats.headers.tackles",
+                  "home": "9",
+                  "away": "8",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Blocks",
+                  "key": "shot_blocks",
+                  "home": "1",
+                  "away": "3",
+                  "format_type": "integer"
+                }
+              ]
+            },
+            {
+              "group_name": "Discipline",
+              "items": [
+                {
+                  "title": "Fouls committed",
+                  "key": "fouls",
+                  "home": "8",
+                  "away": "2",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Red cards",
+                  "key": "red_cards",
+                  "home": "0",
+                  "away": "0",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Yellow cards",
+                  "key": "yellow_cards",
+                  "home": "1",
+                  "away": "1",
+                  "format_type": "integer"
+                }
+              ]
+            },
+            {
+              "group_name": "Duels",
+              "items": [
+                {
+                  "title": "Aerial duels won",
+                  "key": "aerials_won",
+                  "home": "8 (62%)",
+                  "away": "5 (38%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Successful dribbles",
+                  "key": "dribbles_succeeded",
+                  "home": "5 (45%)",
+                  "away": "7 (70%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Duels won",
+                  "key": "duel_won",
+                  "home": "24",
+                  "away": "28",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Ground duels won",
+                  "key": "ground_duels_won",
+                  "home": "16 (41%)",
+                  "away": "23 (59%)",
+                  "format_type": "integerWithPercentage"
+                }
+              ]
+            },
+            {
+              "group_name": "Expected goals (xG)",
+              "items": [
+                {
+                  "title": "Expected goals (xG)",
+                  "key": "expected_goals",
+                  "home": "1.29",
+                  "away": "0.34",
+                  "format_type": "double"
+                },
+                {
+                  "title": "xG non-penalty",
+                  "key": "expected_goals_non_penalty",
+                  "home": "1.29",
+                  "away": "0.34",
+                  "format_type": "double"
+                },
+                {
+                  "title": "xG on target (xGOT)",
+                  "key": "expected_goals_on_target",
+                  "home": "0.29",
+                  "away": "0.00",
+                  "format_type": "double"
+                },
+                {
+                  "title": "xG open play",
+                  "key": "expected_goals_open_play",
+                  "home": "1.18",
+                  "away": "0.23",
+                  "format_type": "double"
+                },
+                {
+                  "title": "xG set play",
+                  "key": "expected_goals_set_play",
+                  "home": "0.11",
+                  "away": "0.11",
+                  "format_type": "double"
+                }
+              ]
+            },
+            {
+              "group_name": "Passes",
+              "items": [
+                {
+                  "title": "Offsides",
+                  "key": "Offsides",
+                  "home": "0",
+                  "away": "0",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Accurate crosses",
+                  "key": "accurate_crosses",
+                  "home": "3 (30%)",
+                  "away": "1 (25%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Accurate passes",
+                  "key": "accurate_passes",
+                  "home": "181 (82%)",
+                  "away": "177 (81%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Accurate long balls",
+                  "key": "long_balls_accurate",
+                  "home": "13 (59%)",
+                  "away": "11 (42%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Opposition half",
+                  "key": "opposition_half_passes",
+                  "home": "96",
+                  "away": "78",
+                  "format_type": ""
+                },
+                {
+                  "title": "Own half",
+                  "key": "own_half_passes",
+                  "home": "85",
+                  "away": "99",
+                  "format_type": ""
+                },
+                {
+                  "title": "Passes",
+                  "key": "passes",
+                  "home": "220",
+                  "away": "219",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Throws",
+                  "key": "player_throws",
+                  "home": "11",
+                  "away": "10",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Touches in opposition box",
+                  "key": "touches_opp_box",
+                  "home": "18",
+                  "away": "12",
+                  "format_type": ""
+                }
+              ]
+            },
+            {
+              "group_name": "Shots",
+              "items": [
+                {
+                  "title": "Shots off target",
+                  "key": "ShotsOffTarget",
+                  "home": "9",
+                  "away": "4",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Shots on target",
+                  "key": "ShotsOnTarget",
+                  "home": "2",
+                  "away": "0",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Blocked shots",
+                  "key": "blocked_shots",
+                  "home": "3",
+                  "away": "1",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Shots inside box",
+                  "key": "shots_inside_box",
+                  "home": "10",
+                  "away": "4",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Shots outside box",
+                  "key": "shots_outside_box",
+                  "home": "4",
+                  "away": "1",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Hit woodwork",
+                  "key": "shots_woodwork",
+                  "home": "1",
+                  "away": "0",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Total shots",
+                  "key": "total_shots",
+                  "home": "14",
+                  "away": "5",
+                  "format_type": "integer"
+                }
+              ]
+            },
+            {
+              "group_name": "Top stats",
+              "items": [
+                {
+                  "title": "Ball possession",
+                  "key": "BallPossesion",
+                  "home": "51",
+                  "away": "49",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Shots on target",
+                  "key": "ShotsOnTarget",
+                  "home": "2",
+                  "away": "0",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Accurate passes",
+                  "key": "accurate_passes",
+                  "home": "181 (82%)",
+                  "away": "177 (81%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Big chances",
+                  "key": "big_chance",
+                  "home": "1",
+                  "away": "1",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Big chances missed",
+                  "key": "big_chance_missed_title",
+                  "home": "1",
+                  "away": "1",
+                  "format_type": ""
+                },
+                {
+                  "title": "Corners",
+                  "key": "corners",
+                  "home": "3",
+                  "away": "1",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Expected goals (xG)",
+                  "key": "expected_goals",
+                  "home": "1.29",
+                  "away": "0.34",
+                  "format_type": "double"
+                },
+                {
+                  "title": "Total shots",
+                  "key": "total_shots",
+                  "home": "14",
+                  "away": "5",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Touches in opposition box",
+                  "key": "touches_opp_box",
+                  "home": "18",
+                  "away": "12",
+                  "format_type": ""
+                },
+                {
+                  "title": "Yellow cards",
+                  "key": "yellow_cards",
+                  "home": "1",
+                  "away": "1",
+                  "format_type": "integer"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "period": "SecondHalf",
+          "groups": [
+            {
+              "group_name": "Defence",
+              "items": [
+                {
+                  "title": "Clearances",
+                  "key": "clearances",
+                  "home": "22",
+                  "away": "8",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Interceptions",
+                  "key": "interceptions",
+                  "home": "5",
+                  "away": "2",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Keeper saves",
+                  "key": "keeper_saves",
+                  "home": "1",
+                  "away": "1",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Tackles",
+                  "key": "matchstats.headers.tackles",
+                  "home": "6",
+                  "away": "7",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Blocks",
+                  "key": "shot_blocks",
+                  "home": "1",
+                  "away": "1",
+                  "format_type": "integer"
+                }
+              ]
+            },
+            {
+              "group_name": "Discipline",
+              "items": [
+                {
+                  "title": "Fouls committed",
+                  "key": "fouls",
+                  "home": "6",
+                  "away": "4",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Red cards",
+                  "key": "red_cards",
+                  "home": "1",
+                  "away": "0",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Yellow cards",
+                  "key": "yellow_cards",
+                  "home": "1",
+                  "away": "3",
+                  "format_type": "integer"
+                }
+              ]
+            },
+            {
+              "group_name": "Duels",
+              "items": [
+                {
+                  "title": "Aerial duels won",
+                  "key": "aerials_won",
+                  "home": "6 (67%)",
+                  "away": "3 (33%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Successful dribbles",
+                  "key": "dribbles_succeeded",
+                  "home": "2 (40%)",
+                  "away": "0 (0%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Duels won",
+                  "key": "duel_won",
+                  "home": "18",
+                  "away": "15",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Ground duels won",
+                  "key": "ground_duels_won",
+                  "home": "12 (50%)",
+                  "away": "12 (50%)",
+                  "format_type": "integerWithPercentage"
+                }
+              ]
+            },
+            {
+              "group_name": "Expected goals (xG)",
+              "items": [
+                {
+                  "title": "Expected goals (xG)",
+                  "key": "expected_goals",
+                  "home": "2.17",
+                  "away": "0.23",
+                  "format_type": "double"
+                },
+                {
+                  "title": "xG non-penalty",
+                  "key": "expected_goals_non_penalty",
+                  "home": "1.38",
+                  "away": "0.23",
+                  "format_type": "double"
+                },
+                {
+                  "title": "xG on target (xGOT)",
+                  "key": "expected_goals_on_target",
+                  "home": "1.95",
+                  "away": "0.22",
+                  "format_type": "double"
+                },
+                {
+                  "title": "xG open play",
+                  "key": "expected_goals_open_play",
+                  "home": "1.16",
+                  "away": "0.23",
+                  "format_type": "double"
+                },
+                {
+                  "title": "xG set play",
+                  "key": "expected_goals_set_play",
+                  "home": "0.22",
+                  "away": "0.00",
+                  "format_type": "double"
+                }
+              ]
+            },
+            {
+              "group_name": "Passes",
+              "items": [
+                {
+                  "title": "Offsides",
+                  "key": "Offsides",
+                  "home": "1",
+                  "away": "0",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Accurate crosses",
+                  "key": "accurate_crosses",
+                  "home": "2 (29%)",
+                  "away": "0 (0%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Accurate passes",
+                  "key": "accurate_passes",
+                  "home": "98 (71%)",
+                  "away": "255 (88%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Accurate long balls",
+                  "key": "long_balls_accurate",
+                  "home": "5 (28%)",
+                  "away": "12 (44%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Opposition half",
+                  "key": "opposition_half_passes",
+                  "home": "44",
+                  "away": "151",
+                  "format_type": ""
+                },
+                {
+                  "title": "Own half",
+                  "key": "own_half_passes",
+                  "home": "54",
+                  "away": "104",
+                  "format_type": ""
+                },
+                {
+                  "title": "Passes",
+                  "key": "passes",
+                  "home": "139",
+                  "away": "290",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Throws",
+                  "key": "player_throws",
+                  "home": "7",
+                  "away": "12",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Touches in opposition box",
+                  "key": "touches_opp_box",
+                  "home": "10",
+                  "away": "8",
+                  "format_type": ""
+                }
+              ]
+            },
+            {
+              "group_name": "Shots",
+              "items": [
+                {
+                  "title": "Shots off target",
+                  "key": "ShotsOffTarget",
+                  "home": "1",
+                  "away": "2",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Shots on target",
+                  "key": "ShotsOnTarget",
+                  "home": "4",
+                  "away": "1",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Blocked shots",
+                  "key": "blocked_shots",
+                  "home": "1",
+                  "away": "1",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Shots inside box",
+                  "key": "shots_inside_box",
+                  "home": "5",
+                  "away": "2",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Shots outside box",
+                  "key": "shots_outside_box",
+                  "home": "1",
+                  "away": "2",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Hit woodwork",
+                  "key": "shots_woodwork",
+                  "home": "1",
+                  "away": "0",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Total shots",
+                  "key": "total_shots",
+                  "home": "6",
+                  "away": "4",
+                  "format_type": "integer"
+                }
+              ]
+            },
+            {
+              "group_name": "Top stats",
+              "items": [
+                {
+                  "title": "Ball possession",
+                  "key": "BallPossesion",
+                  "home": "33",
+                  "away": "67",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Shots on target",
+                  "key": "ShotsOnTarget",
+                  "home": "4",
+                  "away": "1",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Accurate passes",
+                  "key": "accurate_passes",
+                  "home": "98 (71%)",
+                  "away": "255 (88%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Big chances",
+                  "key": "big_chance",
+                  "home": "3",
+                  "away": "0",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Big chances missed",
+                  "key": "big_chance_missed_title",
+                  "home": "0",
+                  "away": "0",
+                  "format_type": ""
+                },
+                {
+                  "title": "Corners",
+                  "key": "corners",
+                  "home": "2",
+                  "away": "2",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Expected goals (xG)",
+                  "key": "expected_goals",
+                  "home": "2.17",
+                  "away": "0.23",
+                  "format_type": "double"
+                },
+                {
+                  "title": "Total shots",
+                  "key": "total_shots",
+                  "home": "6",
+                  "away": "4",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Touches in opposition box",
+                  "key": "touches_opp_box",
+                  "home": "10",
+                  "away": "8",
+                  "format_type": ""
+                },
+                {
+                  "title": "Yellow cards",
+                  "key": "yellow_cards",
+                  "home": "1",
+                  "away": "3",
+                  "format_type": "integer"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "advanced": {
+      "match_id": "m_3YgM7X",
+      "teams": [
+        {
+          "team": {
+            "id": "t_3xyER9",
+            "name": "Hoffenheim"
+          },
+          "actions": 639,
+          "possession_value": {
+            "xt_total": 0.8055,
+            "vaep_total": 2.322,
+            "vaep_offensive": 2.4257,
+            "vaep_defensive": -0.1037,
+            "pv_total": 2.2615,
+            "pv_offensive": 2.1041,
+            "pv_defensive": 0.1574
+          },
+          "passing": {
+            "passes": 351,
+            "pass_accuracy": 77.2,
+            "progressive_passes": 31,
+            "progressive_pass_distance": 542.4,
+            "passes_into_box": 16,
+            "key_passes": 11,
+            "assists": 1,
+            "through_balls": 0,
+            "crosses": 13,
+            "switches": 0
+          },
+          "carrying": {
+            "carries": 100,
+            "carry_distance": 1263.5,
+            "progressive_carries": 14,
+            "progressive_carry_distance": 586.8,
+            "carries_into_final_third": 12,
+            "carries_into_box": 1,
+            "take_ons": 17,
+            "take_ons_won": 6,
+            "miscontrols": 11,
+            "dispossessed": 6
+          },
+          "creation": {
+            "sca": 40,
+            "gca": 6,
+            "chances_created": 11,
+            "second_assists": 1,
+            "sca_breakdown": {
+              "pass_live": 23,
+              "pass_dead": 6,
+              "take_on": 3,
+              "shot": 5,
+              "foul_drawn": 2,
+              "defensive": 1
+            },
+            "xag": null
+          },
+          "defending": {
+            "tackles": 16,
+            "interceptions": 26,
+            "blocks": 2,
+            "clearances": 35,
+            "duels_won": 14,
+            "aerials": 22,
+            "aerials_won": 14,
+            "ppda": 9.3,
+            "opponent_passes": 409,
+            "defensive_actions": 44,
+            "challenges": 4,
+            "avg_defensive_action_x": 37.3,
+            "high_turnovers": 11,
+            "counterpress_regains_5s": 12,
+            "ball_recovery_time": 23.8
+          },
+          "territory": {
+            "possession_pct": 41.8,
+            "field_tilt": 50.3,
+            "final_third_entries": 41,
+            "box_entries": 12,
+            "avg_action_x": 49.9
+          },
+          "tempo": {
+            "passes_per_sequence": 2.89,
+            "sequence_time": 8.9,
+            "direct_speed": 2.85,
+            "buildup_attacks": 2,
+            "direct_attacks": 9
+          }
+        },
+        {
+          "team": {
+            "id": "t_2lHR8t",
+            "name": "Bayer Leverkusen"
+          },
+          "actions": 786,
+          "possession_value": {
+            "xt_total": 0.8097,
+            "vaep_total": -0.6693,
+            "vaep_offensive": 0.4172,
+            "vaep_defensive": -1.0864,
+            "pv_total": 0.1481,
+            "pv_offensive": 0.153,
+            "pv_defensive": -0.0049
+          },
+          "passing": {
+            "passes": 497,
+            "pass_accuracy": 83.5,
+            "progressive_passes": 21,
+            "progressive_pass_distance": 414.2,
+            "passes_into_box": 7,
+            "key_passes": 6,
+            "assists": 0,
+            "through_balls": 0,
+            "crosses": 12,
+            "switches": 6
+          },
+          "carrying": {
+            "carries": 117,
+            "carry_distance": 1547.6,
+            "progressive_carries": 16,
+            "progressive_carry_distance": 858.4,
+            "carries_into_final_third": 13,
+            "carries_into_box": 3,
+            "take_ons": 17,
+            "take_ons_won": 8,
+            "miscontrols": 20,
+            "dispossessed": 11
+          },
+          "creation": {
+            "sca": 17,
+            "gca": 0,
+            "chances_created": 6,
+            "second_assists": 0,
+            "sca_breakdown": {
+              "pass_live": 13,
+              "pass_dead": 1,
+              "take_on": 2,
+              "shot": 1,
+              "foul_drawn": 0,
+              "defensive": 0
+            },
+            "xag": null
+          },
+          "defending": {
+            "tackles": 15,
+            "interceptions": 22,
+            "blocks": 4,
+            "clearances": 21,
+            "duels_won": 18,
+            "aerials": 22,
+            "aerials_won": 8,
+            "ppda": 8.93,
+            "opponent_passes": 268,
+            "defensive_actions": 30,
+            "challenges": 5,
+            "avg_defensive_action_x": 34.7,
+            "high_turnovers": 8,
+            "counterpress_regains_5s": 12,
+            "ball_recovery_time": 18.8
+          },
+          "territory": {
+            "possession_pct": 58.2,
+            "field_tilt": 49.7,
+            "final_third_entries": 52,
+            "box_entries": 9,
+            "avg_action_x": 49.9
+          },
+          "tempo": {
+            "passes_per_sequence": 3.49,
+            "sequence_time": 10.58,
+            "direct_speed": 2.54,
+            "buildup_attacks": 1,
+            "direct_attacks": 7
+          }
+        }
+      ]
+    },
+    "shots": {
+      "match_id": "m_3YgM7X",
+      "periods": [
+        {
+          "period": "FirstHalf",
+          "shots": [
+            {
+              "id": "s_08Hv62",
+              "player": {
+                "id": "p_4dogls",
+                "name": "Adam Hložek",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/8a3c20625170ac063a89ea79ad2471e7a8ae878c224632fc57c93e902e0f50e4.webp"
+              },
+              "team_id": "t_3xyER9",
+              "x": 98.44,
+              "y": 31.48,
+              "expected_goals": 0.26,
+              "expected_goals_on_target": 0,
+              "is_on_target": false,
+              "goal_crossed_y": 35.07,
+              "goal_crossed_z": 4.22,
+              "is_inside_box": true,
+              "shot_type": "Header",
+              "situation": "RegularPlay",
+              "minute": 2,
+              "event_type": "Miss"
+            },
+            {
+              "id": "s_4CEiIh",
+              "player": {
+                "id": "p_4HN6xF",
+                "name": "Facundo Medina",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/5605d9214c01ab4481a654b3419cba7bb4dc057cb2a89b6fc8f8635d46dbda5d.webp"
+              },
+              "team_id": "t_2lHR8t",
+              "x": 94,
+              "y": 41.14,
+              "expected_goals": 0.05,
+              "expected_goals_on_target": 0,
+              "is_on_target": true,
+              "goal_crossed_y": 33.7,
+              "goal_crossed_z": 1.22,
+              "is_inside_box": true,
+              "shot_type": "LeftFoot",
+              "situation": "SetPiece",
+              "minute": 4,
+              "event_type": "AttemptSaved",
+              "is_blocked": true,
+              "blocked_x": 95.64,
+              "blocked_y": 39.88
+            },
+            {
+              "id": "s_4RWCwU",
+              "player": {
+                "id": "p_0mvFmY",
+                "name": "Patrik Schick",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/93dce5cca35e341bde8b0239304b78d7aa2aea86bbdb7ceacb79b2e0ccfef448.webp"
+              },
+              "team_id": "t_2lHR8t",
+              "x": 99.59,
+              "y": 27.61,
+              "expected_goals": 0.06,
+              "expected_goals_on_target": 0,
+              "is_on_target": false,
+              "goal_crossed_y": 27.78,
+              "goal_crossed_z": 1.25,
+              "is_inside_box": true,
+              "shot_type": "Header",
+              "situation": "FromCorner",
+              "minute": 5,
+              "event_type": "Miss"
+            },
+            {
+              "id": "s_03qKI8",
+              "player": {
+                "id": "p_4dogls",
+                "name": "Adam Hložek",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/8a3c20625170ac063a89ea79ad2471e7a8ae878c224632fc57c93e902e0f50e4.webp"
+              },
+              "team_id": "t_3xyER9",
+              "x": 92.5,
+              "y": 30.22,
+              "expected_goals": 0.12,
+              "expected_goals_on_target": 0,
+              "is_on_target": false,
+              "goal_crossed_y": 36.75,
+              "goal_crossed_z": 5.55,
+              "is_inside_box": true,
+              "shot_type": "LeftFoot",
+              "situation": "RegularPlay",
+              "minute": 6,
+              "event_type": "Miss"
+            },
+            {
+              "id": "s_2k9IC6",
+              "player": {
+                "id": "p_4N2bFw",
+                "name": "Nathan Tella",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/f08d5022148cada94d955aa32883e22df71e05c1b6060e2e9eacfa7a3cfb9ccf.webp"
+              },
+              "team_id": "t_2lHR8t",
+              "x": 90.5,
+              "y": 38.28,
+              "expected_goals": 0.13,
+              "expected_goals_on_target": 0,
+              "is_on_target": false,
+              "goal_crossed_y": 29.63,
+              "goal_crossed_z": 0.27,
+              "is_inside_box": true,
+              "shot_type": "LeftFoot",
+              "situation": "RegularPlay",
+              "minute": 7,
+              "event_type": "Miss"
+            },
+            {
+              "id": "s_06fyLj",
+              "player": {
+                "id": "p_2LXwxk",
+                "name": "Miguel Gutiérrez",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/2aec15836df88a9952f8f6c3969abc4cc82fc4c59c9625340b46cc1a161b3b5f.webp"
+              },
+              "team_id": "t_2lHR8t",
+              "x": 85.28,
+              "y": 46.73,
+              "expected_goals": 0.03,
+              "expected_goals_on_target": 0,
+              "is_on_target": false,
+              "goal_crossed_y": 47.5,
+              "goal_crossed_z": 4.94,
+              "is_inside_box": false,
+              "shot_type": "LeftFoot",
+              "situation": "RegularPlay",
+              "minute": 8,
+              "event_type": "Miss"
+            },
+            {
+              "id": "s_1dRhZa",
+              "player": {
+                "id": "p_364KMH",
+                "name": "Fisnik Asllani",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/f094c18f5e376eebfe91c9f1f8dbc7c0910319fa41143f79b846060bb8a35f40.webp"
+              },
+              "team_id": "t_3xyER9",
+              "x": 94.1,
+              "y": 21.34,
+              "expected_goals": 0.04,
+              "expected_goals_on_target": 0.18,
+              "is_on_target": true,
+              "goal_crossed_y": 31.33,
+              "goal_crossed_z": 1.06,
+              "is_inside_box": true,
+              "shot_type": "RightFoot",
+              "situation": "RegularPlay",
+              "minute": 12,
+              "event_type": "AttemptSaved",
+              "blocked_x": 103.1,
+              "blocked_y": 31.25,
+              "keeper": {
+                "id": "p_1f4jtm",
+                "name": "Mark Flekken",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/dc3e44a2ade892f814321de917afb0867a3d0cc353fe13a45f2211408e1657fc.webp"
+              }
+            },
+            {
+              "id": "s_4BreL8",
+              "player": {
+                "id": "p_364KMH",
+                "name": "Fisnik Asllani",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/f094c18f5e376eebfe91c9f1f8dbc7c0910319fa41143f79b846060bb8a35f40.webp"
+              },
+              "team_id": "t_3xyER9",
+              "x": 95.45,
+              "y": 26.29,
+              "expected_goals": 0.27,
+              "expected_goals_on_target": 0.11,
+              "is_on_target": true,
+              "goal_crossed_y": 33.47,
+              "goal_crossed_z": 1.06,
+              "is_inside_box": true,
+              "shot_type": "LeftFoot",
+              "situation": "RegularPlay",
+              "minute": 12,
+              "event_type": "AttemptSaved",
+              "blocked_x": 102.34,
+              "blocked_y": 31.41,
+              "keeper": {
+                "id": "p_1f4jtm",
+                "name": "Mark Flekken",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/dc3e44a2ade892f814321de917afb0867a3d0cc353fe13a45f2211408e1657fc.webp"
+              }
+            },
+            {
+              "id": "s_0X7Hh4",
+              "player": {
+                "id": "p_0wj6oP",
+                "name": "Alexander Prass",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/2f7553f2de6580415d52982adb2bc9133c6fb10159071c0912a88f07a4146101.webp"
+              },
+              "team_id": "t_3xyER9",
+              "x": 83.61,
+              "y": 37.66,
+              "expected_goals": 0.04,
+              "expected_goals_on_target": 0,
+              "is_on_target": true,
+              "goal_crossed_y": 34,
+              "goal_crossed_z": 1.22,
+              "is_inside_box": false,
+              "shot_type": "LeftFoot",
+              "situation": "FromCorner",
+              "minute": 16,
+              "event_type": "AttemptSaved",
+              "is_blocked": true,
+              "blocked_x": 92.6,
+              "blocked_y": 36.21
+            },
+            {
+              "id": "s_3aVHKr",
+              "player": {
+                "id": "p_3xsPMX",
+                "name": "Wouter Burger",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/9f4a334a327fd8d4556c016fdaf1884a9a26d1dd43168bab31ae1fb4c5082a5c.webp"
+              },
+              "team_id": "t_3xyER9",
+              "x": 97.47,
+              "y": 30.8,
+              "expected_goals": 0.17,
+              "expected_goals_on_target": 0,
+              "is_on_target": false,
+              "goal_crossed_y": 44.56,
+              "goal_crossed_z": 1.79,
+              "is_inside_box": true,
+              "shot_type": "LeftFoot",
+              "situation": "RegularPlay",
+              "minute": 24,
+              "event_type": "Miss",
+              "blocked_x": 99.5,
+              "blocked_y": 40.47
+            },
+            {
+              "id": "s_3LIUlq",
+              "player": {
+                "id": "p_3nOX6f",
+                "name": "Leon Avdullahu",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/cf6f3b3d9414c7cb019ea6b43ac802b136153cdca3f7f7512e60e91ceb71668b.webp"
+              },
+              "team_id": "t_3xyER9",
+              "x": 83.16,
+              "y": 37.73,
+              "expected_goals": 0.03,
+              "expected_goals_on_target": 0,
+              "is_on_target": false,
+              "goal_crossed_y": 41.31,
+              "goal_crossed_z": 1.34,
+              "is_inside_box": false,
+              "shot_type": "RightFoot",
+              "situation": "RegularPlay",
+              "minute": 24,
+              "event_type": "Miss"
+            },
+            {
+              "id": "s_3AKT0k",
+              "player": {
+                "id": "p_3nOX6f",
+                "name": "Leon Avdullahu",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/cf6f3b3d9414c7cb019ea6b43ac802b136153cdca3f7f7512e60e91ceb71668b.webp"
+              },
+              "team_id": "t_3xyER9",
+              "x": 78.32,
+              "y": 33.92,
+              "expected_goals": 0.02,
+              "expected_goals_on_target": 0,
+              "is_on_target": true,
+              "goal_crossed_y": 35.53,
+              "goal_crossed_z": 1.22,
+              "is_inside_box": false,
+              "shot_type": "RightFoot",
+              "situation": "RegularPlay",
+              "minute": 28,
+              "event_type": "AttemptSaved",
+              "is_blocked": true,
+              "blocked_x": 88.9,
+              "blocked_y": 34
+            },
+            {
+              "id": "s_0MYrQe",
+              "player": {
+                "id": "p_3vWbZA",
+                "name": "Ozan Kabak",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/0dcb898057bbaa1df413fea968a2236a65894daf75a3e5d6ddd4bc889ffc87be.webp"
+              },
+              "team_id": "t_3xyER9",
+              "x": 98.34,
+              "y": 30.05,
+              "expected_goals": 0.06,
+              "expected_goals_on_target": 0,
+              "is_on_target": false,
+              "goal_crossed_y": 54.36,
+              "goal_crossed_z": 0.8,
+              "is_inside_box": true,
+              "shot_type": "Header",
+              "situation": "FromCorner",
+              "minute": 28,
+              "event_type": "Miss"
+            },
+            {
+              "id": "s_1RLCCx",
+              "player": {
+                "id": "p_0mvFmY",
+                "name": "Patrik Schick",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/93dce5cca35e341bde8b0239304b78d7aa2aea86bbdb7ceacb79b2e0ccfef448.webp"
+              },
+              "team_id": "t_2lHR8t",
+              "x": 95.54,
+              "y": 46.03,
+              "expected_goals": 0.06,
+              "expected_goals_on_target": 0,
+              "is_on_target": false,
+              "goal_crossed_y": 35.45,
+              "goal_crossed_z": 3.85,
+              "is_inside_box": true,
+              "shot_type": "LeftFoot",
+              "situation": "RegularPlay",
+              "minute": 31,
+              "event_type": "Miss"
+            },
+            {
+              "id": "s_08kwuI",
+              "player": {
+                "id": "p_2Tpbmq",
+                "name": "Koki Machida",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/846fe9bcd9bf3f50eb1f36cd0e8ccbc1f6b8a400d094027dff9306a77a28e22f.webp"
+              },
+              "team_id": "t_3xyER9",
+              "x": 74.04,
+              "y": 32.86,
+              "expected_goals": 0.02,
+              "expected_goals_on_target": 0,
+              "is_on_target": false,
+              "goal_crossed_y": 47.99,
+              "goal_crossed_z": 3.74,
+              "is_inside_box": false,
+              "shot_type": "LeftFoot",
+              "situation": "RegularPlay",
+              "minute": 35,
+              "event_type": "Miss"
+            },
+            {
+              "id": "s_1uJvYm",
+              "player": {
+                "id": "p_4dogls",
+                "name": "Adam Hložek",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/8a3c20625170ac063a89ea79ad2471e7a8ae878c224632fc57c93e902e0f50e4.webp"
+              },
+              "team_id": "t_3xyER9",
+              "x": 100.16,
+              "y": 23.23,
+              "expected_goals": 0.17,
+              "expected_goals_on_target": 0,
+              "is_on_target": false,
+              "goal_crossed_y": 30.27,
+              "goal_crossed_z": 1.38,
+              "is_inside_box": true,
+              "shot_type": "RightFoot",
+              "situation": "RegularPlay",
+              "minute": 38,
+              "event_type": "Post"
+            },
+            {
+              "id": "s_4cCUAN",
+              "player": {
+                "id": "p_0wj6oP",
+                "name": "Alexander Prass",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/2f7553f2de6580415d52982adb2bc9133c6fb10159071c0912a88f07a4146101.webp"
+              },
+              "team_id": "t_3xyER9",
+              "x": 90,
+              "y": 25.59,
+              "expected_goals": 0.05,
+              "expected_goals_on_target": 0,
+              "is_on_target": false,
+              "goal_crossed_y": 49.96,
+              "goal_crossed_z": 1.7,
+              "is_inside_box": true,
+              "shot_type": "LeftFoot",
+              "situation": "RegularPlay",
+              "minute": 38,
+              "event_type": "Miss"
+            },
+            {
+              "id": "s_3MJsOY",
+              "player": {
+                "id": "p_3vWbZA",
+                "name": "Ozan Kabak",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/0dcb898057bbaa1df413fea968a2236a65894daf75a3e5d6ddd4bc889ffc87be.webp"
+              },
+              "team_id": "t_3xyER9",
+              "x": 91.2,
+              "y": 33.92,
+              "expected_goals": 0.01,
+              "expected_goals_on_target": 0,
+              "is_on_target": false,
+              "goal_crossed_y": 47.99,
+              "goal_crossed_z": 0.53,
+              "is_inside_box": true,
+              "shot_type": "Header",
+              "situation": "SetPiece",
+              "minute": 41,
+              "event_type": "Miss"
+            },
+            {
+              "id": "s_16uc63",
+              "player": {
+                "id": "p_0wj6oP",
+                "name": "Alexander Prass",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/2f7553f2de6580415d52982adb2bc9133c6fb10159071c0912a88f07a4146101.webp"
+              },
+              "team_id": "t_3xyER9",
+              "x": 91.6,
+              "y": 21.62,
+              "expected_goals": 0.04,
+              "expected_goals_on_target": 0,
+              "is_on_target": true,
+              "goal_crossed_y": 32.47,
+              "goal_crossed_z": 1.22,
+              "is_inside_box": true,
+              "shot_type": "LeftFoot",
+              "situation": "RegularPlay",
+              "minute": 45,
+              "event_type": "AttemptSaved",
+              "is_blocked": true,
+              "blocked_x": 94.39,
+              "blocked_y": 23.86,
+              "minute_added": 0
+            }
+          ]
+        },
+        {
+          "period": "SecondHalf",
+          "shots": [
+            {
+              "id": "s_389NB9",
+              "player": {
+                "id": "p_3vWbZA",
+                "name": "Ozan Kabak",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/0dcb898057bbaa1df413fea968a2236a65894daf75a3e5d6ddd4bc889ffc87be.webp"
+              },
+              "team_id": "t_3xyER9",
+              "x": 100.16,
+              "y": 37.71,
+              "expected_goals": 0.13,
+              "expected_goals_on_target": 0,
+              "is_on_target": true,
+              "goal_crossed_y": 37.2,
+              "goal_crossed_z": 1.22,
+              "is_inside_box": true,
+              "shot_type": "Header",
+              "situation": "FromCorner",
+              "minute": 48,
+              "event_type": "AttemptSaved",
+              "is_blocked": true,
+              "blocked_x": 100.83,
+              "blocked_y": 37.7
+            },
+            {
+              "id": "s_1W3ZaC",
+              "player": {
+                "id": "p_4N2bFw",
+                "name": "Nathan Tella",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/f08d5022148cada94d955aa32883e22df71e05c1b6060e2e9eacfa7a3cfb9ccf.webp"
+              },
+              "team_id": "t_2lHR8t",
+              "x": 84.29,
+              "y": 18.11,
+              "expected_goals": 0.01,
+              "expected_goals_on_target": 0,
+              "is_on_target": false,
+              "goal_crossed_y": 37.13,
+              "goal_crossed_z": 6.03,
+              "is_inside_box": false,
+              "shot_type": "LeftFoot",
+              "situation": "RegularPlay",
+              "minute": 59,
+              "event_type": "Miss"
+            },
+            {
+              "id": "s_1KyOZh",
+              "player": {
+                "id": "p_2sQv0j",
+                "name": "Ibrahim Maza",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/a0d2cff3b36781af705853a1a801d211386217624881a18ad84365363173818c.webp"
+              },
+              "team_id": "t_2lHR8t",
+              "x": 83.72,
+              "y": 38.12,
+              "expected_goals": 0.03,
+              "expected_goals_on_target": 0,
+              "is_on_target": true,
+              "goal_crossed_y": 33.62,
+              "goal_crossed_z": 1.22,
+              "is_inside_box": false,
+              "shot_type": "RightFoot",
+              "situation": "RegularPlay",
+              "minute": 62,
+              "event_type": "AttemptSaved",
+              "is_blocked": true,
+              "blocked_x": 88.9,
+              "blocked_y": 37.58
+            },
+            {
+              "id": "s_3cqbag",
+              "player": {
+                "id": "p_1iJGKA",
+                "name": "Andrej Kramarić",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/7d12274df88fc8a8c0e53483def455d82768e911300f1ef5f4dce0c3fe9d079a.webp"
+              },
+              "team_id": "t_3xyER9",
+              "x": 94,
+              "y": 34,
+              "expected_goals": 0.79,
+              "expected_goals_on_target": 0.63,
+              "is_on_target": true,
+              "goal_crossed_y": 34.76,
+              "goal_crossed_z": 0.73,
+              "is_inside_box": true,
+              "shot_type": "RightFoot",
+              "situation": "Penalty",
+              "minute": 79,
+              "event_type": "Goal",
+              "keeper": {
+                "id": "p_1f4jtm",
+                "name": "Mark Flekken",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/dc3e44a2ade892f814321de917afb0867a3d0cc353fe13a45f2211408e1657fc.webp"
+              }
+            },
+            {
+              "id": "s_4cmC60",
+              "player": {
+                "id": "p_2sQv0j",
+                "name": "Ibrahim Maza",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/a0d2cff3b36781af705853a1a801d211386217624881a18ad84365363173818c.webp"
+              },
+              "team_id": "t_2lHR8t",
+              "x": 96.22,
+              "y": 28.96,
+              "expected_goals": 0.15,
+              "expected_goals_on_target": 0,
+              "is_on_target": false,
+              "goal_crossed_y": 34.61,
+              "goal_crossed_z": 5.31,
+              "is_inside_box": true,
+              "shot_type": "RightFoot",
+              "situation": "RegularPlay",
+              "minute": 80,
+              "event_type": "Miss"
+            },
+            {
+              "id": "s_1xNVt4",
+              "player": {
+                "id": "p_2w9oIZ",
+                "name": "Robert Andrich",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/29409783881ec35329aed1b4cbf399cfa657f30de20c31d8d6a23d45b725c4da.webp"
+              },
+              "team_id": "t_2lHR8t",
+              "x": 94.19,
+              "y": 47.43,
+              "expected_goals": 0.04,
+              "expected_goals_on_target": 0.22,
+              "is_on_target": true,
+              "goal_crossed_y": 31.64,
+              "goal_crossed_z": 0.08,
+              "is_inside_box": true,
+              "shot_type": "RightFoot",
+              "situation": "RegularPlay",
+              "minute": 83,
+              "event_type": "AttemptSaved",
+              "blocked_x": 102.72,
+              "blocked_y": 37.58,
+              "keeper": {
+                "id": "p_287FwH",
+                "name": "Oliver Baumann",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/630173b262c46e4cd3a8b17c3f37ab0ae17c72e98c1a663a4edd0baefd7a8a26.webp"
+              }
+            },
+            {
+              "id": "s_2EVBkx",
+              "player": {
+                "id": "p_1iJGKA",
+                "name": "Andrej Kramarić",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/7d12274df88fc8a8c0e53483def455d82768e911300f1ef5f4dce0c3fe9d079a.webp"
+              },
+              "team_id": "t_3xyER9",
+              "x": 97.76,
+              "y": 23.16,
+              "expected_goals": 0.09,
+              "expected_goals_on_target": 0.1,
+              "is_on_target": true,
+              "goal_crossed_y": 32.63,
+              "goal_crossed_z": 1.14,
+              "is_inside_box": true,
+              "shot_type": "RightFoot",
+              "situation": "ThrowInSetPiece",
+              "minute": 88,
+              "event_type": "AttemptSaved",
+              "blocked_x": 103.48,
+              "blocked_y": 30.72,
+              "keeper": {
+                "id": "p_1f4jtm",
+                "name": "Mark Flekken",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/dc3e44a2ade892f814321de917afb0867a3d0cc353fe13a45f2211408e1657fc.webp"
+              }
+            },
+            {
+              "id": "s_4cdnhn",
+              "player": {
+                "id": "p_0wj6oP",
+                "name": "Alexander Prass",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/2f7553f2de6580415d52982adb2bc9133c6fb10159071c0912a88f07a4146101.webp"
+              },
+              "team_id": "t_3xyER9",
+              "x": 87.75,
+              "y": 35.98,
+              "expected_goals": 0.33,
+              "expected_goals_on_target": 0.23,
+              "is_on_target": true,
+              "goal_crossed_y": 33.7,
+              "goal_crossed_z": 1.75,
+              "is_inside_box": false,
+              "shot_type": "LeftFoot",
+              "situation": "FastBreak",
+              "minute": 89,
+              "event_type": "Goal",
+              "keeper": {
+                "id": "p_1f4jtm",
+                "name": "Mark Flekken",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/dc3e44a2ade892f814321de917afb0867a3d0cc353fe13a45f2211408e1657fc.webp"
+              }
+            },
+            {
+              "id": "s_0vqvFi",
+              "player": {
+                "id": "p_1iJGKA",
+                "name": "Andrej Kramarić",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/7d12274df88fc8a8c0e53483def455d82768e911300f1ef5f4dce0c3fe9d079a.webp"
+              },
+              "team_id": "t_3xyER9",
+              "x": 92.5,
+              "y": 20.85,
+              "expected_goals": 0.05,
+              "expected_goals_on_target": 0,
+              "is_on_target": false,
+              "goal_crossed_y": 32.02,
+              "goal_crossed_z": 2.48,
+              "is_inside_box": true,
+              "shot_type": "RightFoot",
+              "situation": "FastBreak",
+              "minute": 90,
+              "event_type": "Post",
+              "minute_added": 5
+            },
+            {
+              "id": "s_0PpVzW",
+              "player": {
+                "id": "p_2fanpl",
+                "name": "Max Moerstedt",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/249795c6709bc192b0d2f3dcb4aa4fdaba8a46487f8f17ca5a4b1a521e50ed73.webp"
+              },
+              "team_id": "t_3xyER9",
+              "x": 101.87,
+              "y": 37.05,
+              "expected_goals": 0.83,
+              "expected_goals_on_target": 0.99,
+              "is_on_target": true,
+              "goal_crossed_y": 36.97,
+              "goal_crossed_z": 0.45,
+              "is_inside_box": true,
+              "shot_type": "LeftFoot",
+              "situation": "FastBreak",
+              "minute": 90,
+              "event_type": "Goal",
+              "minute_added": 5,
+              "keeper": {
+                "id": "p_1f4jtm",
+                "name": "Mark Flekken",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/dc3e44a2ade892f814321de917afb0867a3d0cc353fe13a45f2211408e1657fc.webp"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "m_1dZPZA",
+    "match_id": "m_1dZPZA",
+    "league": "Bundesliga",
+    "league_id": "l_1Isor4",
+    "season": "2026/2027",
+    "date": "2026-10-25",
+    "match": {
+      "id": "m_1dZPZA",
+      "home_team": {
+        "id": "t_40kQKX",
+        "name": "Freiburg",
+        "image_url": "https://cdn.pitchapi.dev/images/teams/7dc233f0e2db0efee3f17464cf336dc780c92250ad52bd28652c5965ce87e114.webp"
+      },
+      "away_team": {
+        "id": "t_1cpjqO",
+        "name": "Bayern München",
+        "image_url": "https://cdn.pitchapi.dev/images/teams/1e2afd379a7d354c930f790c1f9ab0c2b50654cf4d47f20ffb269b8cfe309bca.webp"
+      },
+      "date": "2026-10-25",
+      "time_utc": "2026-10-25T16:30:00Z",
+      "status": "finished",
+      "score_home": 1,
+      "score_away": 3
+    },
+    "collected_at": "2026-10-26T14:34:13.939196+00:00",
+    "stats": {
+      "match_id": "m_1dZPZA",
+      "home_team": {
+        "id": "t_40kQKX",
+        "name": "Freiburg",
+        "image_url": "https://cdn.pitchapi.dev/images/teams/7dc233f0e2db0efee3f17464cf336dc780c92250ad52bd28652c5965ce87e114.webp"
+      },
+      "away_team": {
+        "id": "t_1cpjqO",
+        "name": "Bayern München",
+        "image_url": "https://cdn.pitchapi.dev/images/teams/1e2afd379a7d354c930f790c1f9ab0c2b50654cf4d47f20ffb269b8cfe309bca.webp"
+      },
+      "periods": [
+        {
+          "period": "All",
+          "groups": [
+            {
+              "group_name": "Defence",
+              "items": [
+                {
+                  "title": "Clearances",
+                  "key": "clearances",
+                  "home": "16",
+                  "away": "22",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Interceptions",
+                  "key": "interceptions",
+                  "home": "8",
+                  "away": "4",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Keeper saves",
+                  "key": "keeper_saves",
+                  "home": "6",
+                  "away": "4",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Tackles",
+                  "key": "matchstats.headers.tackles",
+                  "home": "19",
+                  "away": "18",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Blocks",
+                  "key": "shot_blocks",
+                  "home": "1",
+                  "away": "6",
+                  "format_type": "integer"
+                }
+              ]
+            },
+            {
+              "group_name": "Discipline",
+              "items": [
+                {
+                  "title": "Fouls committed",
+                  "key": "fouls",
+                  "home": "9",
+                  "away": "11",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Red cards",
+                  "key": "red_cards",
+                  "home": "0",
+                  "away": "0",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Yellow cards",
+                  "key": "yellow_cards",
+                  "home": "3",
+                  "away": "1",
+                  "format_type": "integer"
+                }
+              ]
+            },
+            {
+              "group_name": "Duels",
+              "items": [
+                {
+                  "title": "Aerial duels won",
+                  "key": "aerials_won",
+                  "home": "14 (61%)",
+                  "away": "9 (39%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Successful dribbles",
+                  "key": "dribbles_succeeded",
+                  "home": "7 (37%)",
+                  "away": "10 (50%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Duels won",
+                  "key": "duel_won",
+                  "home": "50",
+                  "away": "46",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Ground duels won",
+                  "key": "ground_duels_won",
+                  "home": "36 (49%)",
+                  "away": "37 (51%)",
+                  "format_type": "integerWithPercentage"
+                }
+              ]
+            },
+            {
+              "group_name": "Expected goals (xG)",
+              "items": [
+                {
+                  "title": "Expected goals (xG)",
+                  "key": "expected_goals",
+                  "home": "0.90",
+                  "away": "2.99",
+                  "format_type": "double"
+                },
+                {
+                  "title": "xG non-penalty",
+                  "key": "expected_goals_non_penalty",
+                  "home": "0.90",
+                  "away": "2.99",
+                  "format_type": "double"
+                },
+                {
+                  "title": "xG on target (xGOT)",
+                  "key": "expected_goals_on_target",
+                  "home": "0.84",
+                  "away": "3.10",
+                  "format_type": "double"
+                },
+                {
+                  "title": "xG open play",
+                  "key": "expected_goals_open_play",
+                  "home": "0.52",
+                  "away": "2.57",
+                  "format_type": "double"
+                },
+                {
+                  "title": "xG set play",
+                  "key": "expected_goals_set_play",
+                  "home": "0.37",
+                  "away": "0.42",
+                  "format_type": "double"
+                }
+              ]
+            },
+            {
+              "group_name": "Passes",
+              "items": [
+                {
+                  "title": "Offsides",
+                  "key": "Offsides",
+                  "home": "1",
+                  "away": "1",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Accurate crosses",
+                  "key": "accurate_crosses",
+                  "home": "5 (38%)",
+                  "away": "2 (25%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Accurate passes",
+                  "key": "accurate_passes",
+                  "home": "333 (82%)",
+                  "away": "440 (84%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Accurate long balls",
+                  "key": "long_balls_accurate",
+                  "home": "14 (33%)",
+                  "away": "24 (43%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Opposition half",
+                  "key": "opposition_half_passes",
+                  "home": "128",
+                  "away": "198",
+                  "format_type": ""
+                },
+                {
+                  "title": "Own half",
+                  "key": "own_half_passes",
+                  "home": "205",
+                  "away": "242",
+                  "format_type": ""
+                },
+                {
+                  "title": "Passes",
+                  "key": "passes",
+                  "home": "406",
+                  "away": "523",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Throws",
+                  "key": "player_throws",
+                  "home": "9",
+                  "away": "17",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Touches in opposition box",
+                  "key": "touches_opp_box",
+                  "home": "25",
+                  "away": "23",
+                  "format_type": ""
+                }
+              ]
+            },
+            {
+              "group_name": "Shots",
+              "items": [
+                {
+                  "title": "Shots off target",
+                  "key": "ShotsOffTarget",
+                  "home": "5",
+                  "away": "7",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Shots on target",
+                  "key": "ShotsOnTarget",
+                  "home": "4",
+                  "away": "9",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Blocked shots",
+                  "key": "blocked_shots",
+                  "home": "7",
+                  "away": "1",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Shots inside box",
+                  "key": "shots_inside_box",
+                  "home": "8",
+                  "away": "13",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Shots outside box",
+                  "key": "shots_outside_box",
+                  "home": "8",
+                  "away": "4",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Hit woodwork",
+                  "key": "shots_woodwork",
+                  "home": "0",
+                  "away": "0",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Total shots",
+                  "key": "total_shots",
+                  "home": "16",
+                  "away": "17",
+                  "format_type": "integer"
+                }
+              ]
+            },
+            {
+              "group_name": "Top stats",
+              "items": [
+                {
+                  "title": "Ball possession",
+                  "key": "BallPossesion",
+                  "home": "44",
+                  "away": "56",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Shots on target",
+                  "key": "ShotsOnTarget",
+                  "home": "4",
+                  "away": "9",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Accurate passes",
+                  "key": "accurate_passes",
+                  "home": "333 (82%)",
+                  "away": "440 (84%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Big chances",
+                  "key": "big_chance",
+                  "home": "0",
+                  "away": "6",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Big chances missed",
+                  "key": "big_chance_missed_title",
+                  "home": "0",
+                  "away": "3",
+                  "format_type": ""
+                },
+                {
+                  "title": "Corners",
+                  "key": "corners",
+                  "home": "5",
+                  "away": "6",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Expected goals (xG)",
+                  "key": "expected_goals",
+                  "home": "0.90",
+                  "away": "2.99",
+                  "format_type": "double"
+                },
+                {
+                  "title": "Total shots",
+                  "key": "total_shots",
+                  "home": "16",
+                  "away": "17",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Touches in opposition box",
+                  "key": "touches_opp_box",
+                  "home": "25",
+                  "away": "23",
+                  "format_type": ""
+                },
+                {
+                  "title": "Yellow cards",
+                  "key": "yellow_cards",
+                  "home": "3",
+                  "away": "1",
+                  "format_type": "integer"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "period": "FirstHalf",
+          "groups": [
+            {
+              "group_name": "Defence",
+              "items": [
+                {
+                  "title": "Clearances",
+                  "key": "clearances",
+                  "home": "10",
+                  "away": "7",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Interceptions",
+                  "key": "interceptions",
+                  "home": "3",
+                  "away": "3",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Keeper saves",
+                  "key": "keeper_saves",
+                  "home": "2",
+                  "away": "0",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Tackles",
+                  "key": "matchstats.headers.tackles",
+                  "home": "5",
+                  "away": "6",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Blocks",
+                  "key": "shot_blocks",
+                  "home": "0",
+                  "away": "3",
+                  "format_type": "integer"
+                }
+              ]
+            },
+            {
+              "group_name": "Discipline",
+              "items": [
+                {
+                  "title": "Fouls committed",
+                  "key": "fouls",
+                  "home": "4",
+                  "away": "4",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Red cards",
+                  "key": "red_cards",
+                  "home": "0",
+                  "away": "0",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Yellow cards",
+                  "key": "yellow_cards",
+                  "home": "1",
+                  "away": "0",
+                  "format_type": "integer"
+                }
+              ]
+            },
+            {
+              "group_name": "Duels",
+              "items": [
+                {
+                  "title": "Aerial duels won",
+                  "key": "aerials_won",
+                  "home": "6 (60%)",
+                  "away": "4 (40%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Successful dribbles",
+                  "key": "dribbles_succeeded",
+                  "home": "3 (50%)",
+                  "away": "3 (60%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Duels won",
+                  "key": "duel_won",
+                  "home": "18",
+                  "away": "17",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Ground duels won",
+                  "key": "ground_duels_won",
+                  "home": "12 (48%)",
+                  "away": "13 (52%)",
+                  "format_type": "integerWithPercentage"
+                }
+              ]
+            },
+            {
+              "group_name": "Expected goals (xG)",
+              "items": [
+                {
+                  "title": "Expected goals (xG)",
+                  "key": "expected_goals",
+                  "home": "0.34",
+                  "away": "1.22",
+                  "format_type": "double"
+                },
+                {
+                  "title": "xG non-penalty",
+                  "key": "expected_goals_non_penalty",
+                  "home": "0.34",
+                  "away": "1.22",
+                  "format_type": "double"
+                },
+                {
+                  "title": "xG on target (xGOT)",
+                  "key": "expected_goals_on_target",
+                  "home": "0.00",
+                  "away": "1.23",
+                  "format_type": "double"
+                },
+                {
+                  "title": "xG open play",
+                  "key": "expected_goals_open_play",
+                  "home": "0.31",
+                  "away": "1.22",
+                  "format_type": "double"
+                },
+                {
+                  "title": "xG set play",
+                  "key": "expected_goals_set_play",
+                  "home": "0.03",
+                  "away": "0.00",
+                  "format_type": "double"
+                }
+              ]
+            },
+            {
+              "group_name": "Passes",
+              "items": [
+                {
+                  "title": "Offsides",
+                  "key": "Offsides",
+                  "home": "1",
+                  "away": "0",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Accurate crosses",
+                  "key": "accurate_crosses",
+                  "home": "1 (33%)",
+                  "away": "0 (0%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Accurate passes",
+                  "key": "accurate_passes",
+                  "home": "148 (78%)",
+                  "away": "275 (85%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Accurate long balls",
+                  "key": "long_balls_accurate",
+                  "home": "7 (32%)",
+                  "away": "15 (52%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Opposition half",
+                  "key": "opposition_half_passes",
+                  "home": "60",
+                  "away": "116",
+                  "format_type": ""
+                },
+                {
+                  "title": "Own half",
+                  "key": "own_half_passes",
+                  "home": "88",
+                  "away": "159",
+                  "format_type": ""
+                },
+                {
+                  "title": "Passes",
+                  "key": "passes",
+                  "home": "189",
+                  "away": "323",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Throws",
+                  "key": "player_throws",
+                  "home": "5",
+                  "away": "9",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Touches in opposition box",
+                  "key": "touches_opp_box",
+                  "home": "7",
+                  "away": "11",
+                  "format_type": ""
+                }
+              ]
+            },
+            {
+              "group_name": "Shots",
+              "items": [
+                {
+                  "title": "Shots off target",
+                  "key": "ShotsOffTarget",
+                  "home": "3",
+                  "away": "3",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Shots on target",
+                  "key": "ShotsOnTarget",
+                  "home": "0",
+                  "away": "4",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Blocked shots",
+                  "key": "blocked_shots",
+                  "home": "3",
+                  "away": "0",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Shots inside box",
+                  "key": "shots_inside_box",
+                  "home": "3",
+                  "away": "5",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Shots outside box",
+                  "key": "shots_outside_box",
+                  "home": "3",
+                  "away": "2",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Hit woodwork",
+                  "key": "shots_woodwork",
+                  "home": "0",
+                  "away": "0",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Total shots",
+                  "key": "total_shots",
+                  "home": "6",
+                  "away": "7",
+                  "format_type": "integer"
+                }
+              ]
+            },
+            {
+              "group_name": "Top stats",
+              "items": [
+                {
+                  "title": "Ball possession",
+                  "key": "BallPossesion",
+                  "home": "37",
+                  "away": "63",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Shots on target",
+                  "key": "ShotsOnTarget",
+                  "home": "0",
+                  "away": "4",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Accurate passes",
+                  "key": "accurate_passes",
+                  "home": "148 (78%)",
+                  "away": "275 (85%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Big chances",
+                  "key": "big_chance",
+                  "home": "0",
+                  "away": "2",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Big chances missed",
+                  "key": "big_chance_missed_title",
+                  "home": "0",
+                  "away": "0",
+                  "format_type": ""
+                },
+                {
+                  "title": "Corners",
+                  "key": "corners",
+                  "home": "1",
+                  "away": "2",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Expected goals (xG)",
+                  "key": "expected_goals",
+                  "home": "0.34",
+                  "away": "1.22",
+                  "format_type": "double"
+                },
+                {
+                  "title": "Total shots",
+                  "key": "total_shots",
+                  "home": "6",
+                  "away": "7",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Touches in opposition box",
+                  "key": "touches_opp_box",
+                  "home": "7",
+                  "away": "11",
+                  "format_type": ""
+                },
+                {
+                  "title": "Yellow cards",
+                  "key": "yellow_cards",
+                  "home": "1",
+                  "away": "0",
+                  "format_type": "integer"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "period": "SecondHalf",
+          "groups": [
+            {
+              "group_name": "Defence",
+              "items": [
+                {
+                  "title": "Clearances",
+                  "key": "clearances",
+                  "home": "6",
+                  "away": "15",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Interceptions",
+                  "key": "interceptions",
+                  "home": "5",
+                  "away": "1",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Keeper saves",
+                  "key": "keeper_saves",
+                  "home": "4",
+                  "away": "4",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Tackles",
+                  "key": "matchstats.headers.tackles",
+                  "home": "14",
+                  "away": "12",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Blocks",
+                  "key": "shot_blocks",
+                  "home": "1",
+                  "away": "3",
+                  "format_type": "integer"
+                }
+              ]
+            },
+            {
+              "group_name": "Discipline",
+              "items": [
+                {
+                  "title": "Fouls committed",
+                  "key": "fouls",
+                  "home": "5",
+                  "away": "7",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Red cards",
+                  "key": "red_cards",
+                  "home": "0",
+                  "away": "0",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Yellow cards",
+                  "key": "yellow_cards",
+                  "home": "2",
+                  "away": "1",
+                  "format_type": "integer"
+                }
+              ]
+            },
+            {
+              "group_name": "Duels",
+              "items": [
+                {
+                  "title": "Aerial duels won",
+                  "key": "aerials_won",
+                  "home": "8 (62%)",
+                  "away": "5 (38%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Successful dribbles",
+                  "key": "dribbles_succeeded",
+                  "home": "4 (31%)",
+                  "away": "7 (47%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Duels won",
+                  "key": "duel_won",
+                  "home": "32",
+                  "away": "29",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Ground duels won",
+                  "key": "ground_duels_won",
+                  "home": "24 (50%)",
+                  "away": "24 (50%)",
+                  "format_type": "integerWithPercentage"
+                }
+              ]
+            },
+            {
+              "group_name": "Expected goals (xG)",
+              "items": [
+                {
+                  "title": "Expected goals (xG)",
+                  "key": "expected_goals",
+                  "home": "0.55",
+                  "away": "1.77",
+                  "format_type": "double"
+                },
+                {
+                  "title": "xG non-penalty",
+                  "key": "expected_goals_non_penalty",
+                  "home": "0.55",
+                  "away": "1.77",
+                  "format_type": "double"
+                },
+                {
+                  "title": "xG on target (xGOT)",
+                  "key": "expected_goals_on_target",
+                  "home": "0.84",
+                  "away": "1.87",
+                  "format_type": "double"
+                },
+                {
+                  "title": "xG open play",
+                  "key": "expected_goals_open_play",
+                  "home": "0.21",
+                  "away": "1.35",
+                  "format_type": "double"
+                },
+                {
+                  "title": "xG set play",
+                  "key": "expected_goals_set_play",
+                  "home": "0.34",
+                  "away": "0.42",
+                  "format_type": "double"
+                }
+              ]
+            },
+            {
+              "group_name": "Passes",
+              "items": [
+                {
+                  "title": "Offsides",
+                  "key": "Offsides",
+                  "home": "0",
+                  "away": "1",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Accurate crosses",
+                  "key": "accurate_crosses",
+                  "home": "4 (40%)",
+                  "away": "2 (40%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Accurate passes",
+                  "key": "accurate_passes",
+                  "home": "185 (85%)",
+                  "away": "165 (83%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Accurate long balls",
+                  "key": "long_balls_accurate",
+                  "home": "7 (33%)",
+                  "away": "9 (33%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Opposition half",
+                  "key": "opposition_half_passes",
+                  "home": "68",
+                  "away": "82",
+                  "format_type": ""
+                },
+                {
+                  "title": "Own half",
+                  "key": "own_half_passes",
+                  "home": "117",
+                  "away": "83",
+                  "format_type": ""
+                },
+                {
+                  "title": "Passes",
+                  "key": "passes",
+                  "home": "217",
+                  "away": "200",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Throws",
+                  "key": "player_throws",
+                  "home": "4",
+                  "away": "8",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Touches in opposition box",
+                  "key": "touches_opp_box",
+                  "home": "18",
+                  "away": "12",
+                  "format_type": ""
+                }
+              ]
+            },
+            {
+              "group_name": "Shots",
+              "items": [
+                {
+                  "title": "Shots off target",
+                  "key": "ShotsOffTarget",
+                  "home": "2",
+                  "away": "4",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Shots on target",
+                  "key": "ShotsOnTarget",
+                  "home": "4",
+                  "away": "5",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Blocked shots",
+                  "key": "blocked_shots",
+                  "home": "4",
+                  "away": "1",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Shots inside box",
+                  "key": "shots_inside_box",
+                  "home": "5",
+                  "away": "8",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Shots outside box",
+                  "key": "shots_outside_box",
+                  "home": "5",
+                  "away": "2",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Hit woodwork",
+                  "key": "shots_woodwork",
+                  "home": "0",
+                  "away": "0",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Total shots",
+                  "key": "total_shots",
+                  "home": "10",
+                  "away": "10",
+                  "format_type": "integer"
+                }
+              ]
+            },
+            {
+              "group_name": "Top stats",
+              "items": [
+                {
+                  "title": "Ball possession",
+                  "key": "BallPossesion",
+                  "home": "52",
+                  "away": "48",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Shots on target",
+                  "key": "ShotsOnTarget",
+                  "home": "4",
+                  "away": "5",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Accurate passes",
+                  "key": "accurate_passes",
+                  "home": "185 (85%)",
+                  "away": "165 (83%)",
+                  "format_type": "integerWithPercentage"
+                },
+                {
+                  "title": "Big chances",
+                  "key": "big_chance",
+                  "home": "0",
+                  "away": "4",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Big chances missed",
+                  "key": "big_chance_missed_title",
+                  "home": "0",
+                  "away": "3",
+                  "format_type": ""
+                },
+                {
+                  "title": "Corners",
+                  "key": "corners",
+                  "home": "4",
+                  "away": "4",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Expected goals (xG)",
+                  "key": "expected_goals",
+                  "home": "0.55",
+                  "away": "1.77",
+                  "format_type": "double"
+                },
+                {
+                  "title": "Total shots",
+                  "key": "total_shots",
+                  "home": "10",
+                  "away": "10",
+                  "format_type": "integer"
+                },
+                {
+                  "title": "Touches in opposition box",
+                  "key": "touches_opp_box",
+                  "home": "18",
+                  "away": "12",
+                  "format_type": ""
+                },
+                {
+                  "title": "Yellow cards",
+                  "key": "yellow_cards",
+                  "home": "2",
+                  "away": "1",
+                  "format_type": "integer"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "advanced": {
+      "match_id": "m_1dZPZA",
+      "teams": [
+        {
+          "team": {
+            "id": "t_40kQKX",
+            "name": "Freiburg"
+          },
+          "actions": 695,
+          "possession_value": {
+            "xt_total": 0.8277,
+            "vaep_total": 0.1363,
+            "vaep_offensive": 0.5119,
+            "vaep_defensive": -0.3755,
+            "pv_total": 0.201,
+            "pv_offensive": 0.2621,
+            "pv_defensive": -0.061
+          },
+          "passing": {
+            "passes": 400,
+            "pass_accuracy": 82.2,
+            "progressive_passes": 19,
+            "progressive_pass_distance": 332.2,
+            "passes_into_box": 11,
+            "key_passes": 7,
+            "assists": 0,
+            "through_balls": 0,
+            "crosses": 8,
+            "switches": 2
+          },
+          "carrying": {
+            "carries": 126,
+            "carry_distance": 1524,
+            "progressive_carries": 18,
+            "progressive_carry_distance": 767.9,
+            "carries_into_final_third": 16,
+            "carries_into_box": 0,
+            "take_ons": 22,
+            "take_ons_won": 7,
+            "miscontrols": 18,
+            "dispossessed": 6
+          },
+          "creation": {
+            "sca": 29,
+            "gca": 0,
+            "chances_created": 7,
+            "second_assists": 0,
+            "sca_breakdown": {
+              "pass_live": 15,
+              "pass_dead": 6,
+              "take_on": 2,
+              "shot": 4,
+              "foul_drawn": 2,
+              "defensive": 0
+            },
+            "xag": null
+          },
+          "defending": {
+            "tackles": 18,
+            "interceptions": 22,
+            "blocks": 1,
+            "clearances": 16,
+            "duels_won": 18,
+            "aerials": 23,
+            "aerials_won": 14,
+            "ppda": 10.62,
+            "opponent_passes": 414,
+            "defensive_actions": 39,
+            "challenges": 5,
+            "avg_defensive_action_x": 40.6,
+            "high_turnovers": 13,
+            "counterpress_regains_5s": 11,
+            "ball_recovery_time": 23.4
+          },
+          "territory": {
+            "possession_pct": 43.8,
+            "field_tilt": 40.1,
+            "final_third_entries": 33,
+            "box_entries": 9,
+            "avg_action_x": 45.5
+          },
+          "tempo": {
+            "passes_per_sequence": 3.38,
+            "sequence_time": 12.16,
+            "direct_speed": 1.9,
+            "buildup_attacks": 3,
+            "direct_attacks": 8
+          }
+        },
+        {
+          "team": {
+            "id": "t_1cpjqO",
+            "name": "Bayern München"
+          },
+          "actions": 836,
+          "possession_value": {
+            "xt_total": 0.8945,
+            "vaep_total": 3.2126,
+            "vaep_offensive": 3.063,
+            "vaep_defensive": 0.1496,
+            "pv_total": 2.2083,
+            "pv_offensive": 2.7775,
+            "pv_defensive": -0.5692
+          },
+          "passing": {
+            "passes": 514,
+            "pass_accuracy": 84.2,
+            "progressive_passes": 24,
+            "progressive_pass_distance": 447.9,
+            "passes_into_box": 13,
+            "key_passes": 13,
+            "assists": 2,
+            "through_balls": 6,
+            "crosses": 1,
+            "switches": 5
+          },
+          "carrying": {
+            "carries": 147,
+            "carry_distance": 1565.8,
+            "progressive_carries": 12,
+            "progressive_carry_distance": 770.5,
+            "carries_into_final_third": 12,
+            "carries_into_box": 2,
+            "take_ons": 19,
+            "take_ons_won": 10,
+            "miscontrols": 12,
+            "dispossessed": 9
+          },
+          "creation": {
+            "sca": 30,
+            "gca": 5,
+            "chances_created": 13,
+            "second_assists": 2,
+            "sca_breakdown": {
+              "pass_live": 22,
+              "pass_dead": 3,
+              "take_on": 1,
+              "shot": 2,
+              "foul_drawn": 1,
+              "defensive": 1
+            },
+            "xag": null
+          },
+          "defending": {
+            "tackles": 18,
+            "interceptions": 14,
+            "blocks": 6,
+            "clearances": 24,
+            "duels_won": 22,
+            "aerials": 23,
+            "aerials_won": 9,
+            "ppda": 10.84,
+            "opponent_passes": 347,
+            "defensive_actions": 32,
+            "challenges": 4,
+            "avg_defensive_action_x": 36.1,
+            "high_turnovers": 14,
+            "counterpress_regains_5s": 16,
+            "ball_recovery_time": 19.2
+          },
+          "territory": {
+            "possession_pct": 56.2,
+            "field_tilt": 59.9,
+            "final_third_entries": 39,
+            "box_entries": 12,
+            "avg_action_x": 46.4
+          },
+          "tempo": {
+            "passes_per_sequence": 4.17,
+            "sequence_time": 13.58,
+            "direct_speed": 2.1,
+            "buildup_attacks": 5,
+            "direct_attacks": 10
+          }
+        }
+      ]
+    },
+    "shots": {
+      "match_id": "m_1dZPZA",
+      "periods": [
+        {
+          "period": "FirstHalf",
+          "shots": [
+            {
+              "id": "s_1qOOfp",
+              "player": {
+                "id": "p_0EqkCA",
+                "name": "Patrick Osterhage",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/2d3857b8c00ca51f5a57915b0d376869c109e88300d96f3b5b89849b0eb86675.webp"
+              },
+              "team_id": "t_40kQKX",
+              "x": 93.4,
+              "y": 46.24,
+              "expected_goals": 0.03,
+              "expected_goals_on_target": 0,
+              "is_on_target": false,
+              "goal_crossed_y": 42.99,
+              "goal_crossed_z": 4.46,
+              "is_inside_box": true,
+              "shot_type": "LeftFoot",
+              "situation": "ThrowInSetPiece",
+              "minute": 14,
+              "event_type": "Miss"
+            },
+            {
+              "id": "s_0sxonL",
+              "player": {
+                "id": "p_3AC7ND",
+                "name": "Jan-Niklas Beste",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/897def3a4920c1c7709b3651fd72192949afa1fc790b1c4a28a7f47e084f9e6b.webp"
+              },
+              "team_id": "t_40kQKX",
+              "x": 87.64,
+              "y": 33.31,
+              "expected_goals": 0.07,
+              "expected_goals_on_target": 0,
+              "is_on_target": true,
+              "goal_crossed_y": 35.14,
+              "goal_crossed_z": 1.22,
+              "is_inside_box": false,
+              "shot_type": "LeftFoot",
+              "situation": "RegularPlay",
+              "minute": 16,
+              "event_type": "AttemptSaved",
+              "is_blocked": true,
+              "blocked_x": 90.4,
+              "blocked_y": 33.62
+            },
+            {
+              "id": "s_3zMe5B",
+              "player": {
+                "id": "p_1NIzYq",
+                "name": "Dayot Upamecano",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/5de08ea65ea43ee32c95205f599beedf631aade854edc77bede74866053a7b2a.webp"
+              },
+              "team_id": "t_1cpjqO",
+              "x": 89.7,
+              "y": 26.77,
+              "expected_goals": 0.55,
+              "expected_goals_on_target": 0.34,
+              "is_on_target": true,
+              "goal_crossed_y": 32.93,
+              "goal_crossed_z": 0.61,
+              "is_inside_box": true,
+              "shot_type": "RightFoot",
+              "situation": "FastBreak",
+              "minute": 16,
+              "event_type": "Goal",
+              "keeper": {
+                "id": "p_25B0u3",
+                "name": "Mio Backhaus",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/9aa9f96e08555daa5161ce1935846825fbd774d0d5dcabc1db5d3a2b6221e09a.webp"
+              }
+            },
+            {
+              "id": "s_21qDK7",
+              "player": {
+                "id": "p_2c4WVs",
+                "name": "Lucas Höler",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/3c26714118cbc6ad256bc7512c16ef896988a88214e6cfb8323fca0431f0359f.webp"
+              },
+              "team_id": "t_40kQKX",
+              "x": 95.74,
+              "y": 36.59,
+              "expected_goals": 0.11,
+              "expected_goals_on_target": 0,
+              "is_on_target": true,
+              "goal_crossed_y": 32.47,
+              "goal_crossed_z": 1.22,
+              "is_inside_box": true,
+              "shot_type": "RightFoot",
+              "situation": "RegularPlay",
+              "minute": 22,
+              "event_type": "AttemptSaved",
+              "is_blocked": true,
+              "blocked_x": 97.28,
+              "blocked_y": 35.91
+            },
+            {
+              "id": "s_2c05No",
+              "player": {
+                "id": "p_2c4WVs",
+                "name": "Lucas Höler",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/3c26714118cbc6ad256bc7512c16ef896988a88214e6cfb8323fca0431f0359f.webp"
+              },
+              "team_id": "t_40kQKX",
+              "x": 94.29,
+              "y": 35.3,
+              "expected_goals": 0.09,
+              "expected_goals_on_target": 0,
+              "is_on_target": true,
+              "goal_crossed_y": 36.36,
+              "goal_crossed_z": 1.22,
+              "is_inside_box": true,
+              "shot_type": "RightFoot",
+              "situation": "RegularPlay",
+              "minute": 22,
+              "event_type": "AttemptSaved",
+              "is_blocked": true,
+              "blocked_x": 96.51,
+              "blocked_y": 35.53
+            },
+            {
+              "id": "s_3s0fhf",
+              "player": {
+                "id": "p_2HDCEW",
+                "name": "Michael Olise",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/a5a749250cbaae96cca002451bf9490bf2adca92ac0d393f85817fcd70071395.webp"
+              },
+              "team_id": "t_1cpjqO",
+              "x": 88.7,
+              "y": 30.34,
+              "expected_goals": 0.14,
+              "expected_goals_on_target": 0.05,
+              "is_on_target": true,
+              "goal_crossed_y": 34.23,
+              "goal_crossed_z": 0.16,
+              "is_inside_box": true,
+              "shot_type": "LeftFoot",
+              "situation": "RegularPlay",
+              "minute": 24,
+              "event_type": "AttemptSaved",
+              "blocked_x": 103.48,
+              "blocked_y": 34.31,
+              "keeper": {
+                "id": "p_25B0u3",
+                "name": "Mio Backhaus",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/9aa9f96e08555daa5161ce1935846825fbd774d0d5dcabc1db5d3a2b6221e09a.webp"
+              }
+            },
+            {
+              "id": "s_2RCrgY",
+              "player": {
+                "id": "p_0qf1Qf",
+                "name": "Lennart Karl",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/777f7c5af2bcfebc23479e81b6acc0ea522323e3504a7664b69f62f6d32c4928.webp"
+              },
+              "team_id": "t_1cpjqO",
+              "x": 89.7,
+              "y": 29.38,
+              "expected_goals": 0.08,
+              "expected_goals_on_target": 0,
+              "is_on_target": false,
+              "goal_crossed_y": 38.37,
+              "goal_crossed_z": 6.03,
+              "is_inside_box": true,
+              "shot_type": "LeftFoot",
+              "situation": "RegularPlay",
+              "minute": 25,
+              "event_type": "Miss"
+            },
+            {
+              "id": "s_2cMiTj",
+              "player": {
+                "id": "p_1Vowbo",
+                "name": "Serge Gnabry",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/3ea2f1aedc2f5e87025c4efe3cc0c81f4d707e4839c6c54c5acf8bd0a7dcb2d3.webp"
+              },
+              "team_id": "t_1cpjqO",
+              "x": 81.7,
+              "y": 36.29,
+              "expected_goals": 0.06,
+              "expected_goals_on_target": 0,
+              "is_on_target": false,
+              "goal_crossed_y": 20.29,
+              "goal_crossed_z": 1.52,
+              "is_inside_box": false,
+              "shot_type": "RightFoot",
+              "situation": "RegularPlay",
+              "minute": 28,
+              "event_type": "Miss"
+            },
+            {
+              "id": "s_2uzXVb",
+              "player": {
+                "id": "p_0xLJJb",
+                "name": "Yuito Suzuki",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/24116ea93b6eb56bf040302ee3d73ef1eb07beb45a7109eecb8a7f36edd8be47.webp"
+              },
+              "team_id": "t_40kQKX",
+              "x": 73.14,
+              "y": 26.29,
+              "expected_goals": 0.01,
+              "expected_goals_on_target": 0,
+              "is_on_target": false,
+              "goal_crossed_y": 31.48,
+              "goal_crossed_z": 5.67,
+              "is_inside_box": false,
+              "shot_type": "RightFoot",
+              "situation": "RegularPlay",
+              "minute": 30,
+              "event_type": "Miss"
+            },
+            {
+              "id": "s_0ocHJW",
+              "player": {
+                "id": "p_30DGd9",
+                "name": "Nathaniel Brown",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/800af01ded96c51137c9792c54a72b0920012425bff92f0b24eaa7fad103dbf5.webp"
+              },
+              "team_id": "t_1cpjqO",
+              "x": 89.1,
+              "y": 32.02,
+              "expected_goals": 0.14,
+              "expected_goals_on_target": 0.6,
+              "is_on_target": true,
+              "goal_crossed_y": 36.52,
+              "goal_crossed_z": 0.21,
+              "is_inside_box": true,
+              "shot_type": "RightFoot",
+              "situation": "RegularPlay",
+              "minute": 34,
+              "event_type": "AttemptSaved",
+              "blocked_x": 103.96,
+              "blocked_y": 33.47,
+              "keeper": {
+                "id": "p_25B0u3",
+                "name": "Mio Backhaus",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/9aa9f96e08555daa5161ce1935846825fbd774d0d5dcabc1db5d3a2b6221e09a.webp"
+              }
+            },
+            {
+              "id": "s_3aLWW3",
+              "player": {
+                "id": "p_1Vowbo",
+                "name": "Serge Gnabry",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/3ea2f1aedc2f5e87025c4efe3cc0c81f4d707e4839c6c54c5acf8bd0a7dcb2d3.webp"
+              },
+              "team_id": "t_1cpjqO",
+              "x": 81.13,
+              "y": 49.47,
+              "expected_goals": 0.02,
+              "expected_goals_on_target": 0,
+              "is_on_target": false,
+              "goal_crossed_y": 16.22,
+              "goal_crossed_z": 7.6,
+              "is_inside_box": false,
+              "shot_type": "RightFoot",
+              "situation": "RegularPlay",
+              "minute": 41,
+              "event_type": "Miss"
+            },
+            {
+              "id": "s_3KLGIi",
+              "player": {
+                "id": "p_1Vowbo",
+                "name": "Serge Gnabry",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/3ea2f1aedc2f5e87025c4efe3cc0c81f4d707e4839c6c54c5acf8bd0a7dcb2d3.webp"
+              },
+              "team_id": "t_1cpjqO",
+              "x": 101.3,
+              "y": 44.28,
+              "expected_goals": 0.22,
+              "expected_goals_on_target": 0.23,
+              "is_on_target": true,
+              "goal_crossed_y": 34.69,
+              "goal_crossed_z": 0.08,
+              "is_inside_box": true,
+              "shot_type": "RightFoot",
+              "situation": "RegularPlay",
+              "minute": 42,
+              "event_type": "Goal",
+              "keeper": {
+                "id": "p_25B0u3",
+                "name": "Mio Backhaus",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/9aa9f96e08555daa5161ce1935846825fbd774d0d5dcabc1db5d3a2b6221e09a.webp"
+              }
+            },
+            {
+              "id": "s_1Sk9Gw",
+              "player": {
+                "id": "p_2c4WVs",
+                "name": "Lucas Höler",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/3c26714118cbc6ad256bc7512c16ef896988a88214e6cfb8323fca0431f0359f.webp"
+              },
+              "team_id": "t_40kQKX",
+              "x": 55.55,
+              "y": 34.08,
+              "expected_goals": 0.03,
+              "expected_goals_on_target": 0,
+              "is_on_target": false,
+              "goal_crossed_y": 42,
+              "goal_crossed_z": 2.66,
+              "is_inside_box": false,
+              "shot_type": "RightFoot",
+              "situation": "FastBreak",
+              "minute": 45,
+              "event_type": "Miss",
+              "minute_added": 3
+            }
+          ]
+        },
+        {
+          "period": "SecondHalf",
+          "shots": [
+            {
+              "id": "s_04CeU8",
+              "player": {
+                "id": "p_1UYJfA",
+                "name": "Derry Scherhant",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/adccee708e23ddf1d4bff6e1cc3f86a3b4e743105a28ea7021669fc0331fa7d7.webp"
+              },
+              "team_id": "t_40kQKX",
+              "x": 80.12,
+              "y": 17.76,
+              "expected_goals": 0.03,
+              "expected_goals_on_target": 0.02,
+              "is_on_target": true,
+              "goal_crossed_y": 33.01,
+              "goal_crossed_z": 1.06,
+              "is_inside_box": false,
+              "shot_type": "RightFoot",
+              "situation": "FreeKick",
+              "minute": 47,
+              "event_type": "AttemptSaved",
+              "blocked_x": 103.48,
+              "blocked_y": 32.25,
+              "keeper": {
+                "id": "p_1aqS56",
+                "name": "Jonas Urbig",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/570415be9657607d13e36c234953da4c568963360df8a25be412dda2a9dd568d.webp"
+              }
+            },
+            {
+              "id": "s_0n1RgH",
+              "player": {
+                "id": "p_3AC7ND",
+                "name": "Jan-Niklas Beste",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/897def3a4920c1c7709b3651fd72192949afa1fc790b1c4a28a7f47e084f9e6b.webp"
+              },
+              "team_id": "t_40kQKX",
+              "x": 91.6,
+              "y": 20.29,
+              "expected_goals": 0.03,
+              "expected_goals_on_target": 0,
+              "is_on_target": false,
+              "goal_crossed_y": 43.04,
+              "goal_crossed_z": 6.27,
+              "is_inside_box": true,
+              "shot_type": "RightFoot",
+              "situation": "FromCorner",
+              "minute": 53,
+              "event_type": "Miss"
+            },
+            {
+              "id": "s_14pkas",
+              "player": {
+                "id": "p_4SOI8C",
+                "name": "Harry Kane",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/96450367a9b57c6854a73390c5c86b1cbb2a6851ba44a1b071516886636782b3.webp"
+              },
+              "team_id": "t_1cpjqO",
+              "x": 98.34,
+              "y": 37.51,
+              "expected_goals": 0.31,
+              "expected_goals_on_target": 0,
+              "is_on_target": false,
+              "goal_crossed_y": 36.67,
+              "goal_crossed_z": 4.71,
+              "is_inside_box": true,
+              "shot_type": "Header",
+              "situation": "SetPiece",
+              "minute": 57,
+              "event_type": "Miss"
+            },
+            {
+              "id": "s_1Wwc9g",
+              "player": {
+                "id": "p_1O0dMP",
+                "name": "Igor Matanović",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/4b26e61c15d6b3ba9e6219139db6325368db0be477cdf1627736c1e752f48d86.webp"
+              },
+              "team_id": "t_40kQKX",
+              "x": 80.57,
+              "y": 27.87,
+              "expected_goals": 0.03,
+              "expected_goals_on_target": 0.26,
+              "is_on_target": true,
+              "goal_crossed_y": 37.2,
+              "goal_crossed_z": 0.24,
+              "is_inside_box": false,
+              "shot_type": "RightFoot",
+              "situation": "RegularPlay",
+              "minute": 59,
+              "event_type": "AttemptSaved",
+              "blocked_x": 103.29,
+              "blocked_y": 33.01,
+              "keeper": {
+                "id": "p_1aqS56",
+                "name": "Jonas Urbig",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/570415be9657607d13e36c234953da4c568963360df8a25be412dda2a9dd568d.webp"
+              }
+            },
+            {
+              "id": "s_0uer2U",
+              "player": {
+                "id": "p_1jy0wW",
+                "name": "Ismael Saibari",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/b6b0564d1faf5f8d6bfd6c2ae73e144faf35bc3590c8315516204fc3be884d1d.webp"
+              },
+              "team_id": "t_1cpjqO",
+              "x": 94,
+              "y": 47.57,
+              "expected_goals": 0.04,
+              "expected_goals_on_target": 0,
+              "is_on_target": false,
+              "goal_crossed_y": 28.12,
+              "goal_crossed_z": 0.36,
+              "is_inside_box": true,
+              "shot_type": "LeftFoot",
+              "situation": "RegularPlay",
+              "minute": 62,
+              "event_type": "Miss",
+              "blocked_x": 101.87,
+              "blocked_y": 33.7,
+              "keeper": {
+                "id": "p_25B0u3",
+                "name": "Mio Backhaus",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/9aa9f96e08555daa5161ce1935846825fbd774d0d5dcabc1db5d3a2b6221e09a.webp"
+              }
+            },
+            {
+              "id": "s_1ReW54",
+              "player": {
+                "id": "p_30DGd9",
+                "name": "Nathaniel Brown",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/800af01ded96c51137c9792c54a72b0920012425bff92f0b24eaa7fad103dbf5.webp"
+              },
+              "team_id": "t_1cpjqO",
+              "x": 97.18,
+              "y": 28.71,
+              "expected_goals": 0.18,
+              "expected_goals_on_target": 0.16,
+              "is_on_target": true,
+              "goal_crossed_y": 34.53,
+              "goal_crossed_z": 0.69,
+              "is_inside_box": true,
+              "shot_type": "RightFoot",
+              "situation": "RegularPlay",
+              "minute": 69,
+              "event_type": "AttemptSaved",
+              "blocked_x": 103.1,
+              "blocked_y": 32.32,
+              "keeper": {
+                "id": "p_25B0u3",
+                "name": "Mio Backhaus",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/9aa9f96e08555daa5161ce1935846825fbd774d0d5dcabc1db5d3a2b6221e09a.webp"
+              }
+            },
+            {
+              "id": "s_1KA4mD",
+              "player": {
+                "id": "p_2HDCEW",
+                "name": "Michael Olise",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/a5a749250cbaae96cca002451bf9490bf2adca92ac0d393f85817fcd70071395.webp"
+              },
+              "team_id": "t_1cpjqO",
+              "x": 90.9,
+              "y": 19.09,
+              "expected_goals": 0.03,
+              "expected_goals_on_target": 0,
+              "is_on_target": true,
+              "goal_crossed_y": 34,
+              "goal_crossed_z": 1.22,
+              "is_inside_box": true,
+              "shot_type": "LeftFoot",
+              "situation": "RegularPlay",
+              "minute": 73,
+              "event_type": "AttemptSaved",
+              "is_blocked": true,
+              "blocked_x": 94.77,
+              "blocked_y": 23.09
+            },
+            {
+              "id": "s_4Ad2Ep",
+              "player": {
+                "id": "p_1jy0wW",
+                "name": "Ismael Saibari",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/b6b0564d1faf5f8d6bfd6c2ae73e144faf35bc3590c8315516204fc3be884d1d.webp"
+              },
+              "team_id": "t_1cpjqO",
+              "x": 83.95,
+              "y": 38.2,
+              "expected_goals": 0.07,
+              "expected_goals_on_target": 0,
+              "is_on_target": false,
+              "goal_crossed_y": 22.6,
+              "goal_crossed_z": 0.27,
+              "is_inside_box": false,
+              "shot_type": "LeftFoot",
+              "situation": "RegularPlay",
+              "minute": 73,
+              "event_type": "Miss"
+            },
+            {
+              "id": "s_2SAnRg",
+              "player": {
+                "id": "p_1jy0wW",
+                "name": "Ismael Saibari",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/b6b0564d1faf5f8d6bfd6c2ae73e144faf35bc3590c8315516204fc3be884d1d.webp"
+              },
+              "team_id": "t_1cpjqO",
+              "x": 99.97,
+              "y": 25.53,
+              "expected_goals": 0.14,
+              "expected_goals_on_target": 0.12,
+              "is_on_target": true,
+              "goal_crossed_y": 34.53,
+              "goal_crossed_z": 0.85,
+              "is_inside_box": true,
+              "shot_type": "RightFoot",
+              "situation": "RegularPlay",
+              "minute": 75,
+              "event_type": "AttemptSaved",
+              "blocked_x": 101.21,
+              "blocked_y": 27.78,
+              "keeper": {
+                "id": "p_25B0u3",
+                "name": "Mio Backhaus",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/9aa9f96e08555daa5161ce1935846825fbd774d0d5dcabc1db5d3a2b6221e09a.webp"
+              }
+            },
+            {
+              "id": "s_1srhQM",
+              "player": {
+                "id": "p_1NIzYq",
+                "name": "Dayot Upamecano",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/5de08ea65ea43ee32c95205f599beedf631aade854edc77bede74866053a7b2a.webp"
+              },
+              "team_id": "t_1cpjqO",
+              "x": 101.21,
+              "y": 36.97,
+              "expected_goals": 0.11,
+              "expected_goals_on_target": 0,
+              "is_on_target": false,
+              "goal_crossed_y": 31.48,
+              "goal_crossed_z": 4.1,
+              "is_inside_box": true,
+              "shot_type": "OtherBodyParts",
+              "situation": "FromCorner",
+              "minute": 76,
+              "event_type": "Miss"
+            },
+            {
+              "id": "s_4JM5KO",
+              "player": {
+                "id": "p_0l3pTm",
+                "name": "Maximilian Eggestein",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/4deae9dffe3b02956ec3373e80fc2a3fdc589867949ba4945d79931ff8ed42e8.webp"
+              },
+              "team_id": "t_40kQKX",
+              "x": 80.8,
+              "y": 37.72,
+              "expected_goals": 0.03,
+              "expected_goals_on_target": 0,
+              "is_on_target": false,
+              "goal_crossed_y": 37.13,
+              "goal_crossed_z": 6.15,
+              "is_inside_box": false,
+              "shot_type": "LeftFoot",
+              "situation": "RegularPlay",
+              "minute": 79,
+              "event_type": "Miss"
+            },
+            {
+              "id": "s_2aHjzl",
+              "player": {
+                "id": "p_4SOI8C",
+                "name": "Harry Kane",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/96450367a9b57c6854a73390c5c86b1cbb2a6851ba44a1b071516886636782b3.webp"
+              },
+              "team_id": "t_1cpjqO",
+              "x": 90.2,
+              "y": 30.28,
+              "expected_goals": 0.13,
+              "expected_goals_on_target": 0.47,
+              "is_on_target": true,
+              "goal_crossed_y": 31.87,
+              "goal_crossed_z": 0.98,
+              "is_inside_box": true,
+              "shot_type": "RightFoot",
+              "situation": "RegularPlay",
+              "minute": 81,
+              "event_type": "AttemptSaved",
+              "blocked_x": 103.96,
+              "blocked_y": 34.15,
+              "keeper": {
+                "id": "p_25B0u3",
+                "name": "Mio Backhaus",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/9aa9f96e08555daa5161ce1935846825fbd774d0d5dcabc1db5d3a2b6221e09a.webp"
+              }
+            },
+            {
+              "id": "s_1rtXAu",
+              "player": {
+                "id": "p_1jy0wW",
+                "name": "Ismael Saibari",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/b6b0564d1faf5f8d6bfd6c2ae73e144faf35bc3590c8315516204fc3be884d1d.webp"
+              },
+              "team_id": "t_1cpjqO",
+              "x": 93.6,
+              "y": 35.14,
+              "expected_goals": 0.24,
+              "expected_goals_on_target": 0.13,
+              "is_on_target": true,
+              "goal_crossed_y": 34.84,
+              "goal_crossed_z": 0.94,
+              "is_inside_box": true,
+              "shot_type": "RightFoot",
+              "situation": "RegularPlay",
+              "minute": 81,
+              "event_type": "AttemptSaved",
+              "blocked_x": 103.96,
+              "blocked_y": 34.31,
+              "keeper": {
+                "id": "p_25B0u3",
+                "name": "Mio Backhaus",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/9aa9f96e08555daa5161ce1935846825fbd774d0d5dcabc1db5d3a2b6221e09a.webp"
+              }
+            },
+            {
+              "id": "s_38mTNo",
+              "player": {
+                "id": "p_2WiZ4D",
+                "name": "Tom Bischof",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/15f7025c37824fff6ab3fa31e68919992e44f64b4573a4b0929391e5619d9ff3.webp"
+              },
+              "team_id": "t_1cpjqO",
+              "x": 4.74,
+              "y": 30.3,
+              "expected_goals": 0,
+              "is_on_target": true,
+              "goal_crossed_y": 36.75,
+              "goal_crossed_z": 0.98,
+              "is_inside_box": true,
+              "shot_type": "OtherBodyParts",
+              "situation": "RegularPlay",
+              "minute": 82,
+              "event_type": "Goal",
+              "is_own_goal": true,
+              "keeper": {
+                "id": "p_1aqS56",
+                "name": "Jonas Urbig",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/570415be9657607d13e36c234953da4c568963360df8a25be412dda2a9dd568d.webp"
+              }
+            },
+            {
+              "id": "s_3BiniI",
+              "player": {
+                "id": "p_2nCTjI",
+                "name": "Cyriaque Irié",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/8a170fa28177d59af39a9375ac5c9ebbd9c8198b5f5ace38363639548d1a3259.webp"
+              },
+              "team_id": "t_40kQKX",
+              "x": 79.22,
+              "y": 35.98,
+              "expected_goals": 0.03,
+              "expected_goals_on_target": 0,
+              "is_on_target": true,
+              "goal_crossed_y": 35.68,
+              "goal_crossed_z": 1.22,
+              "is_inside_box": false,
+              "shot_type": "LeftFoot",
+              "situation": "RegularPlay",
+              "minute": 83,
+              "event_type": "AttemptSaved",
+              "is_blocked": true,
+              "blocked_x": 84.51,
+              "blocked_y": 35.91
+            },
+            {
+              "id": "s_04bffz",
+              "player": {
+                "id": "p_1CRz7O",
+                "name": "Vincenzo Grifo",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/e24dbb5f13c5b0c426f6f0d907cc33bfa477c5dbc7339cc1b4455da97be9d507.webp"
+              },
+              "team_id": "t_40kQKX",
+              "x": 79.33,
+              "y": 38.62,
+              "expected_goals": 0.06,
+              "expected_goals_on_target": 0,
+              "is_on_target": true,
+              "goal_crossed_y": 34.76,
+              "goal_crossed_z": 1.22,
+              "is_inside_box": false,
+              "shot_type": "RightFoot",
+              "situation": "FreeKick",
+              "minute": 84,
+              "event_type": "AttemptSaved",
+              "is_blocked": true,
+              "blocked_x": 89.7,
+              "blocked_y": 37.43
+            },
+            {
+              "id": "s_1Q5QNx",
+              "player": {
+                "id": "p_1O0dMP",
+                "name": "Igor Matanović",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/4b26e61c15d6b3ba9e6219139db6325368db0be477cdf1627736c1e752f48d86.webp"
+              },
+              "team_id": "t_40kQKX",
+              "x": 96.03,
+              "y": 27.61,
+              "expected_goals": 0.09,
+              "expected_goals_on_target": 0,
+              "is_on_target": true,
+              "goal_crossed_y": 33.7,
+              "goal_crossed_z": 1.22,
+              "is_inside_box": true,
+              "shot_type": "RightFoot",
+              "situation": "RegularPlay",
+              "minute": 85,
+              "event_type": "AttemptSaved",
+              "is_blocked": true,
+              "blocked_x": 97.67,
+              "blocked_y": 28.88
+            },
+            {
+              "id": "s_2mSQJP",
+              "player": {
+                "id": "p_2nCTjI",
+                "name": "Cyriaque Irié",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/8a170fa28177d59af39a9375ac5c9ebbd9c8198b5f5ace38363639548d1a3259.webp"
+              },
+              "team_id": "t_40kQKX",
+              "x": 100.45,
+              "y": 30.05,
+              "expected_goals": 0.15,
+              "expected_goals_on_target": 0.21,
+              "is_on_target": true,
+              "goal_crossed_y": 32.47,
+              "goal_crossed_z": 0.82,
+              "is_inside_box": true,
+              "shot_type": "LeftFoot",
+              "situation": "RegularPlay",
+              "minute": 85,
+              "event_type": "AttemptSaved",
+              "blocked_x": 102.06,
+              "blocked_y": 30.72,
+              "keeper": {
+                "id": "p_1aqS56",
+                "name": "Jonas Urbig",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/570415be9657607d13e36c234953da4c568963360df8a25be412dda2a9dd568d.webp"
+              }
+            },
+            {
+              "id": "s_1u9bQn",
+              "player": {
+                "id": "p_1O0dMP",
+                "name": "Igor Matanović",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/4b26e61c15d6b3ba9e6219139db6325368db0be477cdf1627736c1e752f48d86.webp"
+              },
+              "team_id": "t_40kQKX",
+              "x": 94.58,
+              "y": 30.95,
+              "expected_goals": 0.04,
+              "expected_goals_on_target": 0.02,
+              "is_on_target": true,
+              "goal_crossed_y": 33.77,
+              "goal_crossed_z": 1.18,
+              "is_inside_box": true,
+              "shot_type": "Header",
+              "situation": "RegularPlay",
+              "minute": 87,
+              "event_type": "AttemptSaved",
+              "blocked_x": 103.67,
+              "blocked_y": 33.01,
+              "keeper": {
+                "id": "p_1aqS56",
+                "name": "Jonas Urbig",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/570415be9657607d13e36c234953da4c568963360df8a25be412dda2a9dd568d.webp"
+              }
+            },
+            {
+              "id": "s_26UFTR",
+              "player": {
+                "id": "p_2VYn5C",
+                "name": "Matthias Ginter",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/5b65708a3b1dd6342959b5ff8565c381d43c219577758fdb5fe7675c359cac21.webp"
+              },
+              "team_id": "t_40kQKX",
+              "x": 96.12,
+              "y": 37.58,
+              "expected_goals": 0.04,
+              "expected_goals_on_target": 0.55,
+              "is_on_target": true,
+              "goal_crossed_y": 36.82,
+              "goal_crossed_z": 1.79,
+              "is_inside_box": true,
+              "shot_type": "Header",
+              "situation": "FromCorner",
+              "minute": 90,
+              "event_type": "AttemptSaved",
+              "blocked_x": 103.67,
+              "blocked_y": 34.53,
+              "minute_added": 1,
+              "keeper": {
+                "id": "p_1aqS56",
+                "name": "Jonas Urbig",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/570415be9657607d13e36c234953da4c568963360df8a25be412dda2a9dd568d.webp"
+              }
+            },
+            {
+              "id": "s_4UvoNC",
+              "player": {
+                "id": "p_1O0dMP",
+                "name": "Igor Matanović",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/4b26e61c15d6b3ba9e6219139db6325368db0be477cdf1627736c1e752f48d86.webp"
+              },
+              "team_id": "t_40kQKX",
+              "x": 99.88,
+              "y": 34.99,
+              "expected_goals": 0.18,
+              "expected_goals_on_target": 0,
+              "is_on_target": true,
+              "goal_crossed_y": 33.39,
+              "goal_crossed_z": 1.22,
+              "is_inside_box": true,
+              "shot_type": "Header",
+              "situation": "FromCorner",
+              "minute": 90,
+              "event_type": "AttemptSaved",
+              "is_blocked": true,
+              "blocked_x": 100.83,
+              "blocked_y": 34.69,
+              "minute_added": 2
+            },
+            {
+              "id": "s_4HlKDN",
+              "player": {
+                "id": "p_2HDCEW",
+                "name": "Michael Olise",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/a5a749250cbaae96cca002451bf9490bf2adca92ac0d393f85817fcd70071395.webp"
+              },
+              "team_id": "t_1cpjqO",
+              "x": 73.36,
+              "y": 44.56,
+              "expected_goals": 0.56,
+              "expected_goals_on_target": 0.99,
+              "is_on_target": true,
+              "goal_crossed_y": 32.93,
+              "goal_crossed_z": 0.04,
+              "is_inside_box": false,
+              "shot_type": "LeftFoot",
+              "situation": "RegularPlay",
+              "minute": 90,
+              "event_type": "Goal",
+              "minute_added": 5,
+              "keeper": {
+                "id": "p_25B0u3",
+                "name": "Mio Backhaus",
+                "position_id": null,
+                "image_url": "https://cdn.pitchapi.dev/images/players/9aa9f96e08555daa5161ce1935846825fbd774d0d5dcabc1db5d3a2b6221e09a.webp"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
     "id": "m_4e2kal",
     "match_id": "m_4e2kal",
     "league": "Bundesliga",
