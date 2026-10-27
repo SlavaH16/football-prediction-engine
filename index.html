@@ -4,7 +4,7 @@
 <div class="card"><h2>📊 Statistiky týmu</h2><p class="muted">Vyber tým a podívej se na jeho poslední výsledky.</p><select id="teamSelect" style="width:100%"><option value="">Načítám týmy…</option></select><div id="teamStats"><p class="muted">Statistiky se zobrazí po výběru týmu.</p></div></div>
 <div class="card"><div class="row"><button id="upcomingBtn" class="active">Nadcházející zápasy</button><button id="historyBtn">Historie výsledků</button></div><div class="row"><select id="league"><option value="">Všechny soutěže</option></select><input id="search" placeholder="Hledat tým…"></div><p id="count" class="muted"></p></div><div id="matches"></div>
 <div class="card"><h2>🔎 Analýza vybraného utkání</h2><p class="muted">U zápasu klepni na „Analyzovat utkání“.</p><div id="matchAnalysis"><p class="muted">Zatím není vybráno žádné utkání k analýze.</p></div></div>
-<div class="card"><h2>🎯 Vybrané zápasy</h2><p id="selectedCount">Vybrané zápasy: 0</p><div id="selectedList">Zatím nemáš vybrané žádné zápasy.</div><button id="clear">Zrušit výběr</button><p class="muted">Statistiky jsou popisné. Pravděpodobnost výsledku zatím není vypočítávána.</p></div>
+<div class="card"><h2>🎯 Vybrané zápasy</h2><p id="selectedCount">Vybrané zápasy: 0</p><div id="selectedList">Zatím nemáš vybrané žádné zápasy.</div><button id="clear">Zrušit výběr</button><p class="muted">Vybrané zápasy lze jednotlivě analyzovat pomocí Poissonova modelu a doplňkového ML odhadu.</p></div>
 <script>
 let upcoming=[],history=[],mode="upcoming";const selected=new Map();
 const statusEl=document.getElementById("status"),matchesEl=document.getElementById("matches"),leagueEl=document.getElementById("league"),searchEl=document.getElementById("search"),teamSelect=document.getElementById("teamSelect");
@@ -13,7 +13,21 @@ function formatDate(v){if(!v)return"Termín neznámý";let d=new Date(v);return 
 function currentMatches(){return mode==="history"?history:upcoming}
 function key(m){return String(m.id??(m.utcDate+"-"+m.homeTeam?.name+"-"+m.awayTeam?.name))}
 function finished(m){return m.status==="FINISHED"&&m.score?.fullTime?.home!=null&&m.score?.fullTime?.away!=null}
-function teamMatches(t){return history.filter(m=>finished(m)&&(m.homeTeam?.name===t||m.awayTeam?.name===t)).sort((a,b)=>new Date(b.utcDate)-new Date(a.utcDate))}
+function teamMatches(t, beforeDate) {
+    const cutoff = beforeDate ? Date.parse(beforeDate) : NaN;
+    return history
+        .filter(m =>
+            finished(m) &&
+            (m.homeTeam?.name === t || m.awayTeam?.name === t) &&
+            (
+                !Number.isFinite(cutoff) ||
+                Date.parse(m.utcDate) < cutoff
+            )
+        )
+        .sort((a, b) =>
+            new Date(b.utcDate) - new Date(a.utcDate)
+        );
+}
 function result(m,t){let home=m.homeTeam?.name===t,g=home?m.score.fullTime.home:m.score.fullTime.away,a=home?m.score.fullTime.away:m.score.fullTime.home;return{gf:g,ga:a,p:g>a?3:g===a?1:0,r:g>a?"V":g===a?"R":"P",m}}
 function sum(ms,t){let s=ms.map(m=>result(m,t)),w=s.filter(x=>x.r==="V").length,d=s.filter(x=>x.r==="R").length,l=s.filter(x=>x.r==="P").length,g=s.reduce((n,x)=>n+x.gf,0),a=s.reduce((n,x)=>n+x.ga,0),p=s.reduce((n,x)=>n+x.p,0);return{n:s.length,w,d,l,g,a,p,avgG:s.length?(g/s.length).toFixed(2):"—",avgA:s.length?(a/s.length).toFixed(2):"—",s}}
 function tile(l,v){return'<div class="stat"><span class="muted">'+l+'</span><strong>'+v+'</strong></div>'}
@@ -23,7 +37,7 @@ function renderTeamStats(){let t=teamSelect.value,e=document.getElementById("tea
 function fact(n){let r=1;for(let i=2;i<=n;i++)r*=i;return r;}
 function predictMatch(m){
  const home=m.homeTeam?.name||"Domácí",away=m.awayTeam?.name||"Hosté";
- const hm=teamMatches(home),am=teamMatches(away);
+ const hm=teamMatches(home,m.utcDate),am=teamMatches(away,m.utcDate);
  const h5=sum(hm.slice(0,5),home),a5=sum(am.slice(0,5),away);
  const hh=sum(hm.filter(x=>x.homeTeam?.name===home).slice(0,10),home);
  const aa=sum(am.filter(x=>x.awayTeam?.name===away).slice(0,10),away);
@@ -46,8 +60,94 @@ function predictionMarkup(p){
  return '<div class="statgrid">'+tile("1 · "+esc(p.home),pc(p.one))+tile("X · Remíza",pc(p.x))+tile("2 · "+esc(p.away),pc(p.two))+tile("Odhad gólů",p.lh.toFixed(2)+" : "+p.la.toFixed(2))+'</div><p class="muted">Orientační odhad pomocí Poissonova modelu z historických gólů, domácí/venkovní bilance a poslední formy. Použito až '+p.available+' posledních zápasů na tým; nejde o jistotu ani doporučení sázky.</p>';
 }
 
-function analyze(m){let home=m.homeTeam?.name||"Domácí",away=m.awayTeam?.name||"Hosté",hm=teamMatches(home),am=teamMatches(away),h5=sum(hm.slice(0,5),home),a5=sum(am.slice(0,5),away),hd=sum(hm.filter(x=>x.homeTeam?.name===home),home),av=sum(am.filter(x=>x.awayTeam?.name===away),away),shared=hm.filter(x=>x.homeTeam?.name===away||x.awayTeam?.name===away).sort((a,b)=>new Date(b.utcDate)-new Date(a.utcDate)).slice(0,5),e=document.getElementById("matchAnalysis");
-e.innerHTML='<h3>'+esc(home)+' – '+esc(away)+'</h3><p>'+esc(m.competition?.name||"")+' · '+esc(formatDate(m.utcDate))+'</p><div class="teamcols"><div class="teamcol"><h3>🏠 '+esc(home)+'</h3><p>Forma · posledních '+h5.n+' zápasů</p><div class="statgrid">'+tile("Bilance V–R–P",h5.w+"–"+h5.d+"–"+h5.l)+tile("Body",h5.p+" / "+(h5.n*3))+tile("Vstřelené / zápas",h5.avgG)+tile("Inkasované / zápas",h5.avgA)+'</div><p>Doma v historii: '+hd.w+' výher, '+hd.d+' remíz, '+hd.l+' proher</p><p>Góly doma: '+hd.g+':'+hd.a+'</p></div><div class="teamcol"><h3>✈️ '+esc(away)+'</h3><p>Forma · posledních '+a5.n+' zápasů</p><div class="statgrid">'+tile("Bilance V–R–P",a5.w+"–"+a5.d+"–"+a5.l)+tile("Body",a5.p+" / "+(a5.n*3))+tile("Vstřelené / zápas",a5.avgG)+tile("Inkasované / zápas",a5.avgA)+'</div><p>Venku v historii: '+av.w+' výher, '+av.d+' remíz, '+av.l+' proher</p><p>Góly venku: '+av.g+':'+av.a+'</p></div></div><h3>🎯 Pravděpodobnost 1 / X / 2</h3>'+predictionMarkup(predictMatch(m))+'<h3>Vzájemné zápasy</h3>'+(shared.length?shared.map(x=>'<p>'+esc(formatDate(x.utcDate))+' · '+esc(x.homeTeam?.name)+' '+x.score.fullTime.home+':'+x.score.fullTime.away+' '+esc(x.awayTeam?.name)+'</p>').join(""):'<p class="muted">V dostupné historii nebyly nalezeny vzájemné zápasy.</p>')+'<p class="muted">Odhad 1 / X / 2 vychází z historických gólů a formy pomocí Poissonova modelu. Je orientační; skutečný výsledek může být jiný.</p>';e.scrollIntoView({behavior:"smooth",block:"start"})}
+
+function mlFeaturesForTeam(team, venue, beforeDate){
+ const matches=teamMatches(team,beforeDate);
+ const last5=matches.slice(0,5);
+ const results=last5.map(m=>result(m,team));
+ const n=last5.length;
+ const goalsFor=n?results.reduce((a,r)=>a+r.gf,0)/n:null;
+ const goalsAgainst=n?results.reduce((a,r)=>a+r.ga,0)/n:null;
+ const wins=n?results.filter(r=>r.r==="V").length/n:null;
+ const over15=n?results.filter(r=>(r.gf+r.ga)>1).length/n:null;
+ return {
+   matchesBefore:matches.length,
+   goalsForAvg5:goalsFor,
+   goalsAgainstAvg5:goalsAgainst,
+   winRate5:wins,
+   over15Rate5:over15
+ };
+}
+function buildMlFeatures(m){
+ const home=m.homeTeam?.name||"Domácí",away=m.awayTeam?.name||"Hosté";
+ const h=mlFeaturesForTeam(home,"home",m.utcDate);
+ const a=mlFeaturesForTeam(away,"away",m.utcDate);
+ return {
+   home_matches_before:h.matchesBefore,
+   home_goals_for_avg5:h.goalsForAvg5,
+   home_goals_against_avg5:h.goalsAgainstAvg5,
+   home_win_rate5:h.winRate5,
+   home_over15_rate5:h.over15Rate5,
+   home_xg_for_avg5:null,
+   home_xg_against_avg5:null,
+   home_corners_avg5:null,
+   away_matches_before:a.matchesBefore,
+   away_goals_for_avg5:a.goalsForAvg5,
+   away_goals_against_avg5:a.goalsAgainstAvg5,
+   away_win_rate5:a.winRate5,
+   away_over15_rate5:a.over15Rate5,
+   away_xg_for_avg5:null,
+   away_xg_against_avg5:null,
+   away_corners_avg5:null,
+   competition:m.competition?.name||"UNKNOWN"
+ };
+}
+async function fetchMlPrediction(m){
+ const response=await fetch("http://127.0.0.1:8765/predict",{
+   method:"POST",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({features:buildMlFeatures(m)})
+ });
+ if(!response.ok)throw new Error("ML API HTTP "+response.status);
+ const data=await response.json();
+ if(!data.ok)throw new Error(data.error||"ML API nevrátila výsledek");
+ return data;
+}
+function mlPredictionMarkup(data){
+ const pc=v=>Math.round(v*100)+"%";
+ return '<div class="card"><h3>🤖 ML model · doplňkový odhad</h3><div class="statgrid">'+
+   tile("Výhra domácích",pc(data.probability_home_win))+
+   tile("Domácí nevyhrají",pc(data.probability_not_home_win))+
+   '</div><p class="muted">Logistický model odhaduje pouze výhru domácích proti výsledku remíza/výhra hostů; nejde o samostatnou predikci 1/X/2. Historie neobsahuje xG ani rohy, proto jsou tyto vstupy ponechány jako chybějící a model je doplňuje naučenou imputací. Výsledek je orientační a může být méně spolehlivý.</p></div>';
+}
+
+async function analyze(m){
+ const home=m.homeTeam?.name||"Domácí",away=m.awayTeam?.name||"Hosté";
+ const hm=teamMatches(home,m.utcDate),am=teamMatches(away,m.utcDate);
+ const h5=sum(hm.slice(0,5),home),a5=sum(am.slice(0,5),away);
+ const hd=sum(hm.filter(x=>x.homeTeam?.name===home),home);
+ const av=sum(am.filter(x=>x.awayTeam?.name===away),away);
+ const shared=hm.filter(x=>(x.homeTeam?.name===away||x.awayTeam?.name===away)&&Date.parse(x.utcDate)<Date.parse(m.utcDate))
+   .sort((a,b)=>new Date(b.utcDate)-new Date(a.utcDate)).slice(0,5);
+ const e=document.getElementById("matchAnalysis");
+ const matchKey=key(m);
+ e.dataset.matchKey=matchKey;
+ e.innerHTML='<h3>'+esc(home)+' – '+esc(away)+'</h3><p>'+esc(m.competition?.name||"")+' · '+esc(formatDate(m.utcDate))+'</p>'+
+ '<div class="teamcols"><div class="teamcol"><h3>🏠 '+esc(home)+'</h3><p>Forma · posledních '+h5.n+' zápasů před tímto utkáním</p><div class="statgrid">'+tile("Bilance V–R–P",h5.w+"–"+h5.d+"–"+h5.l)+tile("Body",h5.p+" / "+(h5.n*3))+tile("Vstřelené / zápas",h5.avgG)+tile("Inkasované / zápas",h5.avgA)+'</div><p>Doma v dostupné předchozí historii: '+hd.w+' výher, '+hd.d+' remíz, '+hd.l+' proher</p><p>Góly doma: '+hd.g+':'+hd.a+'</p></div>'+
+ '<div class="teamcol"><h3>✈️ '+esc(away)+'</h3><p>Forma · posledních '+a5.n+' zápasů před tímto utkáním</p><div class="statgrid">'+tile("Bilance V–R–P",a5.w+"–"+a5.d+"–"+a5.l)+tile("Body",a5.p+" / "+(a5.n*3))+tile("Vstřelené / zápas",a5.avgG)+tile("Inkasované / zápas",a5.avgA)+'</div><p>Venku v dostupné předchozí historii: '+av.w+' výher, '+av.d+' remíz, '+av.l+' proher</p><p>Góly venku: '+av.g+':'+av.a+'</p></div></div>'+
+ '<h3>🎯 Pravděpodobnost 1 / X / 2</h3>'+predictionMarkup(predictMatch(m))+
+ '<div id="mlPrediction"><p class="muted">Načítám doplňkový odhad ML modelu…</p></div>'+
+ '<h3>Vzájemné zápasy</h3>'+(shared.length?shared.map(x=>'<p>'+esc(formatDate(x.utcDate))+' · '+esc(x.homeTeam?.name)+' '+x.score.fullTime.home+':'+x.score.fullTime.away+' '+esc(x.awayTeam?.name)+'</p>').join(""):'<p class="muted">V dostupné historii před tímto utkáním nebyly nalezeny vzájemné zápasy.</p>')+
+ '<p class="muted">Poissonův odhad 1 / X / 2 vychází z historických gólů a formy. ML model je doplňkový a odhaduje pouze výhru domácích. Oba odhady jsou orientační.</p>';
+ e.scrollIntoView({behavior:"smooth",block:"start"});
+ const mlContainer=document.getElementById("mlPrediction");
+ try{
+   const data=await fetchMlPrediction(m);
+   if(e.dataset.matchKey===matchKey)mlContainer.innerHTML=mlPredictionMarkup(data);
+ }catch(err){
+   if(e.dataset.matchKey===matchKey)mlContainer.innerHTML='<div class="card"><h3>🤖 ML model</h3><p class="muted">ML API není dostupné. Poissonova predikce funguje dál. Spusť v samostatném PowerShellu <code>python .\\scripts\\ml_api.py</code> a otevři aplikaci přes lokální HTTP server.</p><p class="muted">Detail: '+esc(err.message)+'</p></div>';
+ }
+}
 function renderLeagues(){let old=leagueEl.value,ls=[...new Set(currentMatches().map(m=>m.competition?.name).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"cs"));leagueEl.innerHTML='<option value="">Všechny soutěže</option>'+ls.map(x=>'<option value="'+esc(x)+'">'+esc(x)+'</option>').join("");if(ls.includes(old))leagueEl.value=old}
 function render(){let ms=currentMatches(),q=searchEl.value.trim().toLocaleLowerCase("cs-CZ"),l=leagueEl.value,list=ms.filter(m=>(!l||m.competition?.name===l)&&(!q||((m.homeTeam?.name||"")+" "+(m.awayTeam?.name||"")).toLocaleLowerCase("cs-CZ").includes(q)));document.getElementById("count").textContent="Zobrazeno "+list.length+" z "+ms.length+" zápasů.";matchesEl.innerHTML=list.length?list.map(m=>{let id=key(m),h=m.score?.fullTime?.home,a=m.score?.fullTime?.away,has=h!=null&&a!=null;return'<div class="card"><div class="row"><span class="badge">'+esc(m.competition?.name||"Soutěž")+'</span><span class="badge">'+(finished(m)?"Odehráno":m.status==="IN_PLAY"?"Právě se hraje":"Naplánováno")+'</span></div><h3>'+esc(m.homeTeam?.name)+' – '+esc(m.awayTeam?.name)+'</h3>'+((mode==="history"||has)?'<p class="score">'+h+' : '+a+'</p>':'')+'<p>'+esc(formatDate(m.utcDate))+'</p><div class="row"><button data-select="'+esc(id)+'">'+(selected.has(id)?"✓ Vybráno":"＋ Vybrat zápas")+'</button><button data-analyze="'+esc(id)+'">Analyzovat utkání</button></div></div>'}).join(""):'<div class="card">Žádné zápasy neodpovídají filtru.</div>';document.getElementById("selectedCount").textContent="Vybrané zápasy: "+selected.size;document.getElementById("selectedList").innerHTML=[...selected.values()].map(m=>'<p>'+esc(m.homeTeam?.name)+' – '+esc(m.awayTeam?.name)+'<br><small>'+esc(m.competition?.name||"")+'</small></p>').join("")||"Zatím nemáš vybrané žádné zápasy.";document.getElementById("upcomingBtn").classList.toggle("active",mode==="upcoming");document.getElementById("historyBtn").classList.toggle("active",mode==="history")}
 matchesEl.addEventListener("click",e=>{let b=e.target.closest("button[data-analyze]");if(b){let m=currentMatches().find(x=>key(x)===b.dataset.analyze);if(m)analyze(m);return}b=e.target.closest("button[data-select]");if(!b)return;let m=currentMatches().find(x=>key(x)===b.dataset.select);if(!m)return;let k=key(m);selected.has(k)?selected.delete(k):selected.set(k,m);render()});
