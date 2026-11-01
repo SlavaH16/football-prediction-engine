@@ -1,75 +1,55 @@
 {
-  "generated_at": "2026-10-31T13:53:15.652793+00:00",
+  "generated_at": "2026-11-01T14:31:41.690238+00:00",
   "cutoff_date": "2023-10-16",
   "max_new_matches": 180,
   "max_per_league": 30,
-  "known_ids_before_run": 9367,
-  "new_matches_saved": 24,
-  "known_ids_after_run": 9391,
-  "discovered_unstored_matches": 24,
+  "known_ids_before_run": 9502,
+  "new_matches_saved": 29,
+  "known_ids_after_run": 9531,
+  "discovered_unstored_matches": 29,
   "leagues": [
     {
       "league": "Premier League",
       "league_id": "l_4WFCIZ",
-      "new_matches": 0,
+      "new_matches": 8,
       "file": "data/pitchapi_history/Premier_League_2026_2027.json",
       "seasons_scanned": 6
     },
     {
       "league": "Czech First League",
       "league_id": "l_0F4I4F",
-      "new_matches": 0,
+      "new_matches": 6,
       "file": "data/pitchapi_history/Czech_First_League_2026_2027.json",
       "seasons_scanned": 3
     },
     {
       "league": "Bundesliga",
       "league_id": "l_1Isor4",
-      "new_matches": 1,
+      "new_matches": 6,
       "file": "data/pitchapi_history/Bundesliga_2026_2027.json",
       "seasons_scanned": 6
     },
     {
       "league": "LaLiga",
       "league_id": "l_0ErfuF",
-      "new_matches": 10,
+      "new_matches": 4,
       "file": "data/pitchapi_history/LaLiga_2026_2027.json",
       "seasons_scanned": 6
     },
     {
       "league": "Serie A",
       "league_id": "l_0ALvwF",
-      "new_matches": 10,
+      "new_matches": 4,
       "file": "data/pitchapi_history/Serie_A_2026_2027.json",
       "seasons_scanned": 6
     },
     {
       "league": "Ligue 1",
       "league_id": "l_3FJFUl",
-      "new_matches": 3,
+      "new_matches": 1,
       "file": "data/pitchapi_history/Ligue_1_2026_2027.json",
       "seasons_scanned": 6
     }
   ],
-  "errors": [
-    "LaLiga 2023/2024 match m_3LO221 advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a1923c-11d9-7d55-939d-48466920a7ef)",
-    "LaLiga 2023/2024 match m_2doETQ advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a1923c-13df-7de4-9531-80b6c97c6c5d)",
-    "LaLiga 2023/2024 match m_2cUmDa advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a1923c-16a7-7c99-8322-23093e33859f)",
-    "LaLiga 2023/2024 match m_0KLOaW advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a1923c-18ad-76c4-93ae-24eedd4fb1a3)",
-    "LaLiga 2023/2024 match m_46d9pM advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a1923c-1aa9-7842-a861-4da52cd1dffb)",
-    "LaLiga 2023/2024 match m_3ONiyx advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a1923c-1cb6-7cad-97d7-a21fa1ffc39c)",
-    "LaLiga 2023/2024 match m_1XxfOC advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a1923c-1ec3-79ee-9332-0854205a844e)",
-    "LaLiga 2023/2024 match m_0FzcIQ advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a1923c-20c1-75fb-9dbf-e246c1bbe748)",
-    "LaLiga 2023/2024 match m_1rLfIJ advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a1923c-22bd-794b-bf15-309f8fb9e503)",
-    "Serie A 2023/2024 match m_1njOIY advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a1923c-368b-7840-91e7-c120b26b9cea)",
-    "Serie A 2023/2024 match m_069jie advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a1923c-389e-70ed-a6c2-fed7d65decff)",
-    "Serie A 2023/2024 match m_41XbjJ advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a1923c-3a95-70f5-9cd7-0b09ffb916b9)",
-    "Serie A 2023/2024 match m_2ts8Bt advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a1923c-3c96-7a12-b1d5-ee343b26c978)",
-    "Serie A 2023/2024 match m_2c09Kk advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a1923c-3e9c-76fd-b280-7e644c366c5c)",
-    "Serie A 2023/2024 match m_0yYdkF advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a1923c-408d-75a4-b1e7-9d2b55c64d6e)",
-    "Serie A 2023/2024 match m_0vfQHQ advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a1923c-4288-7efe-a2c9-584bf9442604)",
-    "Serie A 2023/2024 match m_3y3OI4 advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a1923c-448a-797f-b439-af77948455a1)",
-    "Serie A 2023/2024 match m_1Bv2nH advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a1923c-4688-77d7-8155-ade688ad71a1)",
-    "Serie A 2023/2024 match m_156Or1 advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a1923c-4889-7c0f-bd39-985c8e29d471)"
-  ]
+  "errors": []
 }
