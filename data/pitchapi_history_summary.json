@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-11-04T15:45:23.477417+00:00",
+  "generated_at": "2026-11-05T15:48:53.913939+00:00",
   "cutoff_date": "2023-10-16",
   "max_new_matches": 180,
   "max_per_league": 30,
-  "known_ids_before_run": 9428,
-  "new_matches_saved": 0,
-  "known_ids_after_run": 9428,
-  "discovered_unstored_matches": 0,
+  "known_ids_before_run": 9446,
+  "new_matches_saved": 1,
+  "known_ids_after_run": 9447,
+  "discovered_unstored_matches": 1,
   "leagues": [
     {
       "league": "Premier League",
@@ -18,7 +18,7 @@
     {
       "league": "Czech First League",
       "league_id": "l_0F4I4F",
-      "new_matches": 0,
+      "new_matches": 1,
       "file": "data/pitchapi_history/Czech_First_League_2026_2027.json",
       "seasons_scanned": 3
     },
