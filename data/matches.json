@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-08T05:57:46.186655+00:00",
+  "updated": "2026-11-08T13:19:35.351358+00:00",
   "matches": [
     {
       "area": {
@@ -90,11 +90,11 @@
       },
       "id": 558840,
       "utcDate": "2026-11-08T11:15:00Z",
-      "status": "TIMED",
+      "status": "FINISHED",
       "matchday": 12,
       "stage": "REGULAR_SEASON",
       "group": null,
-      "lastUpdated": "2026-11-08T00:20:27Z",
+      "lastUpdated": "2026-11-08T13:17:39Z",
       "homeTeam": {
         "id": 673,
         "name": "SC Heerenveen",
@@ -110,21 +110,28 @@
         "crest": "https://crests.football-data.org/675.png"
       },
       "score": {
-        "winner": null,
+        "winner": "HOME_TEAM",
         "duration": "REGULAR",
         "fullTime": {
-          "home": null,
-          "away": null
+          "home": 5,
+          "away": 3
         },
         "halfTime": {
-          "home": null,
-          "away": null
+          "home": 1,
+          "away": 2
         }
       },
       "odds": {
         "msg": "Activate Odds-Package in User-Panel to retrieve odds."
       },
-      "referees": []
+      "referees": [
+        {
+          "id": 43899,
+          "name": "Danny Makkelie",
+          "type": "REFEREE",
+          "nationality": "Netherlands"
+        }
+      ]
     },
     {
       "area": {
@@ -149,11 +156,11 @@
       },
       "id": 558533,
       "utcDate": "2026-11-08T11:30:00Z",
-      "status": "TIMED",
+      "status": "IN_PLAY",
       "matchday": 11,
       "stage": "REGULAR_SEASON",
       "group": null,
-      "lastUpdated": "2026-11-08T01:32:00Z",
+      "lastUpdated": "2026-11-08T13:19:15Z",
       "homeTeam": {
         "id": 113,
         "name": "SSC Napoli",
@@ -169,21 +176,28 @@
         "crest": "https://crests.football-data.org/110.png"
       },
       "score": {
-        "winner": null,
+        "winner": "DRAW",
         "duration": "REGULAR",
         "fullTime": {
-          "home": null,
-          "away": null
+          "home": 1,
+          "away": 1
         },
         "halfTime": {
-          "home": null,
-          "away": null
+          "home": 0,
+          "away": 1
         }
       },
       "odds": {
         "msg": "Activate Odds-Package in User-Panel to retrieve odds."
       },
-      "referees": []
+      "referees": [
+        {
+          "id": 11002,
+          "name": "Luca Pairetto",
+          "type": "REFEREE",
+          "nationality": "Italy"
+        }
+      ]
     },
     {
       "area": {
@@ -208,11 +222,11 @@
       },
       "id": 564738,
       "utcDate": "2026-11-08T13:00:00Z",
-      "status": "TIMED",
+      "status": "IN_PLAY",
       "matchday": 12,
       "stage": "REGULAR_SEASON",
       "group": null,
-      "lastUpdated": "2026-11-08T00:20:28Z",
+      "lastUpdated": "2026-11-08T13:18:43Z",
       "homeTeam": {
         "id": 285,
         "name": "Elche CF",
@@ -228,11 +242,11 @@
         "crest": "https://crests.football-data.org/90.png"
       },
       "score": {
-        "winner": null,
+        "winner": "DRAW",
         "duration": "REGULAR",
         "fullTime": {
-          "home": null,
-          "away": null
+          "home": 0,
+          "away": 0
         },
         "halfTime": {
           "home": null,
@@ -242,7 +256,14 @@
       "odds": {
         "msg": "Activate Odds-Package in User-Panel to retrieve odds."
       },
-      "referees": []
+      "referees": [
+        {
+          "id": 207113,
+          "name": "César Soto Grado",
+          "type": "REFEREE",
+          "nationality": "Spain"
+        }
+      ]
     },
     {
       "area": {
@@ -301,7 +322,14 @@
       "odds": {
         "msg": "Activate Odds-Package in User-Panel to retrieve odds."
       },
-      "referees": []
+      "referees": [
+        {
+          "id": 17136,
+          "name": "Joey Kooij",
+          "type": "REFEREE",
+          "nationality": "Netherlands"
+        }
+      ]
     },
     {
       "area": {
@@ -360,7 +388,14 @@
       "odds": {
         "msg": "Activate Odds-Package in User-Panel to retrieve odds."
       },
-      "referees": []
+      "referees": [
+        {
+          "id": 11430,
+          "name": "Simon Hooper",
+          "type": "REFEREE",
+          "nationality": "England"
+        }
+      ]
     },
     {
       "area": {
@@ -419,7 +454,14 @@
       "odds": {
         "msg": "Activate Odds-Package in User-Panel to retrieve odds."
       },
-      "referees": []
+      "referees": [
+        {
+          "id": 283434,
+          "name": "Claudio Allegretta",
+          "type": "REFEREE",
+          "nationality": "Italy"
+        }
+      ]
     },
     {
       "area": {
@@ -478,7 +520,14 @@
       "odds": {
         "msg": "Activate Odds-Package in User-Panel to retrieve odds."
       },
-      "referees": []
+      "referees": [
+        {
+          "id": 11378,
+          "name": "Tony Harrington",
+          "type": "REFEREE",
+          "nationality": "England"
+        }
+      ]
     },
     {
       "area": {
@@ -537,7 +586,14 @@
       "odds": {
         "msg": "Activate Odds-Package in User-Panel to retrieve odds."
       },
-      "referees": []
+      "referees": [
+        {
+          "id": 23568,
+          "name": "Jarred Gillett",
+          "type": "REFEREE",
+          "nationality": "Australia"
+        }
+      ]
     },
     {
       "area": {
@@ -596,7 +652,14 @@
       "odds": {
         "msg": "Activate Odds-Package in User-Panel to retrieve odds."
       },
-      "referees": []
+      "referees": [
+        {
+          "id": 9374,
+          "name": "Clément Turpin",
+          "type": "REFEREE",
+          "nationality": "France"
+        }
+      ]
     },
     {
       "area": {
@@ -655,7 +718,14 @@
       "odds": {
         "msg": "Activate Odds-Package in User-Panel to retrieve odds."
       },
-      "referees": []
+      "referees": [
+        {
+          "id": 11029,
+          "name": "Davide Massa",
+          "type": "REFEREE",
+          "nationality": "Italy"
+        }
+      ]
     },
     {
       "area": {
@@ -714,7 +784,14 @@
       "odds": {
         "msg": "Activate Odds-Package in User-Panel to retrieve odds."
       },
-      "referees": []
+      "referees": [
+        {
+          "id": 11605,
+          "name": "Michael Oliver",
+          "type": "REFEREE",
+          "nationality": "England"
+        }
+      ]
     },
     {
       "area": {
@@ -773,7 +850,14 @@
       "odds": {
         "msg": "Activate Odds-Package in User-Panel to retrieve odds."
       },
-      "referees": []
+      "referees": [
+        {
+          "id": 43878,
+          "name": "Felix Zwayer",
+          "type": "REFEREE",
+          "nationality": "Germany"
+        }
+      ]
     },
     {
       "area": {
@@ -832,7 +916,14 @@
       "odds": {
         "msg": "Activate Odds-Package in User-Panel to retrieve odds."
       },
-      "referees": []
+      "referees": [
+        {
+          "id": 206203,
+          "name": "Juan Martínez Munuera",
+          "type": "REFEREE",
+          "nationality": "Spain"
+        }
+      ]
     },
     {
       "area": {
