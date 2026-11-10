@@ -1,52 +1,52 @@
 {
-  "generated_at": "2026-11-09T17:48:33.224497+00:00",
+  "generated_at": "2026-11-10T15:48:16.324031+00:00",
   "cutoff_date": "2023-10-16",
   "max_new_matches": 180,
   "max_per_league": 30,
-  "known_ids_before_run": 9423,
-  "new_matches_saved": 26,
-  "known_ids_after_run": 9449,
-  "discovered_unstored_matches": 26,
+  "known_ids_before_run": 9377,
+  "new_matches_saved": 0,
+  "known_ids_after_run": 9377,
+  "discovered_unstored_matches": 0,
   "leagues": [
     {
       "league": "Premier League",
       "league_id": "l_4WFCIZ",
-      "new_matches": 5,
+      "new_matches": 0,
       "file": "data/pitchapi_history/Premier_League_2026_2027.json",
       "seasons_scanned": 6
     },
     {
       "league": "Czech First League",
       "league_id": "l_0F4I4F",
-      "new_matches": 3,
+      "new_matches": 0,
       "file": "data/pitchapi_history/Czech_First_League_2026_2027.json",
       "seasons_scanned": 3
     },
     {
       "league": "Bundesliga",
       "league_id": "l_1Isor4",
-      "new_matches": 3,
+      "new_matches": 0,
       "file": "data/pitchapi_history/Bundesliga_2026_2027.json",
       "seasons_scanned": 6
     },
     {
       "league": "LaLiga",
       "league_id": "l_0ErfuF",
-      "new_matches": 5,
+      "new_matches": 0,
       "file": "data/pitchapi_history/LaLiga_2026_2027.json",
       "seasons_scanned": 6
     },
     {
       "league": "Serie A",
       "league_id": "l_0ALvwF",
-      "new_matches": 4,
+      "new_matches": 0,
       "file": "data/pitchapi_history/Serie_A_2026_2027.json",
       "seasons_scanned": 6
     },
     {
       "league": "Ligue 1",
       "league_id": "l_3FJFUl",
-      "new_matches": 6,
+      "new_matches": 0,
       "file": "data/pitchapi_history/Ligue_1_2026_2027.json",
       "seasons_scanned": 6
     }
