@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-10T19:42:44.643587+00:00",
+  "updated": "2026-11-11T06:09:38.678171+00:00",
   "matches": [
     {
       "area": {
@@ -28,7 +28,7 @@
       "matchday": 35,
       "stage": "REGULAR_SEASON",
       "group": null,
-      "lastUpdated": "2026-11-10T00:20:18Z",
+      "lastUpdated": "2026-11-11T00:20:28Z",
       "homeTeam": {
         "id": 4364,
         "name": "Mirassol FC",
@@ -87,7 +87,7 @@
       "matchday": 21,
       "stage": "REGULAR_SEASON",
       "group": null,
-      "lastUpdated": "2026-11-10T00:20:18Z",
+      "lastUpdated": "2026-11-11T00:20:28Z",
       "homeTeam": {
         "id": 1772,
         "name": "Chapecoense AF",
