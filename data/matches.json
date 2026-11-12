@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-12T00:39:38.805632+00:00",
+  "updated": "2026-11-12T15:08:48.860760+00:00",
   "matches": [
     {
       "area": {
@@ -28,7 +28,7 @@
       "matchday": 35,
       "stage": "REGULAR_SEASON",
       "group": null,
-      "lastUpdated": "2026-11-11T00:20:28Z",
+      "lastUpdated": "2026-11-12T00:20:29Z",
       "homeTeam": {
         "id": 4364,
         "name": "Mirassol FC",
@@ -83,11 +83,11 @@
       },
       "id": 554942,
       "utcDate": "2026-11-14T23:30:00Z",
-      "status": "TIMED",
+      "status": "2026-07-29 20:00:00Z",
       "matchday": 21,
       "stage": "REGULAR_SEASON",
       "group": null,
-      "lastUpdated": "2026-11-11T00:20:28Z",
+      "lastUpdated": "2026-11-12T08:21:42Z",
       "homeTeam": {
         "id": 1772,
         "name": "Chapecoense AF",
@@ -146,7 +146,7 @@
       "matchday": 35,
       "stage": "REGULAR_SEASON",
       "group": null,
-      "lastUpdated": "2026-11-11T00:20:28Z",
+      "lastUpdated": "2026-11-12T01:32:01Z",
       "homeTeam": {
         "id": 4241,
         "name": "Coritiba FBC",
@@ -205,7 +205,7 @@
       "matchday": 35,
       "stage": "REGULAR_SEASON",
       "group": null,
-      "lastUpdated": "2026-11-11T00:20:28Z",
+      "lastUpdated": "2026-11-12T01:32:01Z",
       "homeTeam": {
         "id": 4287,
         "name": "Clube do Remo",
@@ -258,26 +258,26 @@
         "currentMatchday": 35,
         "winner": null
       },
-      "id": 555083,
+      "id": 555082,
       "utcDate": "2026-11-18T23:30:00Z",
       "status": "TIMED",
       "matchday": 35,
       "stage": "REGULAR_SEASON",
       "group": null,
-      "lastUpdated": "2026-11-11T00:20:28Z",
+      "lastUpdated": "2026-11-12T01:32:01Z",
       "homeTeam": {
-        "id": 1783,
-        "name": "CR Flamengo",
-        "shortName": "Flamengo",
-        "tla": "FLA",
-        "crest": "https://crests.football-data.org/1783.png"
+        "id": 1771,
+        "name": "Cruzeiro EC",
+        "shortName": "Cruzeiro",
+        "tla": "CRU",
+        "crest": "https://crests.football-data.org/1771.png"
       },
       "awayTeam": {
-        "id": 1768,
-        "name": "CA Paranaense",
-        "shortName": "Paranaense",
-        "tla": "CAP",
-        "crest": "https://crests.football-data.org/1768.png"
+        "id": 1769,
+        "name": "SE Palmeiras",
+        "shortName": "Palmeiras",
+        "tla": "PAL",
+        "crest": "https://crests.football-data.org/1769.png"
       },
       "score": {
         "winner": null,
@@ -317,26 +317,26 @@
         "currentMatchday": 35,
         "winner": null
       },
-      "id": 555082,
+      "id": 555083,
       "utcDate": "2026-11-18T23:30:00Z",
       "status": "TIMED",
       "matchday": 35,
       "stage": "REGULAR_SEASON",
       "group": null,
-      "lastUpdated": "2026-11-11T00:20:28Z",
+      "lastUpdated": "2026-11-12T01:32:01Z",
       "homeTeam": {
-        "id": 1771,
-        "name": "Cruzeiro EC",
-        "shortName": "Cruzeiro",
-        "tla": "CRU",
-        "crest": "https://crests.football-data.org/1771.png"
+        "id": 1783,
+        "name": "CR Flamengo",
+        "shortName": "Flamengo",
+        "tla": "FLA",
+        "crest": "https://crests.football-data.org/1783.png"
       },
       "awayTeam": {
-        "id": 1769,
-        "name": "SE Palmeiras",
-        "shortName": "Palmeiras",
-        "tla": "PAL",
-        "crest": "https://crests.football-data.org/1769.png"
+        "id": 1768,
+        "name": "CA Paranaense",
+        "shortName": "Paranaense",
+        "tla": "CAP",
+        "crest": "https://crests.football-data.org/1768.png"
       },
       "score": {
         "winner": null,
