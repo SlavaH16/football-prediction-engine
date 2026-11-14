@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-14T06:16:20.991103+00:00",
+  "updated": "2026-11-14T13:33:49.776028+00:00",
   "matches": [
     {
       "area": {
@@ -258,65 +258,6 @@
         "currentMatchday": 35,
         "winner": null
       },
-      "id": 555083,
-      "utcDate": "2026-11-18T23:30:00Z",
-      "status": "TIMED",
-      "matchday": 35,
-      "stage": "REGULAR_SEASON",
-      "group": null,
-      "lastUpdated": "2026-11-14T00:20:33Z",
-      "homeTeam": {
-        "id": 1783,
-        "name": "CR Flamengo",
-        "shortName": "Flamengo",
-        "tla": "FLA",
-        "crest": "https://crests.football-data.org/1783.png"
-      },
-      "awayTeam": {
-        "id": 1768,
-        "name": "CA Paranaense",
-        "shortName": "Paranaense",
-        "tla": "CAP",
-        "crest": "https://crests.football-data.org/1768.png"
-      },
-      "score": {
-        "winner": null,
-        "duration": "REGULAR",
-        "fullTime": {
-          "home": null,
-          "away": null
-        },
-        "halfTime": {
-          "home": null,
-          "away": null
-        }
-      },
-      "odds": {
-        "msg": "Activate Odds-Package in User-Panel to retrieve odds."
-      },
-      "referees": []
-    },
-    {
-      "area": {
-        "id": 2032,
-        "name": "Brazil",
-        "code": "BRA",
-        "flag": "https://crests.football-data.org/764.svg"
-      },
-      "competition": {
-        "id": 2013,
-        "name": "Campeonato Brasileiro Série A",
-        "code": "BSA",
-        "type": "LEAGUE",
-        "emblem": "https://crests.football-data.org/bsa.png"
-      },
-      "season": {
-        "id": 2474,
-        "startDate": "2026-01-28",
-        "endDate": "2026-12-02",
-        "currentMatchday": 35,
-        "winner": null
-      },
       "id": 555082,
       "utcDate": "2026-11-18T23:30:00Z",
       "status": "TIMED",
@@ -376,26 +317,26 @@
         "currentMatchday": 35,
         "winner": null
       },
-      "id": 555084,
-      "utcDate": "2026-11-19T00:30:00Z",
+      "id": 555083,
+      "utcDate": "2026-11-18T23:30:00Z",
       "status": "TIMED",
       "matchday": 35,
       "stage": "REGULAR_SEASON",
       "group": null,
       "lastUpdated": "2026-11-14T00:20:33Z",
       "homeTeam": {
-        "id": 1767,
-        "name": "Grêmio FBPA",
-        "shortName": "Grêmio",
-        "tla": "FBP",
-        "crest": "https://crests.football-data.org/1767.png"
+        "id": 1783,
+        "name": "CR Flamengo",
+        "shortName": "Flamengo",
+        "tla": "FLA",
+        "crest": "https://crests.football-data.org/1783.png"
       },
       "awayTeam": {
-        "id": 1777,
-        "name": "EC Bahia",
-        "shortName": "Bahia",
-        "tla": "BAH",
-        "crest": "https://crests.football-data.org/1777.png"
+        "id": 1768,
+        "name": "CA Paranaense",
+        "shortName": "Paranaense",
+        "tla": "CAP",
+        "crest": "https://crests.football-data.org/1768.png"
       },
       "score": {
         "winner": null,
@@ -494,26 +435,26 @@
         "currentMatchday": 35,
         "winner": null
       },
-      "id": 555089,
-      "utcDate": "2026-11-19T22:30:00Z",
+      "id": 555084,
+      "utcDate": "2026-11-19T00:30:00Z",
       "status": "TIMED",
       "matchday": 35,
       "stage": "REGULAR_SEASON",
       "group": null,
       "lastUpdated": "2026-11-14T00:20:33Z",
       "homeTeam": {
-        "id": 1782,
-        "name": "EC Vitória",
-        "shortName": "Vitória",
-        "tla": "VIT",
-        "crest": "https://crests.football-data.org/1782.png"
+        "id": 1767,
+        "name": "Grêmio FBPA",
+        "shortName": "Grêmio",
+        "tla": "FBP",
+        "crest": "https://crests.football-data.org/1767.png"
       },
       "awayTeam": {
-        "id": 4286,
-        "name": "RB Bragantino",
-        "shortName": "Bragantino",
-        "tla": "RBB",
-        "crest": "https://crests.football-data.org/4286.png"
+        "id": 1777,
+        "name": "EC Bahia",
+        "shortName": "Bahia",
+        "tla": "BAH",
+        "crest": "https://crests.football-data.org/1777.png"
       },
       "score": {
         "winner": null,
@@ -573,6 +514,65 @@
         "shortName": "Internacional",
         "tla": "SCI",
         "crest": "https://crests.football-data.org/6684.png"
+      },
+      "score": {
+        "winner": null,
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": null,
+          "away": null
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "odds": {
+        "msg": "Activate Odds-Package in User-Panel to retrieve odds."
+      },
+      "referees": []
+    },
+    {
+      "area": {
+        "id": 2032,
+        "name": "Brazil",
+        "code": "BRA",
+        "flag": "https://crests.football-data.org/764.svg"
+      },
+      "competition": {
+        "id": 2013,
+        "name": "Campeonato Brasileiro Série A",
+        "code": "BSA",
+        "type": "LEAGUE",
+        "emblem": "https://crests.football-data.org/bsa.png"
+      },
+      "season": {
+        "id": 2474,
+        "startDate": "2026-01-28",
+        "endDate": "2026-12-02",
+        "currentMatchday": 35,
+        "winner": null
+      },
+      "id": 555089,
+      "utcDate": "2026-11-19T22:30:00Z",
+      "status": "TIMED",
+      "matchday": 35,
+      "stage": "REGULAR_SEASON",
+      "group": null,
+      "lastUpdated": "2026-11-14T00:20:33Z",
+      "homeTeam": {
+        "id": 1782,
+        "name": "EC Vitória",
+        "shortName": "Vitória",
+        "tla": "VIT",
+        "crest": "https://crests.football-data.org/1782.png"
+      },
+      "awayTeam": {
+        "id": 4286,
+        "name": "RB Bragantino",
+        "shortName": "Bragantino",
+        "tla": "RBB",
+        "crest": "https://crests.football-data.org/4286.png"
       },
       "score": {
         "winner": null,
