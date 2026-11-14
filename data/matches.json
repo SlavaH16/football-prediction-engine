@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-14T13:33:49.776028+00:00",
+  "updated": "2026-11-14T22:20:50.459344+00:00",
   "matches": [
     {
       "area": {
@@ -24,11 +24,11 @@
       },
       "id": 555085,
       "utcDate": "2026-11-14T21:30:00Z",
-      "status": "TIMED",
+      "status": "IN_PLAY",
       "matchday": 35,
       "stage": "REGULAR_SEASON",
       "group": null,
-      "lastUpdated": "2026-11-14T00:20:33Z",
+      "lastUpdated": "2026-11-14T22:20:35Z",
       "homeTeam": {
         "id": 4364,
         "name": "Mirassol FC",
@@ -44,11 +44,11 @@
         "crest": "https://crests.football-data.org/1766.png"
       },
       "score": {
-        "winner": null,
+        "winner": "DRAW",
         "duration": "REGULAR",
         "fullTime": {
-          "home": null,
-          "away": null
+          "home": 0,
+          "away": 0
         },
         "halfTime": {
           "home": null,
@@ -58,7 +58,14 @@
       "odds": {
         "msg": "Activate Odds-Package in User-Panel to retrieve odds."
       },
-      "referees": []
+      "referees": [
+        {
+          "id": 206907,
+          "name": "Savio Pereira Sampaio",
+          "type": "REFEREE",
+          "nationality": "Brazil"
+        }
+      ]
     },
     {
       "area": {
@@ -117,7 +124,14 @@
       "odds": {
         "msg": "Activate Odds-Package in User-Panel to retrieve odds."
       },
-      "referees": []
+      "referees": [
+        {
+          "id": 206944,
+          "name": "Rodrigo Pereira de Lima",
+          "type": "REFEREE",
+          "nationality": "Brazil"
+        }
+      ]
     },
     {
       "area": {
@@ -258,7 +272,7 @@
         "currentMatchday": 35,
         "winner": null
       },
-      "id": 555082,
+      "id": 555083,
       "utcDate": "2026-11-18T23:30:00Z",
       "status": "TIMED",
       "matchday": 35,
@@ -266,18 +280,18 @@
       "group": null,
       "lastUpdated": "2026-11-14T00:20:33Z",
       "homeTeam": {
-        "id": 1771,
-        "name": "Cruzeiro EC",
-        "shortName": "Cruzeiro",
-        "tla": "CRU",
-        "crest": "https://crests.football-data.org/1771.png"
+        "id": 1783,
+        "name": "CR Flamengo",
+        "shortName": "Flamengo",
+        "tla": "FLA",
+        "crest": "https://crests.football-data.org/1783.png"
       },
       "awayTeam": {
-        "id": 1769,
-        "name": "SE Palmeiras",
-        "shortName": "Palmeiras",
-        "tla": "PAL",
-        "crest": "https://crests.football-data.org/1769.png"
+        "id": 1768,
+        "name": "CA Paranaense",
+        "shortName": "Paranaense",
+        "tla": "CAP",
+        "crest": "https://crests.football-data.org/1768.png"
       },
       "score": {
         "winner": null,
@@ -317,7 +331,7 @@
         "currentMatchday": 35,
         "winner": null
       },
-      "id": 555083,
+      "id": 555082,
       "utcDate": "2026-11-18T23:30:00Z",
       "status": "TIMED",
       "matchday": 35,
@@ -325,18 +339,18 @@
       "group": null,
       "lastUpdated": "2026-11-14T00:20:33Z",
       "homeTeam": {
-        "id": 1783,
-        "name": "CR Flamengo",
-        "shortName": "Flamengo",
-        "tla": "FLA",
-        "crest": "https://crests.football-data.org/1783.png"
+        "id": 1771,
+        "name": "Cruzeiro EC",
+        "shortName": "Cruzeiro",
+        "tla": "CRU",
+        "crest": "https://crests.football-data.org/1771.png"
       },
       "awayTeam": {
-        "id": 1768,
-        "name": "CA Paranaense",
-        "shortName": "Paranaense",
-        "tla": "CAP",
-        "crest": "https://crests.football-data.org/1768.png"
+        "id": 1769,
+        "name": "SE Palmeiras",
+        "shortName": "Palmeiras",
+        "tla": "PAL",
+        "crest": "https://crests.football-data.org/1769.png"
       },
       "score": {
         "winner": null,
@@ -494,7 +508,7 @@
         "currentMatchday": 35,
         "winner": null
       },
-      "id": 555088,
+      "id": 555089,
       "utcDate": "2026-11-19T22:30:00Z",
       "status": "TIMED",
       "matchday": 35,
@@ -502,18 +516,18 @@
       "group": null,
       "lastUpdated": "2026-11-14T00:20:33Z",
       "homeTeam": {
-        "id": 1780,
-        "name": "CR Vasco da Gama",
-        "shortName": "Vasco da Gama",
-        "tla": "VAS",
-        "crest": "https://crests.football-data.org/1780.png"
+        "id": 1782,
+        "name": "EC Vitória",
+        "shortName": "Vitória",
+        "tla": "VIT",
+        "crest": "https://crests.football-data.org/1782.png"
       },
       "awayTeam": {
-        "id": 6684,
-        "name": "SC Internacional",
-        "shortName": "Internacional",
-        "tla": "SCI",
-        "crest": "https://crests.football-data.org/6684.png"
+        "id": 4286,
+        "name": "RB Bragantino",
+        "shortName": "Bragantino",
+        "tla": "RBB",
+        "crest": "https://crests.football-data.org/4286.png"
       },
       "score": {
         "winner": null,
@@ -553,7 +567,7 @@
         "currentMatchday": 35,
         "winner": null
       },
-      "id": 555089,
+      "id": 555088,
       "utcDate": "2026-11-19T22:30:00Z",
       "status": "TIMED",
       "matchday": 35,
@@ -561,18 +575,18 @@
       "group": null,
       "lastUpdated": "2026-11-14T00:20:33Z",
       "homeTeam": {
-        "id": 1782,
-        "name": "EC Vitória",
-        "shortName": "Vitória",
-        "tla": "VIT",
-        "crest": "https://crests.football-data.org/1782.png"
+        "id": 1780,
+        "name": "CR Vasco da Gama",
+        "shortName": "Vasco da Gama",
+        "tla": "VAS",
+        "crest": "https://crests.football-data.org/1780.png"
       },
       "awayTeam": {
-        "id": 4286,
-        "name": "RB Bragantino",
-        "shortName": "Bragantino",
-        "tla": "RBB",
-        "crest": "https://crests.football-data.org/4286.png"
+        "id": 6684,
+        "name": "SC Internacional",
+        "shortName": "Internacional",
+        "tla": "SCI",
+        "crest": "https://crests.football-data.org/6684.png"
       },
       "score": {
         "winner": null,
