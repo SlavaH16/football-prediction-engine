@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-11-19T16:47:51.055476+00:00",
+  "generated_at": "2026-11-20T16:22:22.395762+00:00",
   "cutoff_date": "2023-10-16",
   "max_new_matches": 180,
   "max_per_league": 30,
-  "known_ids_before_run": 9525,
+  "known_ids_before_run": 9490,
   "new_matches_saved": 0,
-  "known_ids_after_run": 9525,
+  "known_ids_after_run": 9490,
   "discovered_unstored_matches": 0,
   "leagues": [
     {
