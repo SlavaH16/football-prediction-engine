@@ -1,55 +1,58 @@
 {
-  "generated_at": "2026-11-27T17:40:07.447526+00:00",
+  "generated_at": "2026-11-28T16:24:36.814868+00:00",
   "cutoff_date": "2023-10-16",
   "max_new_matches": 180,
   "max_per_league": 30,
-  "known_ids_before_run": 9526,
-  "new_matches_saved": 0,
-  "known_ids_after_run": 9526,
-  "discovered_unstored_matches": 0,
+  "known_ids_before_run": 9594,
+  "new_matches_saved": 10,
+  "known_ids_after_run": 9604,
+  "discovered_unstored_matches": 10,
   "leagues": [
     {
       "league": "Premier League",
       "league_id": "l_4WFCIZ",
-      "new_matches": 0,
+      "new_matches": 1,
       "file": "data/pitchapi_history/Premier_League_2026_2027.json",
       "seasons_scanned": 6
     },
     {
       "league": "Czech First League",
       "league_id": "l_0F4I4F",
-      "new_matches": 0,
+      "new_matches": 3,
       "file": "data/pitchapi_history/Czech_First_League_2026_2027.json",
       "seasons_scanned": 3
     },
     {
       "league": "Bundesliga",
       "league_id": "l_1Isor4",
-      "new_matches": 0,
+      "new_matches": 1,
       "file": "data/pitchapi_history/Bundesliga_2026_2027.json",
       "seasons_scanned": 6
     },
     {
       "league": "LaLiga",
       "league_id": "l_0ErfuF",
-      "new_matches": 0,
+      "new_matches": 2,
       "file": "data/pitchapi_history/LaLiga_2026_2027.json",
       "seasons_scanned": 6
     },
     {
       "league": "Serie A",
       "league_id": "l_0ALvwF",
-      "new_matches": 0,
+      "new_matches": 2,
       "file": "data/pitchapi_history/Serie_A_2026_2027.json",
       "seasons_scanned": 6
     },
     {
       "league": "Ligue 1",
       "league_id": "l_3FJFUl",
-      "new_matches": 0,
+      "new_matches": 1,
       "file": "data/pitchapi_history/Ligue_1_2026_2027.json",
       "seasons_scanned": 6
     }
   ],
-  "errors": []
+  "errors": [
+    "Czech First League 2026/2027 match m_2aKFhZ advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a222f8-b4dd-775a-868e-6342742e6feb)",
+    "Czech First League 2026/2027 match m_1q5Jyr advanced: NotFoundError: no advanced analytics for this match (code=ANALYTICS_UNAVAILABLE, status=404, request_id=01a222f8-b6a8-717d-a548-b02bdc8311b9)"
+  ]
 }
